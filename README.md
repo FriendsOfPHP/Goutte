@@ -29,7 +29,7 @@ Create a Goutte Client instance (which extends
 
     use Goutte\Client;
 
-    $client = new Goutte();
+    $client = new Client();
 
 Make requests with the `request()` method:
 
