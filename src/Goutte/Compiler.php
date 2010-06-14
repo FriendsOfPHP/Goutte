@@ -87,16 +87,15 @@ class Compiler
       'src/vendor/symfony/src/Symfony/Foundation/UniversalClassLoader.php',
       'src/vendor/zend/library/Zend/Exception.php',
       //'src/vendor/zend/library/Zend/Date.php',
-      'src/vendor/zend/library/Zend/Uri.php',
-      'src/vendor/zend/library/Zend/Validate.php',
-      'src/vendor/zend/library/Zend/Validate/Abstract.php',
-      'src/vendor/zend/library/Zend/Validate/Interface.php',
-      'src/vendor/zend/library/Zend/Validate/Hostname.php',
-      'src/vendor/zend/library/Zend/Validate/Ip.php',
-      //'src/vendor/zend/library/Zend/Validate/Hostname/Biz.php',
-      //'src/vendor/zend/library/Zend/Validate/Hostname/Cn.php',
-      'src/vendor/zend/library/Zend/Validate/Hostname/Com.php',
-      'src/vendor/zend/library/Zend/Validate/Hostname/Jp.php',
+      'src/vendor/zend/library/Zend/URI/URI.php',
+      'src/vendor/zend/library/Zend/Validator/Validator.php',
+      'src/vendor/zend/library/Zend/Validator/AbstractValidator.php',
+      'src/vendor/zend/library/Zend/Validator/Hostname/Hostname.php',
+      'src/vendor/zend/library/Zend/Validator/Ip.php',
+      //'src/vendor/zend/library/Zend/Validator/Hostname/Biz.php',
+      //'src/vendor/zend/library/Zend/Validator/Hostname/Cn.php',
+      'src/vendor/zend/library/Zend/Validator/Hostname/Com.php',
+      'src/vendor/zend/library/Zend/Validator/Hostname/Jp.php',
     );
 
     $dirs = array(
@@ -106,8 +105,8 @@ class Compiler
       'src/vendor/symfony/src/Symfony/Components/CssSelector',
       'src/vendor/symfony/src/Symfony/Components/Process',
       //'src/vendor/zend/library/Zend/Date',
-      'src/vendor/zend/library/Zend/Uri',
-      'src/vendor/zend/library/Zend/Http',
+      'src/vendor/zend/library/Zend/URI',
+      'src/vendor/zend/library/Zend/HTTP',
     );
 
     $finder = new Finder();
