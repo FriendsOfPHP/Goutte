@@ -75,26 +75,7 @@ class Client extends BaseClient
 
     protected function createResponse(ZendResponse $response)
     {
-        $headers = array($response->getHeader('Set-Cookie'));
-        $cookies = array();
-        foreach ($headers as $header) {
-            if (!trim($header)) {
-                continue;
-            }
-
-            $parts = explode(';', $header);
-            $value = array_shift($parts);
-            list($name, $value) = explode('=', trim($value));
-
-            $cookies[$name] = array('value' => $value);
-
-            foreach ($parts as $part) {
-                list($key, $value) = explode('=', trim($part));
-                $cookies[$name][$key] = $value;
-            }
-        }
-
-        return new Response($response->getBody(), $response->getStatus(), $response->getHeaders(), $cookies);
+        return new Response($response->getBody(), $response->getStatus(), $response->getHeaders());
     }
 
     protected function createZendClient()
