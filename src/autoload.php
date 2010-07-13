@@ -1,8 +1,8 @@
 <?php
 
-require_once __DIR__.'/vendor/symfony/src/Symfony/Foundation/UniversalClassLoader.php';
+require_once __DIR__.'/vendor/symfony/src/Symfony/Framework/UniversalClassLoader.php';
 
-use Symfony\Foundation\UniversalClassLoader;
+use Symfony\Framework\UniversalClassLoader;
 
 $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(

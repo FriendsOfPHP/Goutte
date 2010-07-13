@@ -9,7 +9,7 @@ use Symfony\Components\BrowserKit\Request;
 use Symfony\Components\BrowserKit\Response;
 
 use Zend\HTTP\Client as ZendClient;
-use Zend\HTTP\Response\Response as ZendResponse;
+use Zend\HTTP\Response as ZendResponse;
 
 /*
  * This file is part of the Goutte package.

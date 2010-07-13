@@ -3,7 +3,7 @@
 namespace Goutte;
 
 use Symfony\Components\Finder\Finder;
-use Symfony\Foundation\Kernel;
+use Symfony\Framework\Kernel;
 
 /*
  * This file is part of the Goutte utility.
@@ -84,7 +84,7 @@ class Compiler
     $files = array(
       'LICENSE',
       'src/autoload.php',
-      'src/vendor/symfony/src/Symfony/Foundation/UniversalClassLoader.php',
+      'src/vendor/symfony/src/Symfony/Framework/UniversalClassLoader.php',
       'src/vendor/zend/library/Zend/Exception.php',
       //'src/vendor/zend/library/Zend/Date.php',
       'src/vendor/zend/library/Zend/URI/URI.php',
