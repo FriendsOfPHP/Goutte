@@ -8,8 +8,8 @@ use Symfony\Components\BrowserKit\CookieJar;
 use Symfony\Components\BrowserKit\Request;
 use Symfony\Components\BrowserKit\Response;
 
-use Zend\HTTP\Client as ZendClient;
-use Zend\HTTP\Response as ZendResponse;
+use Zend\Http\Client as ZendClient;
+use Zend\Http\Response as ZendResponse;
 
 /*
  * This file is part of the Goutte package.
@@ -56,7 +56,7 @@ class Client extends BaseClient
             'maxredirects' => 0,
             'timeout'      => 30,
             'useragent'    => $this->server['HTTP_USER_AGENT'],
-            'adapter'      => 'Zend\\HTTP\\Client\\Adapter\\Socket',
+            'adapter'      => 'Zend\\Http\\Client\\Adapter\\Socket',
             ), $this->zendConfig));
         $client->setMethod(strtoupper($request->getMethod()));
 

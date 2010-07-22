@@ -87,7 +87,7 @@ class Compiler
       'src/vendor/symfony/src/Symfony/Framework/UniversalClassLoader.php',
       'src/vendor/zend/library/Zend/Exception.php',
       //'src/vendor/zend/library/Zend/Date.php',
-      'src/vendor/zend/library/Zend/URI/URI.php',
+      'src/vendor/zend/library/Zend/Uri/Uri.php',
       'src/vendor/zend/library/Zend/Validator/Validator.php',
       'src/vendor/zend/library/Zend/Validator/AbstractValidator.php',
       'src/vendor/zend/library/Zend/Validator/Hostname/Hostname.php',
@@ -105,8 +105,8 @@ class Compiler
       'src/vendor/symfony/src/Symfony/Components/CssSelector',
       'src/vendor/symfony/src/Symfony/Components/Process',
       //'src/vendor/zend/library/Zend/Date',
-      'src/vendor/zend/library/Zend/URI',
-      'src/vendor/zend/library/Zend/HTTP',
+      'src/vendor/zend/library/Zend/Uri',
+      'src/vendor/zend/library/Zend/Http',
     );
 
     $finder = new Finder();
