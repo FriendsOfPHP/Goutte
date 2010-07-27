@@ -90,7 +90,7 @@ class Compiler
       'src/vendor/zend/library/Zend/Uri/Uri.php',
       'src/vendor/zend/library/Zend/Validator/Validator.php',
       'src/vendor/zend/library/Zend/Validator/AbstractValidator.php',
-      'src/vendor/zend/library/Zend/Validator/Hostname/Hostname.php',
+      'src/vendor/zend/library/Zend/Validator/Hostname.php',
       'src/vendor/zend/library/Zend/Validator/Ip.php',
       //'src/vendor/zend/library/Zend/Validator/Hostname/Biz.php',
       //'src/vendor/zend/library/Zend/Validator/Hostname/Cn.php',
