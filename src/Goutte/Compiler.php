@@ -2,7 +2,7 @@
 
 namespace Goutte;
 
-use Symfony\Components\Finder\Finder;
+use Symfony\Component\Finder\Finder;
 use Symfony\Framework\Kernel;
 
 /*
@@ -100,10 +100,10 @@ class Compiler
 
     $dirs = array(
       'src/Goutte',
-      'src/vendor/symfony/src/Symfony/Components/BrowserKit',
-      'src/vendor/symfony/src/Symfony/Components/DomCrawler',
-      'src/vendor/symfony/src/Symfony/Components/CssSelector',
-      'src/vendor/symfony/src/Symfony/Components/Process',
+      'src/vendor/symfony/src/Symfony/Component/BrowserKit',
+      'src/vendor/symfony/src/Symfony/Component/DomCrawler',
+      'src/vendor/symfony/src/Symfony/Component/CssSelector',
+      'src/vendor/symfony/src/Symfony/Component/Process',
       //'src/vendor/zend/library/Zend/Date',
       'src/vendor/zend/library/Zend/Uri',
       'src/vendor/zend/library/Zend/Http',

@@ -2,11 +2,11 @@
 
 namespace Goutte;
 
-use Symfony\Components\BrowserKit\Client as BaseClient;
-use Symfony\Components\BrowserKit\History;
-use Symfony\Components\BrowserKit\CookieJar;
-use Symfony\Components\BrowserKit\Request;
-use Symfony\Components\BrowserKit\Response;
+use Symfony\Component\BrowserKit\Client as BaseClient;
+use Symfony\Component\BrowserKit\History;
+use Symfony\Component\BrowserKit\CookieJar;
+use Symfony\Component\BrowserKit\Request;
+use Symfony\Component\BrowserKit\Response;
 
 use Zend\Http\Client as ZendClient;
 use Zend\Http\Response as ZendResponse;
