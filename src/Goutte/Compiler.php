@@ -84,7 +84,7 @@ class Compiler
     $files = array(
       'LICENSE',
       'src/autoload.php',
-      'src/vendor/symfony/src/Symfony/Component/HttpFoundation/UniversalClassLoader.php',
+      'src/vendor/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php',
       'src/vendor/zend/library/Zend/Exception.php',
       //'src/vendor/zend/library/Zend/Date.php',
       'src/vendor/zend/library/Zend/Uri/Uri.php',
