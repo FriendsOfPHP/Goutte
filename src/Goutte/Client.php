@@ -66,7 +66,7 @@ class Client extends BaseClient
             $client->setParameterGet($request->getParameters());
         }
 
-        foreach ($this->getCookieJar()->getValues($request->getUri()) as $name => $value) {
+        foreach ($this->getCookieJar()->allValues($request->getUri()) as $name => $value) {
             $client->setCookie($name, $value);
         }
 
