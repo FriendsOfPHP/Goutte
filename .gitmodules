@@ -1,0 +1,21 @@
+[submodule "vendor/Symfony/Component/BrowserKit"]
+	path = vendor/Symfony/Component/BrowserKit
+	url = https://github.com/symfony/BrowserKit
+[submodule "vendor/Symfony/Component/DomCrawler"]
+	path = vendor/Symfony/Component/DomCrawler
+	url = https://github.com/symfony/DomCrawler
+[submodule "vendor/Symfony/Component/CssSelector"]
+	path = vendor/Symfony/Component/CssSelector
+	url = https://github.com/symfony/CssSelector
+[submodule "vendor/Symfony/Component/Process"]
+	path = vendor/Symfony/Component/Process
+	url = https://github.com/symfony/Process
+[submodule "vendor/zend"]
+	path = vendor/zend
+	url = https://github.com/zendframework/zf2
+[submodule "vendor/Symfony/Component/ClassLoader"]
+	path = vendor/Symfony/Component/ClassLoader
+	url = https://github.com/symfony/ClassLoader
+[submodule "vendor/Symfony/Component/Finder"]
+	path = vendor/Symfony/Component/Finder
+	url = https://github.com/symfony/Finder

@@ -3,7 +3,6 @@
 namespace Goutte;
 
 use Symfony\Component\Finder\Finder;
-use Symfony\Component\HttpKernel\Kernel;
 
 /*
  * This file is part of the Goutte utility.
@@ -18,7 +17,7 @@ use Symfony\Component\HttpKernel\Kernel;
  * The Compiler class compiles the Goutte utility.
  *
  * @package    Goutte
- * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author     Fabien Potencier <fabien@symfony.com>
  */
 class Compiler
 {
@@ -38,8 +37,7 @@ class Compiler
     foreach ($this->getFiles() as $file)
     {
       $path = str_replace(__DIR__.'/', '', $file);
-      $content = Kernel::stripComments(file_get_contents($file));
-      $content = preg_replace("#require_once 'Zend/.*?';#", '', $content);
+      $content = preg_replace("#require_once 'Zend/.*?';#", '', php_strip_whitespace($file));
 
       $phar->addFromString($path, $content);
     }
@@ -58,7 +56,7 @@ class Compiler
 
   protected function getCliStub()
   {
-    return "<?php ".$this->getLicense()." require_once __DIR__.'/src/autoload.php'; __HALT_COMPILER();";
+    return "<?php ".$this->getLicense()." require_once __DIR__.'/autoload.php'; __HALT_COMPILER();";
   }
 
   protected function getWebStub()
@@ -72,7 +70,7 @@ class Compiler
     /*
      * This file is part of the Goutte utility.
      *
-     * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+     * (c) Fabien Potencier <fabien@symfony.com>
      *
      * This source file is subject to the MIT license that is bundled
      * with this source code in the file LICENSE.
@@ -83,30 +81,30 @@ class Compiler
   {
     $files = array(
       'LICENSE',
-      'src/autoload.php',
-      'src/vendor/symfony/src/Symfony/Component/ClassLoader/UniversalClassLoader.php',
-      'src/vendor/zend/library/Zend/Exception.php',
-      //'src/vendor/zend/library/Zend/Date.php',
-      'src/vendor/zend/library/Zend/Uri/Uri.php',
-      'src/vendor/zend/library/Zend/Validator/Validator.php',
-      'src/vendor/zend/library/Zend/Validator/AbstractValidator.php',
-      'src/vendor/zend/library/Zend/Validator/Hostname.php',
-      'src/vendor/zend/library/Zend/Validator/Ip.php',
-      //'src/vendor/zend/library/Zend/Validator/Hostname/Biz.php',
-      //'src/vendor/zend/library/Zend/Validator/Hostname/Cn.php',
-      'src/vendor/zend/library/Zend/Validator/Hostname/Com.php',
-      'src/vendor/zend/library/Zend/Validator/Hostname/Jp.php',
+      'autoload.php',
+      'vendor/Symfony/Component/ClassLoader/UniversalClassLoader.php',
+      'vendor/zend/library/Zend/Exception.php',
+      //'vendor/zend/library/Zend/Date.php',
+      'vendor/zend/library/Zend/Uri/Uri.php',
+      'vendor/zend/library/Zend/Validator/Validator.php',
+      'vendor/zend/library/Zend/Validator/AbstractValidator.php',
+      'vendor/zend/library/Zend/Validator/Hostname.php',
+      'vendor/zend/library/Zend/Validator/Ip.php',
+      //'vendor/zend/library/Zend/Validator/Hostname/Biz.php',
+      //'vendor/zend/library/Zend/Validator/Hostname/Cn.php',
+      'vendor/zend/library/Zend/Validator/Hostname/Com.php',
+      'vendor/zend/library/Zend/Validator/Hostname/Jp.php',
     );
 
     $dirs = array(
       'src/Goutte',
-      'src/vendor/symfony/src/Symfony/Component/BrowserKit',
-      'src/vendor/symfony/src/Symfony/Component/DomCrawler',
-      'src/vendor/symfony/src/Symfony/Component/CssSelector',
-      'src/vendor/symfony/src/Symfony/Component/Process',
-      //'src/vendor/zend/library/Zend/Date',
-      'src/vendor/zend/library/Zend/Uri',
-      'src/vendor/zend/library/Zend/Http',
+      'vendor/Symfony/Component/BrowserKit',
+      'vendor/Symfony/Component/DomCrawler',
+      'vendor/Symfony/Component/CssSelector',
+      'vendor/Symfony/Component/Process',
+      //'vendor/zend/library/Zend/Date',
+      'vendor/zend/library/Zend/Uri',
+      'vendor/zend/library/Zend/Http',
     );
 
     $finder = new Finder();
