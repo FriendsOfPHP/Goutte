@@ -25,7 +25,7 @@ Require the Goutte phar file to use Goutte in a script:
     require_once '/path/to/goutte.phar';
 
 Create a Goutte Client instance (which extends
-`Symfony\Components\BrowserKit\Client`):
+`Symfony\Component\BrowserKit\Client`):
 
     use Goutte\Client;
 
@@ -36,7 +36,7 @@ Make requests with the `request()` method:
     $crawler = $client->request('GET', 'http://www.symfony-project.org/');
 
 The method returns a `Crawler` object
-(`Symfony\Components\DomCrawler\Crawler`).
+(`Symfony\Component\DomCrawler\Crawler`).
 
 Click on links:
 
@@ -69,7 +69,7 @@ Technical Information
 
 Goutte is a thin wrapper around the following fine PHP libraries:
 
- * Symfony Components: BrowserKit, DomCrawler, CssSelector, and Process
+ * Symfony Components: BrowserKit, ClassLoader, CssSelector, DomCrawler, Finder, and Process
 
  * Zend libraries: Date, Uri, Http, and Validate
 
