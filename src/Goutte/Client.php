@@ -62,8 +62,6 @@ class Client extends BaseClient
 
         if ('post' == $request->getMethod()) {
             $client->setParameterPost($request->getParameters());
-        } else {
-            $client->setParameterGet($request->getParameters());
         }
 
         foreach ($this->getCookieJar()->allValues($request->getUri()) as $name => $value) {
