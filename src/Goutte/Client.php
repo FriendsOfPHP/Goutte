@@ -4,7 +4,7 @@ namespace Goutte;
 
 use Symfony\Component\BrowserKit\Client as BaseClient;
 use Symfony\Component\BrowserKit\History;
-use Symfony\Component\BrowserKit\CookieJar;
+use Goutte\CookieJar as GoutteCookieJar;
 use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\BrowserKit\Response;
 
@@ -32,10 +32,10 @@ class Client extends BaseClient
 
     protected $zendConfig;
 
-    public function __construct(array $zendConfig = array(), array $server = array(), History $history = null, CookieJar $cookieJar = null)
+    public function __construct(array $zendConfig = array(), array $server = array(), History $history = null, GoutteCookieJar $cookieJar = null)
     {
         $this->zendConfig = $zendConfig;
-
+        $cookieJar = null === $cookieJar ? new GoutteCookieJar() : $cookieJar;
         parent::__construct($server, $history, $cookieJar);
     }
 
@@ -53,10 +53,11 @@ class Client extends BaseClient
         $client = $this->createZendClient();
         $client->setUri($request->getUri());
         $client->setConfig(array_merge(array(
-            'maxredirects' => 0,
-            'timeout'      => 30,
-            'useragent'    => $this->server['HTTP_USER_AGENT'],
-            'adapter'      => 'Zend\\Http\\Client\\Adapter\\Socket',
+            'maxredirects'  => 0,
+            'timeout'       => 30,
+            'useragent'     => $this->server['HTTP_USER_AGENT'],
+            'adapter'       => 'Zend\\Http\\Client\\Adapter\\Socket',
+            'encodecookies' => false,
             ), $this->zendConfig));
         $client->setMethod(strtoupper($request->getMethod()));
 
@@ -64,7 +65,7 @@ class Client extends BaseClient
             $client->setParameterPost($request->getParameters());
         }
 
-        foreach ($this->getCookieJar()->allValues($request->getUri()) as $name => $value) {
+        foreach ($this->getCookieJar()->allValues($request->getUri(), true) as $name => $value) {
             $client->setCookie($name, $value);
         }
 
