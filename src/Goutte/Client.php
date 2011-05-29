@@ -60,7 +60,7 @@ class Client extends BaseClient
             ), $this->zendConfig));
         $client->setMethod(strtoupper($request->getMethod()));
 
-        if ('post' == $request->getMethod()) {
+        if ('POST' == $request->getMethod()) {
             $client->setParameterPost($request->getParameters());
         }
 
