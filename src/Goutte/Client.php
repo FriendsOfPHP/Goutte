@@ -57,6 +57,7 @@ class Client extends BaseClient
             'timeout'      => 30,
             'useragent'    => $this->server['HTTP_USER_AGENT'],
             'adapter'      => 'Zend\\Http\\Client\\Adapter\\Socket',
+            'encodecookies' => false,
             ), $this->zendConfig));
         $client->setMethod(strtoupper($request->getMethod()));
 
@@ -64,7 +65,7 @@ class Client extends BaseClient
             $client->setParameterPost($request->getParameters());
         }
 
-        foreach ($this->getCookieJar()->allValues($request->getUri()) as $name => $value) {
+        foreach ($this->getCookieJar()->allRawValues($request->getUri()) as $name => $value) {
             $client->setCookie($name, $value);
         }
 
