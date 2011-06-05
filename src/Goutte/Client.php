@@ -32,11 +32,18 @@ class Client extends BaseClient
 
     protected $zendConfig;
 
+    protected $headers;
+
     public function __construct(array $zendConfig = array(), array $server = array(), History $history = null, CookieJar $cookieJar = null)
     {
         $this->zendConfig = $zendConfig;
 
         parent::__construct($server, $history, $cookieJar);
+    }
+
+    public function setHeaders($headers = null)
+    {
+        $this->headers = $headers;
     }
 
     protected function doRequest($request)
@@ -59,6 +66,9 @@ class Client extends BaseClient
             'adapter'      => 'Zend\\Http\\Client\\Adapter\\Socket',
             ), $this->zendConfig));
         $client->setMethod(strtoupper($request->getMethod()));
+
+        if ($this->headers)
+            $client->setHeaders($this->headers);
 
         if ('POST' == $request->getMethod()) {
             $client->setParameterPost($request->getParameters());
