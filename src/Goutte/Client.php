@@ -68,6 +68,14 @@ class Client extends BaseClient
             $client->setCookie($name, $value);
         }
 
+        foreach ($request->getFiles() as $name => $info) {
+            $filename = $info['name'];
+            if (false === ($data = @file_get_contents($info['tmp_name']))) {
+                throw new \RuntimeException("Unable to read file '{$filename}' for upload");
+            }
+            $client->setFileUpload($filename, $name, $data);
+        }
+
         return $client;
     }
 
