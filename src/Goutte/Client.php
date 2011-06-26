@@ -31,12 +31,18 @@ class Client extends BaseClient
     const VERSION = '0.1';
 
     protected $zendConfig;
+    protected $headers = array();
 
     public function __construct(array $zendConfig = array(), array $server = array(), History $history = null, CookieJar $cookieJar = null)
     {
         $this->zendConfig = $zendConfig;
 
         parent::__construct($server, $history, $cookieJar);
+    }
+
+    public function setHeader($name, $value)
+    {
+        $this->headers[$name] = $value;
     }
 
     protected function doRequest($request)
@@ -62,6 +68,10 @@ class Client extends BaseClient
 
         if ('POST' == $request->getMethod()) {
             $client->setParameterPost($request->getParameters());
+        }
+
+        foreach ($this->headers as $name => $value) {
+            $client->setHeaders($name, $value);
         }
 
         foreach ($this->getCookieJar()->allValues($request->getUri()) as $name => $value) {
