@@ -32,6 +32,7 @@ class Client extends BaseClient
 
     protected $zendConfig;
     protected $headers = array();
+    protected $auth = null;
 
     public function __construct(array $zendConfig = array(), array $server = array(), History $history = null, CookieJar $cookieJar = null)
     {
@@ -43,6 +44,15 @@ class Client extends BaseClient
     public function setHeader($name, $value)
     {
         $this->headers[$name] = $value;
+    }
+
+    public function setAuth($user, $password = '', $type = ZendClient::AUTH_BASIC)
+    {
+        $this->auth = array(
+            'user'     => $user,
+            'password' => $password,
+            'type'     => $type
+        );
     }
 
     protected function doRequest($request)
@@ -72,6 +82,14 @@ class Client extends BaseClient
 
         foreach ($this->headers as $name => $value) {
             $client->setHeaders($name, $value);
+        }
+
+        if ($this->auth !== null) {
+            $client->setAuth(
+                $this->auth['user'],
+                $this->auth['password'],
+                $this->auth['type']
+            );
         }
 
         foreach ($this->getCookieJar()->allValues($request->getUri()) as $name => $value) {
