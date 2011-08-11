@@ -78,4 +78,4 @@ License
 
 Goutte is licensed under the MIT license.
 
-[1]: http://github.com/fabpot/goutte/blob/master/goutte.phar
+[1]: https://raw.github.com/fabpot/Goutte/master/goutte.phar
