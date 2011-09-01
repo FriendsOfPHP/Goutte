@@ -59,7 +59,7 @@ class Client extends BaseClient
     {
         $client = $this->createClient($request);
 
-        $response = $client->request();
+        $response = $client->send($client->getRequest());
 
         return $this->createResponse($response);
     }
@@ -111,7 +111,7 @@ class Client extends BaseClient
 
     protected function createResponse(ZendResponse $response)
     {
-        return new Response($response->getBody(), $response->getStatus(), $response->getHeaders());
+        return new Response($response->getBody(), $response->getStatusCode(), $response->headers()->toArray());
     }
 
     protected function createZendClient()
