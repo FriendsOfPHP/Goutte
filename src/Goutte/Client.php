@@ -93,7 +93,7 @@ class Client extends BaseClient
         }
 
         foreach ($this->getCookieJar()->allValues($request->getUri()) as $name => $value) {
-            $client->setCookie($name, $value);
+            $client->addCookie($name, $value);
         }
 
         foreach ($request->getFiles() as $name => $info) {
