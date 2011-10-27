@@ -81,7 +81,7 @@ class Client extends BaseClient
         }
 
         foreach ($this->headers as $name => $value) {
-            $client->setHeaders($name, $value);
+            $client->setHeaders(array($name => $value));
         }
 
         if ($this->auth !== null) {
