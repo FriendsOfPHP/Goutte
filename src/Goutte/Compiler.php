@@ -95,6 +95,16 @@ class Compiler
       //'vendor/zend/library/Zend/Validator/Hostname/Cn.php',
       'vendor/zend/library/Zend/Validator/Hostname/Com.php',
       'vendor/zend/library/Zend/Validator/Hostname/Jp.php',
+      'vendor/zend/library/Zend/Stdlib/Dispatchable.php',
+      'vendor/zend/library/Zend/Stdlib/Message.php',
+      'vendor/zend/library/Zend/Stdlib/MessageDescription.php',
+      'vendor/zend/library/Zend/Stdlib/RequestDescription.php',
+      'vendor/zend/library/Zend/Stdlib/Parameters.php',
+      'vendor/zend/library/Zend/Stdlib/ParametersDescription.php',
+      'vendor/zend/library/Zend/Stdlib/ResponseDescription.php',
+      'vendor/zend/library/Zend/Loader/PluginClassLoader.php',
+      'vendor/zend/library/Zend/Loader/PluginClassLocator.php',
+      'vendor/zend/library/Zend/Loader/ShortNameLocator.php',
     );
 
     $dirs = array(
