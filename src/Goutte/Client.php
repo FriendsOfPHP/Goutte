@@ -59,7 +59,7 @@ class Client extends BaseClient
     {
         $client = $this->createClient($request);
 
-        $response = $client->send($client->getRequest());
+        $response = $client->request();
 
         return $this->createResponse($response);
     }
@@ -79,7 +79,10 @@ class Client extends BaseClient
         if ('POST' == $request->getMethod()) {
             $client->setParameterPost($request->getParameters());
         }
-        $client->setHeaders($this->headers);
+
+        foreach ($this->headers as $name => $value) {
+            $client->setHeaders($name, $value);
+        }
 
         if ($this->auth !== null) {
             $client->setAuth(
@@ -90,25 +93,38 @@ class Client extends BaseClient
         }
 
         foreach ($this->getCookieJar()->allValues($request->getUri()) as $name => $value) {
-            $client->addCookie($name, $value);
+            $client->setCookie($name, $value);
         }
 
-        foreach ($request->getFiles() as $name => $info) {
-            if (isset($info['tmp_name']) && '' !== $info['tmp_name']) {
-                $filename = $info['name'];
-                if (false === ($data = @file_get_contents($info['tmp_name']))) {
-                    throw new \RuntimeException("Unable to read file '{$filename}' for upload");
-                }
-                $client->setFileUpload($filename, $name, $data);
-            }
-        }
+        $this->addFileUploadsRecursively($client, $request->getFiles());
 
         return $client;
     }
 
+    /**
+     * Goes recursively through the files array and adds uploads to the ZendClient
+     */
+    protected function addFileUploadsRecursively(ZendClient $client, array $files, $arrayName = '') {
+        foreach ($files as $name => $info) {
+            if (!empty($arrayName)) {
+                $name = $arrayName . '[' . $name . ']';
+            }
+            if (isset($info['tmp_name']) && '' !== $info['tmp_name']) {
+                $filename = $info['name'];
+
+                if (false === ($data = @file_get_contents($info['tmp_name']))) {
+                    throw new \RuntimeException("Unable to read file '{$filename}' for upload");
+                }
+                $client->setFileUpload($filename, $name, $data);
+            } elseif (is_array($info)) {
+                $this->addFileUploadsRecursively($client, $info, $name);
+            }
+        }
+    }
+
     protected function createResponse(ZendResponse $response)
     {
-        return new Response($response->getBody(), $response->getStatusCode(), $response->headers()->toArray());
+        return new Response($response->getBody(), $response->getStatus(), $response->getHeaders());
     }
 
     protected function createZendClient()
