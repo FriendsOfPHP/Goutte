@@ -101,7 +101,8 @@ class Client extends BaseClient
     /**
      * Goes recursively through the files array and adds uploads to the ZendClient
      */
-    protected function addFileUploadsRecursively(ZendClient $client, array $files, $arrayName = '') {
+    protected function addFileUploadsRecursively(ZendClient $client, array $files, $arrayName = '')
+    {
         foreach ($files as $name => $info) {
             if (!empty($arrayName)) {
                 $name = $arrayName . '[' . $name . ']';
