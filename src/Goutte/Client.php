@@ -113,6 +113,6 @@ class Client extends BaseClient
 
     protected function createZendClient()
     {
-        return new ZendClient();
+        return new ZendClient(null, array('encodecookies' => false));
     }
 }
