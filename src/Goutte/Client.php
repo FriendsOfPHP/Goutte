@@ -8,8 +8,11 @@ use Symfony\Component\BrowserKit\CookieJar;
 use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\BrowserKit\Response;
 
-use Zend\Http\Client as ZendClient;
-use Zend\Http\Response as ZendResponse;
+use Guzzle\Http\Curl\CurlException;
+use Guzzle\Http\Message\RequestInterface as GuzzleRequestInterface;
+use Guzzle\Http\Message\Response as GuzzleResponse;
+use Guzzle\Service\ClientInterface as GuzzleClientInterface;
+use Guzzle\Service\Client as GuzzleClient;
 
 /*
  * This file is part of the Goutte package.
@@ -25,64 +28,61 @@ use Zend\Http\Response as ZendResponse;
  *
  * @package Goutte
  * @author  Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author  Michael Dowling <michael@guzzlephp.org>
  */
 class Client extends BaseClient
 {
     const VERSION = '0.1';
 
-    protected $zendConfig;
     protected $headers = array();
     protected $auth = null;
+    protected $client;
 
-    public function __construct(array $zendConfig = array(), array $server = array(), History $history = null, CookieJar $cookieJar = null)
+    public function setClient(GuzzleClientInterface $client)
     {
-        $this->zendConfig = $zendConfig;
+        $this->client = $client;
 
-        parent::__construct($server, $history, $cookieJar);
+        return $this;
+    }
+
+    public function getClient()
+    {
+        if (!$this->client) {
+            $this->client = new GuzzleClient();
+        }
+
+        return $this->client;
     }
 
     public function setHeader($name, $value)
     {
         $this->headers[$name] = $value;
+
+        return $this;
     }
 
-    public function setAuth($user, $password = '', $type = ZendClient::AUTH_BASIC)
+    public function setAuth($user, $password = '', $type = GuzzleRequestInterface::AUTH_BASIC)
     {
         $this->auth = array(
-            'user'     => $user,
+            'user' => $user,
             'password' => $password,
             'type'     => $type
         );
+
+        return $this;
     }
 
     protected function doRequest($request)
     {
-        $client = $this->createClient($request);
-
-        $response = $client->send($client->getRequest());
-
-        return $this->createResponse($response);
-    }
-
-    protected function createClient(Request $request)
-    {
-        $client = $this->createZendClient();
-        $client->setUri($request->getUri());
-        $client->setConfig(array_merge(array(
-            'maxredirects' => 0,
-            'timeout'      => 30,
-            'useragent'    => $this->server['HTTP_USER_AGENT'],
-            'adapter'      => 'Zend\\Http\\Client\\Adapter\\Socket',
-            ), $this->zendConfig));
-        $client->setMethod(strtoupper($request->getMethod()));
-
-        if ('POST' == $request->getMethod()) {
-            $client->setParameterPost($request->getParameters());
-        }
-        $client->setHeaders($this->headers);
+        $guzzleRequest = $this->getClient()->createRequest(
+            strtoupper($request->getMethod()),
+            $request->getUri(),
+            $this->headers,
+            $request->getParameters()
+        );
 
         if ($this->auth !== null) {
-            $client->setAuth(
+            $guzzleRequest->setAuth(
                 $this->auth['user'],
                 $this->auth['password'],
                 $this->auth['type']
@@ -90,29 +90,47 @@ class Client extends BaseClient
         }
 
         foreach ($this->getCookieJar()->allValues($request->getUri()) as $name => $value) {
-            $client->addCookie($name, $value);
+            $guzzleRequest->addCookie($name, $value);
         }
 
-        foreach ($request->getFiles() as $name => $info) {
-            if (isset($info['tmp_name']) && '' !== $info['tmp_name']) {
-                $filename = $info['name'];
-                if (false === ($data = @file_get_contents($info['tmp_name']))) {
-                    throw new \RuntimeException("Unable to read file '{$filename}' for upload");
+        if ($request->getMethod() == 'POST') {
+            foreach ($request->getFiles() as $name => $info) {
+                if (isset($info['tmp_name']) && '' !== $info['tmp_name']) {
+                    $guzzleRequest->addPostFiles(array(
+                        $name => $info['tmp_name']
+                    ));
                 }
-                $client->setFileUpload($filename, $name, $data);
             }
         }
 
-        return $client;
+        $guzzleRequest->setHeader('User-Agent', $this->server['HTTP_USER_AGENT']);
+
+        $guzzleRequest->getCurlOptions()->merge(array(
+            CURLOPT_MAXREDIRS => 0,
+            CURLOPT_TIMEOUT   => 30
+        ));
+
+        // Let BrowserKit handle redirects
+        try {
+            $response = $guzzleRequest->send();
+        } catch (CurlException $e) {
+            if (strpos($e->getMessage(), 'redirects')) {
+                $response = $e->getResponse();
+            } else {
+                throw $e;
+            }
+        }
+
+        return $this->createResponse($response);
     }
 
-    protected function createResponse(ZendResponse $response)
+    protected function createResponse(GuzzleResponse $response)
     {
-        return new Response($response->getBody(), $response->getStatusCode(), $response->headers()->toArray());
-    }
-
-    protected function createZendClient()
-    {
-        return new ZendClient(null, array('encodecookies' => false));
+        return new Response(
+            $response->getBody(true),
+            $response->getStatusCode(),
+            $response->getHeaders()->getAll()
+        );
     }
 }
+
