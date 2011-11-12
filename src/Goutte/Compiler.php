@@ -37,9 +37,7 @@ class Compiler
     foreach ($this->getFiles() as $file)
     {
       $path = str_replace(__DIR__.'/', '', $file);
-      $content = preg_replace("#require_once 'Zend/.*?';#", '', php_strip_whitespace($file));
-
-      $phar->addFromString($path, $content);
+      $phar->addFromString($path, file_get_contents($file));
     }
 
     // Stubs
@@ -82,29 +80,7 @@ class Compiler
     $files = array(
       'LICENSE',
       'autoload.php',
-      'vendor/Symfony/Component/ClassLoader/UniversalClassLoader.php',
-      'vendor/zend/library/Zend/Tool/Framework/Exception.php',
-      'vendor/zend/library/Zend/Registry.php',
-      //'vendor/zend/library/Zend/Date.php',
-      'vendor/zend/library/Zend/Uri/Uri.php',
-      'vendor/zend/library/Zend/Validator/Validator.php',
-      'vendor/zend/library/Zend/Validator/AbstractValidator.php',
-      'vendor/zend/library/Zend/Validator/Hostname.php',
-      'vendor/zend/library/Zend/Validator/Ip.php',
-      //'vendor/zend/library/Zend/Validator/Hostname/Biz.php',
-      //'vendor/zend/library/Zend/Validator/Hostname/Cn.php',
-      'vendor/zend/library/Zend/Validator/Hostname/Com.php',
-      'vendor/zend/library/Zend/Validator/Hostname/Jp.php',
-      'vendor/zend/library/Zend/Stdlib/Dispatchable.php',
-      'vendor/zend/library/Zend/Stdlib/Message.php',
-      'vendor/zend/library/Zend/Stdlib/MessageDescription.php',
-      'vendor/zend/library/Zend/Stdlib/RequestDescription.php',
-      'vendor/zend/library/Zend/Stdlib/Parameters.php',
-      'vendor/zend/library/Zend/Stdlib/ParametersDescription.php',
-      'vendor/zend/library/Zend/Stdlib/ResponseDescription.php',
-      'vendor/zend/library/Zend/Loader/PluginClassLoader.php',
-      'vendor/zend/library/Zend/Loader/PluginClassLocator.php',
-      'vendor/zend/library/Zend/Loader/ShortNameLocator.php',
+      'vendor/Symfony/Component/ClassLoader/UniversalClassLoader.php'
     );
 
     $dirs = array(
@@ -113,9 +89,7 @@ class Compiler
       'vendor/Symfony/Component/DomCrawler',
       'vendor/Symfony/Component/CssSelector',
       'vendor/Symfony/Component/Process',
-      //'vendor/zend/library/Zend/Date',
-      'vendor/zend/library/Zend/Uri',
-      'vendor/zend/library/Zend/Http',
+      'vendor/Guzzle/src/Guzzle'
     );
 
     $finder = new Finder();
@@ -124,3 +98,4 @@ class Compiler
     return array_merge($files, iterator_to_array($iterator));
   }
 }
+
