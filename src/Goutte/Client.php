@@ -107,13 +107,16 @@ class Client extends BaseClient
             if (!empty($arrayName)) {
                 $name = $arrayName . '[' . $name . ']';
             }
-            if (isset($info['tmp_name']) && '' !== $info['tmp_name']) {
-                $filename = $info['name'];
+            if (isset($info['tmp_name']) && isset($info['name'])) {
+                if ('' !== $info['tmp_name'] && '' !== $info['name']) {
+                    $filename = $info['name'];
 
-                if (false === ($data = @file_get_contents($info['tmp_name']))) {
-                    throw new \RuntimeException("Unable to read file '{$filename}' for upload");
+                    if (false === ($data = @file_get_contents($info['tmp_name']))) {
+                        throw new \RuntimeException("Unable to read file '{$filename}' for upload");
+                    }
+
+                    $client->setFileUpload($filename, $name, $data);
                 }
-                $client->setFileUpload($filename, $name, $data);
             } elseif (is_array($info)) {
                 $this->addFileUploadsRecursively($client, $info, $name);
             }
