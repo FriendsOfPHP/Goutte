@@ -83,6 +83,9 @@ class Client extends BaseClient
         if ('POST' == $request->getMethod()) {
             $client->setParameterPost($request->getParameters());
         }
+
+        $client->setRawBody($request->getContent());
+
         $client->setHeaders($this->headers);
 
         if ($this->auth !== null) {
