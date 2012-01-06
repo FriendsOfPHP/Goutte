@@ -77,7 +77,7 @@ class Client extends BaseClient
         $client->setMethod(strtoupper($request->getMethod()));
 
         if ($request->getContent() !== null) {
-            $client->setRawData($request->getContent());
+            $client->setRawBody($request->getContent());
         }
 
         if ('POST' == $request->getMethod()) {
