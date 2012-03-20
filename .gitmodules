@@ -10,12 +10,12 @@
 [submodule "vendor/Symfony/Component/Process"]
 	path = vendor/Symfony/Component/Process
 	url = https://github.com/symfony/Process
-[submodule "vendor/zend"]
-	path = vendor/zend
-	url = https://github.com/zendframework/zf2
 [submodule "vendor/Symfony/Component/ClassLoader"]
 	path = vendor/Symfony/Component/ClassLoader
 	url = https://github.com/symfony/ClassLoader
 [submodule "vendor/Symfony/Component/Finder"]
 	path = vendor/Symfony/Component/Finder
 	url = https://github.com/symfony/Finder
+[submodule "vendor/Buzz"]
+	path = vendor/Buzz
+	url = https://github.com/kriswallsmith/Buzz
