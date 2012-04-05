@@ -83,7 +83,6 @@ class Compiler
       'LICENSE',
       'autoload.php',
       'vendor/Symfony/Component/ClassLoader/UniversalClassLoader.php',
-      'vendor/zend/library/Zend/Tool/Framework/Exception.php',
       'vendor/zend/library/Zend/Registry.php',
       //'vendor/zend/library/Zend/Date.php',
       'vendor/zend/library/Zend/Uri/Uri.php',
