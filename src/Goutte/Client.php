@@ -53,7 +53,7 @@ class Client extends BaseClient
      * 
      * @return Symfony\Component\BrowserKit\Response The response object
      */
-    protected function doRequest(Request $request)
+    protected function doRequest($request)
     {
         $buzzRequest = $this->createRequest($request);
         
