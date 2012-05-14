@@ -68,7 +68,7 @@ class Client extends BaseClient
     {
         $client = $this->createZendClient();
         $client->setUri($request->getUri());
-        $client->setConfig(array_merge(array(
+        $client->setOptions(array_merge(array(
             'maxredirects' => 0,
             'timeout'      => 30,
             'useragent'    => $this->server['HTTP_USER_AGENT'],
