@@ -77,11 +77,11 @@ class Compiler
         $files = array(
             'LICENSE',
             'vendor/autoload.php',
+            'Goutte/Client.php',
         );
 
         $dirs = array(
             'vendor/composer',
-            'src/Goutte',
             'vendor/symfony/browser-kit',
             'vendor/symfony/dom-crawler',
             'vendor/symfony/css-selector',
