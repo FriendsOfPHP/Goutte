@@ -12,7 +12,7 @@
          bootstrap="./vendor/autoload.php">
     <testsuites>
         <testsuite name="Goutte Test Suite">
-            <directory>./tests/Goutte/Tests</directory>
+            <directory>./Goutte/Tests</directory>
         </testsuite>
     </testsuites>
 </phpunit>
