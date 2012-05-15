@@ -9,6 +9,6 @@ do
 done
 cd ../../..
 
-cd vendor/zend
+cd vendor/Guzzle
 git fetch origin && git reset --hard origin/master
 cd ../..

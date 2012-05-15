@@ -9,7 +9,7 @@ use Symfony\Component\ClassLoader\UniversalClassLoader;
 $loader = new UniversalClassLoader();
 $loader->registerNamespaces(array(
     'Symfony' => __DIR__.'/vendor',
-    'Zend'    => __DIR__.'/vendor/zend/library',
+    'Guzzle'  => __DIR__.'/vendor/Guzzle/src',
     'Goutte'  => __DIR__.'/src',
 ));
 $loader->register();

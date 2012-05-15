@@ -71,7 +71,7 @@ Goutte is a thin wrapper around the following fine PHP libraries:
 
  * Symfony Components: BrowserKit, ClassLoader, CssSelector, DomCrawler, Finder, and Process
 
- * Zend libraries: Date, Uri, Http, and Validator
+ * [Guzzle](http://www.guzzlephp.org)
 
 License
 -------
@@ -79,3 +79,4 @@ License
 Goutte is licensed under the MIT license.
 
 [1]: https://raw.github.com/fabpot/Goutte/master/goutte.phar
+
