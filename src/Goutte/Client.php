@@ -1,5 +1,14 @@
 <?php
 
+/*
+ * This file is part of the Goutte package.
+ *
+ * (c) Fabien Potencier <fabien@symfony.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Goutte;
 
 use Symfony\Component\BrowserKit\Client as BaseClient;
@@ -14,15 +23,6 @@ use Guzzle\Http\Message\Response as GuzzleResponse;
 use Guzzle\Service\ClientInterface as GuzzleClientInterface;
 use Guzzle\Service\Client as GuzzleClient;
 
-/*
- * This file is part of the Goutte package.
- *
- * (c) Fabien Potencier <fabien@symfony.com>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 /**
  * Client.
  *
@@ -32,7 +32,7 @@ use Guzzle\Service\Client as GuzzleClient;
  */
 class Client extends BaseClient
 {
-    const VERSION = '0.1';
+    const VERSION = '0.2';
 
     protected $headers = array();
     protected $auth = null;
@@ -75,7 +75,7 @@ class Client extends BaseClient
     protected function doRequest($request)
     {
         $guzzleRequest = $this->getClient()->createRequest(
-            strtoupper($request->getMethod()),
+            $request->getMethod(),
             $request->getUri(),
             $this->headers,
             $request->getParameters()
@@ -93,32 +93,27 @@ class Client extends BaseClient
             $guzzleRequest->addCookie($name, $value);
         }
 
-        if ($request->getMethod() == 'POST') {
+        if ('POST' == $request->getMethod()) {
             foreach ($request->getFiles() as $name => $info) {
                 if (isset($info['tmp_name']) && '' !== $info['tmp_name']) {
-                    $guzzleRequest->addPostFiles(array(
-                        $name => $info['tmp_name']
-                    ));
+                    $guzzleRequest->addPostFiles(array($name => $info['tmp_name']));
                 }
             }
         }
 
         $guzzleRequest->setHeader('User-Agent', $this->server['HTTP_USER_AGENT']);
 
-        $guzzleRequest->getCurlOptions()->merge(array(
-            CURLOPT_MAXREDIRS => 0,
-            CURLOPT_TIMEOUT   => 30
-        ));
+        $guzzleRequest->getCurlOptions()->merge(array(CURLOPT_MAXREDIRS => 0, CURLOPT_TIMEOUT => 30));
 
         // Let BrowserKit handle redirects
         try {
             $response = $guzzleRequest->send();
         } catch (CurlException $e) {
-            if (strpos($e->getMessage(), 'redirects')) {
-                $response = $e->getResponse();
-            } else {
+            if (!strpos($e->getMessage(), 'redirects')) {
                 throw $e;
             }
+
+            $response = $e->getResponse();
         }
 
         return $this->createResponse($response);
@@ -126,11 +121,6 @@ class Client extends BaseClient
 
     protected function createResponse(GuzzleResponse $response)
     {
-        return new Response(
-            $response->getBody(true),
-            $response->getStatusCode(),
-            $response->getHeaders()->getAll()
-        );
+        return new Response($response->getBody(true), $response->getStatusCode(), $response->getHeaders()->getAll());
     }
 }
-
