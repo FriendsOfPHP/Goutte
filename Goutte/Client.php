@@ -17,11 +17,11 @@ use Symfony\Component\BrowserKit\CookieJar;
 use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\BrowserKit\Response;
 
-use Guzzle\Http\Curl\CurlException;
+use Guzzle\Http\Exception\CurlException;
 use Guzzle\Http\Message\RequestInterface as GuzzleRequestInterface;
 use Guzzle\Http\Message\Response as GuzzleResponse;
-use Guzzle\Service\ClientInterface as GuzzleClientInterface;
-use Guzzle\Service\Client as GuzzleClient;
+use Guzzle\Http\ClientInterface as GuzzleClientInterface;
+use Guzzle\Http\Client as GuzzleClient;
 
 /**
  * Client.
@@ -75,7 +75,7 @@ class Client extends BaseClient
     protected function doRequest($request)
     {
         $guzzleRequest = $this->getClient()->createRequest(
-            $request->getMethod(),
+            strtoupper($request->getMethod()),
             $request->getUri(),
             $this->headers,
             $request->getParameters()
@@ -94,16 +94,23 @@ class Client extends BaseClient
         }
 
         if ('POST' == $request->getMethod()) {
+            $postFiles = array();
             foreach ($request->getFiles() as $name => $info) {
                 if (isset($info['tmp_name']) && '' !== $info['tmp_name']) {
-                    $guzzleRequest->addPostFiles(array($name => $info['tmp_name']));
+                    $postFiles[$name] = $info['tmp_name'];
                 }
+            }
+            if (!empty($postFiles)) {
+                $guzzleRequest->addPostFiles($postFiles);
             }
         }
 
         $guzzleRequest->setHeader('User-Agent', $this->server['HTTP_USER_AGENT']);
 
-        $guzzleRequest->getCurlOptions()->merge(array(CURLOPT_MAXREDIRS => 0, CURLOPT_TIMEOUT => 30));
+        $guzzleRequest->getCurlOptions()
+            ->set(CURLOPT_FOLLOWLOCATION, false)
+            ->set(CURLOPT_MAXREDIRS, 0)
+            ->set(CURLOPT_TIMEOUT, 30);
 
         // Let BrowserKit handle redirects
         try {
