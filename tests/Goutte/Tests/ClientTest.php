@@ -16,7 +16,7 @@ use Symfony\Component\BrowserKit\Cookie;
 
 use Guzzle\Http\Message\Response as GuzzleResponse;
 use Guzzle\Service\Client as GuzzleClient;
-use Guzzle\Service\Plugin\MockPlugin;
+use Guzzle\Http\Plugin\MockPlugin;
 use Guzzle\Http\Plugin\HistoryPlugin;
 use Guzzle\Http\Message\Response;
 

@@ -9,7 +9,7 @@
          processIsolation="false"
          stopOnFailure="false"
          syntaxCheck="false"
-         bootstrap="./tests/bootstrap.php">
+         bootstrap="./vendor/autoload.php">
     <testsuites>
         <testsuite name="Goutte Test Suite">
             <directory>./tests/Goutte/Tests</directory>

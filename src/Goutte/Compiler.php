@@ -54,7 +54,7 @@ class Compiler
 
   protected function getCliStub()
   {
-    return "<?php ".$this->getLicense()." require_once __DIR__.'/autoload.php'; __HALT_COMPILER();";
+    return "<?php ".$this->getLicense()." require_once __DIR__.'/vendor/autoload.php'; __HALT_COMPILER();";
   }
 
   protected function getWebStub()
@@ -79,17 +79,18 @@ class Compiler
   {
     $files = array(
       'LICENSE',
-      'autoload.php',
-      'vendor/Symfony/Component/ClassLoader/UniversalClassLoader.php'
+      'vendor/autoload.php',
     );
 
     $dirs = array(
+      'vendor/composer',
       'src/Goutte',
-      'vendor/Symfony/Component/BrowserKit',
-      'vendor/Symfony/Component/DomCrawler',
-      'vendor/Symfony/Component/CssSelector',
-      'vendor/Symfony/Component/Process',
-      'vendor/Guzzle/src/Guzzle'
+      'vendor/symfony/browser-kit',
+      'vendor/symfony/dom-crawler',
+      'vendor/symfony/css-selector',
+      'vendor/symfony/process',
+      'vendor/symfony/event-dispatcher',
+      'vendor/guzzle/guzzle/src/Guzzle'
     );
 
     $finder = new Finder();
