@@ -82,11 +82,7 @@ class Compiler
 
         $dirs = array(
             'vendor/composer',
-            'vendor/symfony/browser-kit',
-            'vendor/symfony/dom-crawler',
-            'vendor/symfony/css-selector',
-            'vendor/symfony/process',
-            'vendor/symfony/event-dispatcher',
+            'vendor/symfony',
             'vendor/guzzle/guzzle/src/Guzzle'
         );
 
