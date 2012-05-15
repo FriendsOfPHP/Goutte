@@ -86,8 +86,7 @@ class Compiler
             'vendor/guzzle/guzzle/src/Guzzle'
         );
 
-        $finder = new Finder();
-        $iterator = $finder->files()->name('*.php')->in($dirs);
+        $iterator = Finder::create()->files()->name('*.php')->in($dirs);
 
         return array_merge($files, iterator_to_array($iterator));
     }
