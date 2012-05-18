@@ -18,6 +18,7 @@ use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\BrowserKit\Response;
 
 use Guzzle\Http\Exception\CurlException;
+use Guzzle\Http\Exception\BadResponseException;
 use Guzzle\Http\Message\RequestInterface as GuzzleRequestInterface;
 use Guzzle\Http\Message\Response as GuzzleResponse;
 use Guzzle\Http\ClientInterface as GuzzleClientInterface;
@@ -120,6 +121,8 @@ class Client extends BaseClient
                 throw $e;
             }
 
+            $response = $e->getResponse();
+        } catch (BadResponseException $e) {
             $response = $e->getResponse();
         }
 
