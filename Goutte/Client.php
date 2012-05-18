@@ -89,7 +89,7 @@ class Client extends BaseClient
             );
         }
 
-        foreach ($this->getCookieJar()->allValues($request->getUri()) as $name => $value) {
+        foreach ($this->getCookieJar()->allRawValues($request->getUri()) as $name => $value) {
             $guzzleRequest->addCookie($name, $value);
         }
 
