@@ -74,10 +74,18 @@ class Client extends BaseClient
 
     protected function doRequest($request)
     {
+        $headers = array();
+        foreach ($request->getServer() as $key => $val) {
+            $key = ucfirst(strtolower(str_replace(array('_', 'HTTP-'), array('-', ''), $key)));
+            if (!isset($headers[$key])) {
+                $headers[$key] = $val;
+            }
+        }
+
         $guzzleRequest = $this->getClient()->createRequest(
             strtoupper($request->getMethod()),
             $request->getUri(),
-            $this->headers,
+            array_merge($this->headers, $headers),
             $request->getParameters()
         );
 
