@@ -12,9 +12,6 @@
 namespace Goutte;
 
 use Symfony\Component\BrowserKit\Client as BaseClient;
-use Symfony\Component\BrowserKit\History;
-use Symfony\Component\BrowserKit\CookieJar;
-use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\BrowserKit\Response;
 
 use Guzzle\Http\Exception\CurlException;
