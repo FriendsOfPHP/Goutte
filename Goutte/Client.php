@@ -84,7 +84,7 @@ class Client extends BaseClient
             strtoupper($request->getMethod()),
             $request->getUri(),
             array_merge($this->headers, $headers),
-            $request->getParameters()
+            in_array($request->getMethod(), array('GET','HEAD')) ? null : $request->getParameters()
         );
 
         if ($this->auth !== null) {
