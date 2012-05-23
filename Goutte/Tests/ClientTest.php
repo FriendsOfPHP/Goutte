@@ -105,7 +105,12 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $request = $this->historyPlugin->getLastRequest();
 
         $this->assertEquals(array(
-            'test' => __FILE__
+            'test' => array(
+                array(
+                    'file' => __FILE__,
+                    'type' => 'text/x-php'
+                )
+            )
         ), $request->getPostFiles());
     }
 
