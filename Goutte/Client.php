@@ -59,7 +59,7 @@ class Client extends BaseClient
         return $this;
     }
 
-    public function setAuth($user, $password = '', $type = GuzzleRequestInterface::AUTH_BASIC)
+    public function setAuth($user, $password = '', $type = CURLAUTH_BASIC)
     {
         $this->auth = array(
             'user' => $user,
