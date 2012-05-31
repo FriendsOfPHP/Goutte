@@ -19,6 +19,7 @@ use Guzzle\Http\Client as GuzzleClient;
 use Guzzle\Http\Plugin\MockPlugin;
 use Guzzle\Http\Plugin\HistoryPlugin;
 use Guzzle\Http\Message\Response;
+use Guzzle\Http\Message\PostFile;
 
 /**
  * Goutte Client Test
@@ -106,10 +107,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(array(
             'test' => array(
-                array(
-                    'file' => __FILE__,
-                    'type' => 'text/x-php'
-                )
+                new PostFile('test', __FILE__, 'text/x-php')
             )
         ), $request->getPostFiles());
     }
