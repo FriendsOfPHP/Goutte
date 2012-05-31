@@ -81,7 +81,7 @@ class Client extends BaseClient
         }
 
         $guzzleRequest = $this->getClient()->createRequest(
-            strtoupper($request->getMethod()),
+            $request->getMethod(),
             $request->getUri(),
             array_merge($this->headers, $headers),
             in_array($request->getMethod(), array('GET','HEAD')) ? null : $request->getParameters()
