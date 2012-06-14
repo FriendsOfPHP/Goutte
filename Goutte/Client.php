@@ -16,7 +16,6 @@ use Symfony\Component\BrowserKit\Response;
 
 use Guzzle\Http\Exception\CurlException;
 use Guzzle\Http\Exception\BadResponseException;
-use Guzzle\Http\Message\RequestInterface as GuzzleRequestInterface;
 use Guzzle\Http\Message\Response as GuzzleResponse;
 use Guzzle\Http\ClientInterface as GuzzleClientInterface;
 use Guzzle\Http\Client as GuzzleClient;
@@ -80,11 +79,20 @@ class Client extends BaseClient
             }
         }
 
+        $body = null;
+        if (!in_array($request->getMethod(), array('GET','HEAD'))) {
+            if (null !== $request->getContent()) {
+                $body = $request->getContent();
+            } else {
+                $body = $request->getParameters();
+            }
+        }
+
         $guzzleRequest = $this->getClient()->createRequest(
             $request->getMethod(),
             $request->getUri(),
             array_merge($this->headers, $headers),
-            in_array($request->getMethod(), array('GET','HEAD')) ? null : null !== $request->getContent() ? $request->getContent() : $request->getParameters()
+            $body
         );
 
         if ($this->auth !== null) {
