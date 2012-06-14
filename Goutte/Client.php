@@ -59,7 +59,7 @@ class Client extends BaseClient
         return $this;
     }
 
-    public function setAuth($user, $password = '', $type = GuzzleRequestInterface::AUTH_BASIC)
+    public function setAuth($user, $password = '', $type = CURLAUTH_BASIC)
     {
         $this->auth = array(
             'user' => $user,
@@ -81,7 +81,7 @@ class Client extends BaseClient
         }
 
         $guzzleRequest = $this->getClient()->createRequest(
-            strtoupper($request->getMethod()),
+            $request->getMethod(),
             $request->getUri(),
             array_merge($this->headers, $headers),
             in_array($request->getMethod(), array('GET','HEAD')) ? null : null !== $request->getContent() ? $request->getContent() : $request->getParameters()
