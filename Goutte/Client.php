@@ -36,13 +36,6 @@ class Client extends BaseClient
     protected $auth = null;
     protected $client;
     
-    public function __construct()
-    {
-        if (!extension_loaded('curl')) {
-            throw new Exception('PHP Extension "cURL" not loaded.');
- 	    }
-    }
-
     public function setClient(GuzzleClientInterface $client)
     {
         $this->client = $client;
