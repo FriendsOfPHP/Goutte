@@ -79,11 +79,20 @@ class Client extends BaseClient
             }
         }
 
+        $body = null;
+        if (!in_array($request->getMethod(), array('GET','HEAD'))) {
+            if (null !== $request->getContent()) {
+                $body = $request->getContent();
+            } else {
+                $body = $request->getParameters();
+            }
+        }
+
         $guzzleRequest = $this->getClient()->createRequest(
             $request->getMethod(),
             $request->getUri(),
             array_merge($this->headers, $headers),
-            in_array($request->getMethod(), array('GET','HEAD')) ? null : $request->getParameters()
+            $body
         );
 
         if ($this->auth !== null) {
