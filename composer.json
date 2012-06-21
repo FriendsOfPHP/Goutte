@@ -24,7 +24,6 @@
     "autoload": {
         "psr-0": { "Goutte": "." }
     },
-    "bin": ["goutte.phar"],
     "extra": {
         "branch-alias": {
             "dev-master": "1.0-dev"
