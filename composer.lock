@@ -1,88 +1,88 @@
 {
-    "hash": "53c097bf466d6ca5ea7b94dcd5a9fc7f",
+    "hash": "d29d7ead803fc18b5a5a94a19cc685fd",
     "packages": [
         {
             "package": "guzzle/guzzle",
-            "version": "v2.6.4"
+            "version": "v2.8.1"
         },
         {
             "package": "symfony/browser-kit",
             "version": "dev-master",
-            "source-reference": "6d1864547be92e51972a416fae9460b8be4afe0e"
+            "alias-pretty-version": "2.1.x-dev",
+            "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/browser-kit",
             "version": "dev-master",
-            "source-reference": "6d1864547be92e51972a416fae9460b8be4afe0e",
+            "source-reference": "v2.1.0-BETA3",
+            "commit-date": "1342347231"
+        },
+        {
+            "package": "symfony/css-selector",
+            "version": "dev-master",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/css-selector",
             "version": "dev-master",
-            "source-reference": "d0a98b37fbb57188766fd7c7d757354397ee6ead"
+            "source-reference": "v2.1.0-BETA3",
+            "commit-date": "1342347231"
         },
         {
-            "package": "symfony/css-selector",
+            "package": "symfony/dom-crawler",
             "version": "dev-master",
-            "source-reference": "d0a98b37fbb57188766fd7c7d757354397ee6ead",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/dom-crawler",
             "version": "dev-master",
-            "source-reference": "49d80fac919321c1e255757fe47b97910f667271"
+            "source-reference": "v2.1.0-BETA3",
+            "commit-date": "1342347231"
         },
         {
-            "package": "symfony/dom-crawler",
+            "package": "symfony/event-dispatcher",
             "version": "dev-master",
-            "source-reference": "49d80fac919321c1e255757fe47b97910f667271",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/event-dispatcher",
             "version": "dev-master",
-            "source-reference": "eb82542e8ec9506096caf7c528564c740a214f56"
+            "source-reference": "v2.1.0-BETA3",
+            "commit-date": "1342347231"
         },
         {
-            "package": "symfony/event-dispatcher",
+            "package": "symfony/finder",
             "version": "dev-master",
-            "source-reference": "eb82542e8ec9506096caf7c528564c740a214f56",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/finder",
             "version": "dev-master",
-            "source-reference": "9ee9a907afeef52956187e862714a7702ca26590"
+            "source-reference": "v2.1.0-BETA3",
+            "commit-date": "1342347231"
         },
         {
-            "package": "symfony/finder",
+            "package": "symfony/process",
             "version": "dev-master",
-            "source-reference": "9ee9a907afeef52956187e862714a7702ca26590",
             "alias-pretty-version": "2.1.x-dev",
             "alias-version": "2.1.9999999.9999999-dev"
         },
         {
             "package": "symfony/process",
             "version": "dev-master",
-            "source-reference": "f4f101fc7c1adb8b157058dcc1715f28f1d53208"
-        },
-        {
-            "package": "symfony/process",
-            "version": "dev-master",
-            "source-reference": "f4f101fc7c1adb8b157058dcc1715f28f1d53208",
-            "alias-pretty-version": "2.1.x-dev",
-            "alias-version": "2.1.9999999.9999999-dev"
+            "source-reference": "ae0635cf7768aeab3c7935389e651498706b87ac",
+            "commit-date": "1342632812"
         }
     ],
     "packages-dev": null,
     "aliases": [
 
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": [
 
     ]
