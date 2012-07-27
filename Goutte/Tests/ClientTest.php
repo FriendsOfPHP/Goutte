@@ -67,6 +67,16 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('test', $this->historyPlugin->getLastRequest()->getHeader('X-Test'));
     }
 
+    public function testCustomUserAgent()
+    {
+        $guzzle = $this->getGuzzle();
+        $client = new Client();
+        $client->setClient($guzzle);
+        $client->setHeader('User-Agent', 'foo');
+        $crawler = $client->request('GET', 'http://www.example.com/');
+        $this->assertEquals('foo', $this->historyPlugin->getLastRequest()->getHeader('User-Agent'));
+    }
+
     public function testUsesAuth()
     {
         $guzzle = $this->getGuzzle();
