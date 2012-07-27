@@ -91,9 +91,13 @@ class Client extends BaseClient
         $guzzleRequest = $this->getClient()->createRequest(
             $request->getMethod(),
             $request->getUri(),
-            array_merge($this->headers, $headers),
+            $headers,
             $body
         );
+
+        foreach ($this->headers as $name => $value) {
+            $guzzleRequest->setHeader($name, $value);
+        }
 
         if ($this->auth !== null) {
             $guzzleRequest->setAuth(
@@ -118,8 +122,6 @@ class Client extends BaseClient
                 $guzzleRequest->addPostFiles($postFiles);
             }
         }
-
-        $guzzleRequest->setHeader('User-Agent', $this->server['HTTP_USER_AGENT']);
 
         $guzzleRequest->getCurlOptions()
             ->set(CURLOPT_FOLLOWLOCATION, false)
