@@ -1,17 +1,17 @@
 {
-    "hash": "416edb2b192b67da3680fda85dfcff1b",
+    "hash": "b0922235567e0afbae417938426f0b55",
     "packages": [
         {
             "package": "guzzle/common",
-            "version": "v2.8.1"
+            "version": "v2.8.2"
         },
         {
             "package": "guzzle/http",
-            "version": "v2.8.1"
+            "version": "v2.8.2"
         },
         {
             "package": "guzzle/parser",
-            "version": "v2.8.1"
+            "version": "v2.8.2"
         },
         {
             "package": "symfony/browser-kit",
@@ -70,8 +70,8 @@
         {
             "package": "symfony/finder",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA4",
-            "commit-date": "1342778082"
+            "source-reference": "304b90eed4b2fed6f4831b569c2a7fb68ea61a14",
+            "commit-date": "1343374503"
         },
         {
             "package": "symfony/process",
