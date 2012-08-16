@@ -19,6 +19,7 @@ use Guzzle\Http\Exception\BadResponseException;
 use Guzzle\Http\Message\Response as GuzzleResponse;
 use Guzzle\Http\ClientInterface as GuzzleClientInterface;
 use Guzzle\Http\Client as GuzzleClient;
+use Guzzle\Http\Message\EntityEnclosingRequestInterface;
 
 /**
  * Client.
@@ -112,15 +113,7 @@ class Client extends BaseClient
         }
 
         if ('POST' == $request->getMethod()) {
-            $postFiles = array();
-            foreach ($request->getFiles() as $name => $info) {
-                if (isset($info['tmp_name']) && '' !== $info['tmp_name']) {
-                    $postFiles[$name] = $info['tmp_name'];
-                }
-            }
-            if (!empty($postFiles)) {
-                $guzzleRequest->addPostFiles($postFiles);
-            }
+            $this->addPostFiles($guzzleRequest, $request->getFiles());
         }
 
         $guzzleRequest->getCurlOptions()
@@ -142,6 +135,25 @@ class Client extends BaseClient
         }
 
         return $this->createResponse($response);
+    }
+
+    protected function addPostFiles($request, array $files, $arrayName = '')
+    {
+        if (!$request instanceof EntityEnclosingRequestInterface) {
+            return;
+        }
+
+        foreach ($files as $name => $info) {
+            if (!empty($arrayName)) {
+                $name = $arrayName . '[' . $name . ']';
+            }
+
+            if (isset($info['tmp_name']) && '' !== $info['tmp_name']) {
+                $request->addPostFile($name, $info['tmp_name']);
+            } elseif (is_array($info)) {
+                $this->addPostFiles($request, $info, $name);
+            }
+        }
     }
 
     protected function createResponse(GuzzleResponse $response)
