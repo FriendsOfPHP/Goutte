@@ -3,15 +3,15 @@
     "packages": [
         {
             "package": "guzzle/common",
-            "version": "v2.8.2"
+            "version": "v2.8.4"
         },
         {
             "package": "guzzle/http",
-            "version": "v2.8.2"
+            "version": "v2.8.4"
         },
         {
             "package": "guzzle/parser",
-            "version": "v2.8.2"
+            "version": "v2.8.4"
         },
         {
             "package": "symfony/browser-kit",
@@ -22,8 +22,8 @@
         {
             "package": "symfony/browser-kit",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA4",
-            "commit-date": "1342347231"
+            "source-reference": "v2.1.0-RC2",
+            "commit-date": "1345643321"
         },
         {
             "package": "symfony/css-selector",
@@ -34,8 +34,8 @@
         {
             "package": "symfony/css-selector",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA4",
-            "commit-date": "1342347231"
+            "source-reference": "v2.1.0-RC2",
+            "commit-date": "1345643321"
         },
         {
             "package": "symfony/dom-crawler",
@@ -46,8 +46,8 @@
         {
             "package": "symfony/dom-crawler",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA4",
-            "commit-date": "1342347231"
+            "source-reference": "v2.1.0-RC2",
+            "commit-date": "1346140482"
         },
         {
             "package": "symfony/event-dispatcher",
@@ -58,8 +58,8 @@
         {
             "package": "symfony/event-dispatcher",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA4",
-            "commit-date": "1342739894"
+            "source-reference": "v2.1.0-RC2",
+            "commit-date": "1345643321"
         },
         {
             "package": "symfony/finder",
@@ -70,8 +70,8 @@
         {
             "package": "symfony/finder",
             "version": "dev-master",
-            "source-reference": "304b90eed4b2fed6f4831b569c2a7fb68ea61a14",
-            "commit-date": "1343374503"
+            "source-reference": "v2.1.0-RC2",
+            "commit-date": "1345643321"
         },
         {
             "package": "symfony/process",
@@ -82,13 +82,11 @@
         {
             "package": "symfony/process",
             "version": "dev-master",
-            "source-reference": "v2.1.0-BETA4",
-            "commit-date": "1342632812"
+            "source-reference": "v2.1.0-RC2",
+            "commit-date": "1345986831"
         }
     ],
-    "packages-dev": [
-
-    ],
+    "packages-dev": null,
     "aliases": [
 
     ],
