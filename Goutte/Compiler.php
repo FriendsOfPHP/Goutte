@@ -83,7 +83,7 @@ class Compiler
         $dirs = array(
             'vendor/composer',
             'vendor/symfony',
-            'vendor/guzzle/guzzle/src/Guzzle'
+            'vendor/guzzle'
         );
 
         $iterator = Finder::create()->files()->name('*.php')->in($dirs);
