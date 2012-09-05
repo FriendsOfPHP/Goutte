@@ -147,10 +147,9 @@ class Client extends BaseClient
             if (!empty($arrayName)) {
                 $name = $arrayName . '[' . $name . ']';
             }
-
-            if (isset($info['tmp_name']) && '' !== $info['tmp_name']) {
+            if (is_array($info) && isset($info['tmp_name']) && '' !== $info['tmp_name']) {
                 $request->addPostFile($name, $info['tmp_name']);
-            } elseif (is_array($info) && !empty($info['name'])) {
+            } elseif (is_array($info)) {
                 $this->addPostFiles($request, $info, $name);
             }
         }
