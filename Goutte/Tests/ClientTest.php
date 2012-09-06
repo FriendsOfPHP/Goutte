@@ -165,6 +165,27 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         ), $request->getPostFiles());
     }
 
+    public function testUsesPostFilesUploadError()
+    {
+        $guzzle = $this->getGuzzle();
+        $client = new Client();
+        $client->setClient($guzzle);
+        $files = array(
+            'test' => array(
+                'name' => '',
+                'type' => '',
+                'tmp_name' => '',
+                'error' => 4,
+                'size' => 0,
+            ),
+        );
+
+        $crawler = $client->request('POST', 'http://www.example.com/', array(), $files);
+        $request = $this->historyPlugin->getLastRequest();
+
+        $this->assertEquals(array(), $request->getPostFiles());
+    }
+
     public function testUsesCurlOptions()
     {
         $guzzle = $this->getGuzzle();
