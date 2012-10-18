@@ -122,6 +122,25 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         ), $request->getPostFiles());
     }
 
+    public function testUsesPostNamedFiles()
+    {
+        $guzzle = $this->getGuzzle();
+        $client = new Client();
+        $client->setClient($guzzle);
+        $files = array(
+            'test' => __FILE__
+        );
+
+        $crawler = $client->request('POST', 'http://www.example.com/', array(), $files);
+        $request = $this->historyPlugin->getLastRequest();
+
+        $this->assertEquals(array(
+            'test' => array(
+                new PostFile('test', __FILE__, 'text/x-php')
+            )
+        ), $request->getPostFiles());
+    }
+
     public function testUsesPostFilesNestedFields()
     {
         $guzzle = $this->getGuzzle();
