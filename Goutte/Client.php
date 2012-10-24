@@ -116,10 +116,13 @@ class Client extends BaseClient
             $this->addPostFiles($guzzleRequest, $request->getFiles());
         }
 
-        $guzzleRequest->getCurlOptions()
+        $curlOptions = $guzzleRequest->getCurlOptions()
             ->set(CURLOPT_FOLLOWLOCATION, false)
-            ->set(CURLOPT_MAXREDIRS, 0)
-            ->set(CURLOPT_TIMEOUT, 30);
+            ->set(CURLOPT_MAXREDIRS, 0);
+
+        if (!$curlOptions->get(CURLOPT_TIMEOUT)) {
+            $curlOptions->set(CURLOPT_TIMEOUT, 30);
+        }
 
         // Let BrowserKit handle redirects
         try {
