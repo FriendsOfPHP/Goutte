@@ -46,7 +46,7 @@ class Client extends BaseClient
     public function getClient()
     {
         if (!$this->client) {
-            $this->client = new GuzzleClient();
+            $this->client = new GuzzleClient('', array('redirect.disable' => true));
         }
 
         return $this->client;
@@ -116,9 +116,7 @@ class Client extends BaseClient
             $this->addPostFiles($guzzleRequest, $request->getFiles());
         }
 
-        $curlOptions = $guzzleRequest->getCurlOptions()
-            ->set(CURLOPT_FOLLOWLOCATION, false)
-            ->set(CURLOPT_MAXREDIRS, 0);
+        $curlOptions = $guzzleRequest->getCurlOptions();
 
         if (!$curlOptions->get(CURLOPT_TIMEOUT)) {
             $curlOptions->set(CURLOPT_TIMEOUT, 30);

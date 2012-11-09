@@ -16,8 +16,8 @@ use Symfony\Component\BrowserKit\Cookie;
 
 use Guzzle\Http\Message\Response as GuzzleResponse;
 use Guzzle\Http\Client as GuzzleClient;
-use Guzzle\Http\Plugin\MockPlugin;
-use Guzzle\Http\Plugin\HistoryPlugin;
+use Guzzle\Plugin\Mock\MockPlugin;
+use Guzzle\Plugin\History\HistoryPlugin;
 use Guzzle\Http\Message\Response;
 use Guzzle\Http\Message\PostFile;
 
@@ -36,7 +36,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->historyPlugin = new HistoryPlugin();
         $this->mockPlugin = new MockPlugin();
         $this->mockPlugin->addResponse(new GuzzleResponse(200, null, '<html><body><p>Hi</p></body></html>'));
-        $guzzle = new GuzzleClient();
+        $guzzle = new GuzzleClient('', array('redirect.disable' => true));
         $guzzle->getEventDispatcher()->addSubscriber($this->mockPlugin);
         $guzzle->getEventDispatcher()->addSubscriber($this->historyPlugin);
 
