@@ -19,7 +19,7 @@
         "symfony/dom-crawler": "2.1.*",
         "symfony/finder": "2.1.*",
         "symfony/process": "2.1.*",
-        "guzzle/http": "2.8.*"
+        "guzzle/guzzle": "3.0.*"
     },
     "autoload": {
         "psr-0": { "Goutte": "." }
