@@ -1,5 +1,5 @@
 {
-    "hash": "7b281a871cac49054446dca58c8fbd80",
+    "hash": "e614fd558378a8e1b12d72f3c5af49c9",
     "packages": [
         {
             "name": "guzzle/guzzle",
@@ -62,6 +62,7 @@
                     "Guzzle": "src/"
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -90,17 +91,17 @@
         },
         {
             "name": "symfony/browser-kit",
-            "version": "2.1.x-dev",
+            "version": "v2.1.3",
             "target-dir": "Symfony/Component/BrowserKit",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/BrowserKit",
-                "reference": "eff7eff62a8bccbe7998ecbde4d612bb8da963ff"
+                "reference": "v2.1.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/BrowserKit/archive/eff7eff62a8bccbe7998ecbde4d612bb8da963ff.zip",
-                "reference": "eff7eff62a8bccbe7998ecbde4d612bb8da963ff",
+                "url": "https://github.com/symfony/BrowserKit/zipball/v2.1.3",
+                "reference": "v2.1.3",
                 "shasum": ""
             },
             "require": {
@@ -114,19 +115,20 @@
             "suggest": {
                 "symfony/process": "2.1.*"
             },
-            "time": "1352368308",
+            "time": "2012-10-25 06:11:50",
             "type": "library",
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.1-dev"
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\BrowserKit": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -145,35 +147,36 @@
         },
         {
             "name": "symfony/css-selector",
-            "version": "2.1.x-dev",
+            "version": "v2.1.3",
             "target-dir": "Symfony/Component/CssSelector",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/CssSelector",
-                "reference": "abf8279792230c6685234eb0fa95b0a85e9e9c7a"
+                "reference": "v2.1.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/CssSelector/archive/abf8279792230c6685234eb0fa95b0a85e9e9c7a.zip",
-                "reference": "abf8279792230c6685234eb0fa95b0a85e9e9c7a",
+                "url": "https://github.com/symfony/CssSelector/zipball/v2.1.3",
+                "reference": "v2.1.3",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1352368308",
+            "time": "2012-10-04 08:17:57",
             "type": "library",
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.1-dev"
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\CssSelector": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -192,17 +195,17 @@
         },
         {
             "name": "symfony/dom-crawler",
-            "version": "2.1.x-dev",
+            "version": "v2.1.3",
             "target-dir": "Symfony/Component/DomCrawler",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/DomCrawler",
-                "reference": "8fe81036d0f7452c2bf75b6d489f1e646741bf0f"
+                "reference": "v2.1.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/DomCrawler/archive/8fe81036d0f7452c2bf75b6d489f1e646741bf0f.zip",
-                "reference": "8fe81036d0f7452c2bf75b6d489f1e646741bf0f",
+                "url": "https://github.com/symfony/DomCrawler/zipball/v2.1.3",
+                "reference": "v2.1.3",
                 "shasum": ""
             },
             "require": {
@@ -214,19 +217,20 @@
             "suggest": {
                 "symfony/css-selector": "2.1.*"
             },
-            "time": "1352368308",
+            "time": "2012-10-18 14:16:01",
             "type": "library",
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.1-dev"
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\DomCrawler": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -245,17 +249,17 @@
         },
         {
             "name": "symfony/event-dispatcher",
-            "version": "2.1.x-dev",
+            "version": "v2.1.3",
             "target-dir": "Symfony/Component/EventDispatcher",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/EventDispatcher",
-                "reference": "b5b6807bcc192f3a1c4fba7ef48466ebbd3c4485"
+                "reference": "v2.1.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/EventDispatcher/archive/b5b6807bcc192f3a1c4fba7ef48466ebbd3c4485.zip",
-                "reference": "b5b6807bcc192f3a1c4fba7ef48466ebbd3c4485",
+                "url": "https://github.com/symfony/EventDispatcher/zipball/v2.1.3",
+                "reference": "v2.1.3",
                 "shasum": ""
             },
             "require": {
@@ -268,19 +272,20 @@
                 "symfony/dependency-injection": "2.1.*",
                 "symfony/http-kernel": "2.1.*"
             },
-            "time": "1352368308",
+            "time": "2012-10-04 08:17:57",
             "type": "library",
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.1-dev"
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\EventDispatcher": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -299,35 +304,36 @@
         },
         {
             "name": "symfony/finder",
-            "version": "2.1.x-dev",
+            "version": "v2.1.3",
             "target-dir": "Symfony/Component/Finder",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Finder",
-                "reference": "24e814560125249010dd08717f4d17079c061e98"
+                "reference": "v2.1.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Finder/archive/24e814560125249010dd08717f4d17079c061e98.zip",
-                "reference": "24e814560125249010dd08717f4d17079c061e98",
+                "url": "https://github.com/symfony/Finder/zipball/v2.1.3",
+                "reference": "v2.1.3",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1352368308",
+            "time": "2012-10-20 00:10:30",
             "type": "library",
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.1-dev"
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\Finder": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -346,35 +352,36 @@
         },
         {
             "name": "symfony/process",
-            "version": "2.1.x-dev",
+            "version": "v2.1.3",
             "target-dir": "Symfony/Component/Process",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/Process",
-                "reference": "5437d5f85a089d227337a8be4a46d160b60e1ab1"
+                "reference": "v2.1.3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://github.com/symfony/Process/archive/5437d5f85a089d227337a8be4a46d160b60e1ab1.zip",
-                "reference": "5437d5f85a089d227337a8be4a46d160b60e1ab1",
+                "url": "https://github.com/symfony/Process/zipball/v2.1.3",
+                "reference": "v2.1.3",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
-            "time": "1352368308",
+            "time": "2012-10-20 00:10:30",
             "type": "library",
             "extra": {
                 "branch-alias": {
                     "dev-master": "2.1-dev"
                 }
             },
-            "installation-source": "source",
+            "installation-source": "dist",
             "autoload": {
                 "psr-0": {
                     "Symfony\\Component\\Process": ""
                 }
             },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -392,13 +399,11 @@
             "homepage": "http://symfony.com"
         }
     ],
-    "packages-dev": [
-
-    ],
+    "packages-dev": null,
     "aliases": [
 
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "stable",
     "stability-flags": [
 
     ]
