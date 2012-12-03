@@ -53,7 +53,7 @@ Extract data:
     $nodes = $crawler->filter('.error_list');
     if ($nodes->count())
     {
-      die(sprintf("Authentification error: %s\n", $nodes->text()));
+      die(sprintf("Authentication error: %s\n", $nodes->text()));
     }
 
     printf("Nb tasks: %d\n", $crawler->filter('#nb_tasks')->text());
