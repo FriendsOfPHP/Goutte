@@ -116,6 +116,7 @@ class Client extends BaseClient
             $this->addPostFiles($guzzleRequest, $request->getFiles());
         }
 
+        $guzzleRequest->getParams()->set('redirect.disable', true);
         $curlOptions = $guzzleRequest->getCurlOptions();
 
         if (!$curlOptions->get(CURLOPT_TIMEOUT)) {
