@@ -69,6 +69,74 @@ class Client extends BaseClient
 
         return $this;
     }
+    
+    /**
+     * Calls a URI using GET method.
+     *
+     * @param string  $uri           The URI to fetch
+     * @param array   $parameters    The Request parameters
+     * @param array   $files         The files
+     * @param array   $server        The server parameters (HTTP headers are referenced with a HTTP_ prefix as PHP does)
+     * @param string  $content       The raw body data
+     * @param Boolean $changeHistory Whether to update the history or not (only used internally for back(), forward(), and reload())
+     *
+     * @return \Symfony\Component\DomCrawler\Crawler
+     */
+    public function get($uri, array $parameters = array(), array $files = array(), array $server = array(), $content = null, $changeHistory = true)
+    {
+        return $this->request("GET", $uri, $parameters, $files, $server, $content, $changeHistory);
+    }
+    
+    /**
+     * Calls a URI using POST method.
+     *
+     * @param string  $uri           The URI to fetch
+     * @param array   $parameters    The Request parameters
+     * @param array   $files         The files
+     * @param array   $server        The server parameters (HTTP headers are referenced with a HTTP_ prefix as PHP does)
+     * @param string  $content       The raw body data
+     * @param Boolean $changeHistory Whether to update the history or not (only used internally for back(), forward(), and reload())
+     *
+     * @return \Symfony\Component\DomCrawler\Crawler
+     */
+    public function post($uri, array $parameters = array(), array $files = array(), array $server = array(), $content = null, $changeHistory = true)
+    {
+        return $this->request("POST", $uri, $parameters, $files, $server, $content, $changeHistory);
+    }
+    
+    /**
+     * Calls a URI using PUT method.
+     *
+     * @param string  $uri           The URI to fetch
+     * @param array   $parameters    The Request parameters
+     * @param array   $files         The files
+     * @param array   $server        The server parameters (HTTP headers are referenced with a HTTP_ prefix as PHP does)
+     * @param string  $content       The raw body data
+     * @param Boolean $changeHistory Whether to update the history or not (only used internally for back(), forward(), and reload())
+     *
+     * @return \Symfony\Component\DomCrawler\Crawler
+     */
+    public function put($uri, array $parameters = array(), array $files = array(), array $server = array(), $content = null, $changeHistory = true)
+    {
+        return $this->request("PUT", $uri, $parameters, $files, $server, $content, $changeHistory);
+    }
+    
+    /**
+     * Calls a URI using DELETE method.
+     *
+     * @param string  $uri           The URI to fetch
+     * @param array   $parameters    The Request parameters
+     * @param array   $files         The files
+     * @param array   $server        The server parameters (HTTP headers are referenced with a HTTP_ prefix as PHP does)
+     * @param string  $content       The raw body data
+     * @param Boolean $changeHistory Whether to update the history or not (only used internally for back(), forward(), and reload())
+     *
+     * @return \Symfony\Component\DomCrawler\Crawler
+     */
+    public function delete($uri, array $parameters = array(), array $files = array(), array $server = array(), $content = null, $changeHistory = true)
+    {
+        return $this->request("DELETE", $uri, $parameters, $files, $server, $content, $changeHistory);
+    }
 
     protected function doRequest($request)
     {
