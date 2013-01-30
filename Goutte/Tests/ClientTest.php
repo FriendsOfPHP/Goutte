@@ -244,4 +244,49 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         // Ensure that two requests were sent
         $this->assertEquals(2, count($this->historyPlugin));
     }
+    
+    public function getMockGoutteClientToTestSugarCalls($method)
+    {
+        $client = $this->getMockBuilder("Goutte\Client")
+                ->setMethods(array("request"))
+                ->disableOriginalConstructor()
+                ->getMock();
+        $client->expects($this->once())
+               ->method("request")
+               ->with(
+                       $this->equalTo($method),
+                       $this->equalTo("uri"),
+                       $this->equalTo(array("parameters")),
+                       $this->equalTo(array("files")),
+                       $this->equalTo(array("server")),
+                       $this->equalTo("content"),
+                       $this->equalTo("changeHistory"))
+               ->will($this->returnValue("fakeCrawler"));
+        
+        return $client;
+    }
+    
+    public function testCallRequestUsingGetSugar()
+    {
+        $client = $this->getMockGoutteClientToTestSugarCalls("GET");
+        $this->assertEquals("fakeCrawler", $client->get("uri", array("parameters"), array("files"), array("server"), "content", "changeHistory"));
+    }
+    
+    public function testCallRequestUsingPostSugar()
+    {
+        $client = $this->getMockGoutteClientToTestSugarCalls("POST");
+        $this->assertEquals("fakeCrawler", $client->post("uri", array("parameters"), array("files"), array("server"), "content", "changeHistory"));
+    }
+    
+    public function testCallRequestUsingPutSugar()
+    {
+        $client = $this->getMockGoutteClientToTestSugarCalls("PUT");
+        $this->assertEquals("fakeCrawler", $client->put("uri", array("parameters"), array("files"), array("server"), "content", "changeHistory"));
+    }
+    
+    public function testCallRequestUsingDeleteSugar()
+    {
+        $client = $this->getMockGoutteClientToTestSugarCalls("DELETE");
+        $this->assertEquals("fakeCrawler", $client->delete("uri", array("parameters"), array("files"), array("server"), "content", "changeHistory"));
+    }
 }
