@@ -119,7 +119,7 @@ class Client extends BaseClient
         $guzzleRequest->getParams()->set('redirect.disable', true);
         $curlOptions = $guzzleRequest->getCurlOptions();
 
-        if (!$curlOptions->get(CURLOPT_TIMEOUT)) {
+        if (!$curlOptions->hasKey(CURLOPT_TIMEOUT)) {
             $curlOptions->set(CURLOPT_TIMEOUT, 30);
         }
 
