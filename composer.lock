@@ -1,5 +1,5 @@
 {
-    "hash": "3f85d8f65deadbe444ebe63c7a0276e9",
+    "hash": "e02bfd74348b3cfd96c60c6d44b27a85",
     "packages": [
         {
             "name": "guzzle/guzzle",
@@ -7,12 +7,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "81d15dd3e019f1ebdd69142bb32700e16c3cdf0e"
+                "reference": "e2ea1214a9350a22a9b131a6bc15279299f22fd8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/81d15dd3e019f1ebdd69142bb32700e16c3cdf0e",
-                "reference": "81d15dd3e019f1ebdd69142bb32700e16c3cdf0e",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/e2ea1214a9350a22a9b131a6bc15279299f22fd8",
+                "reference": "e2ea1214a9350a22a9b131a6bc15279299f22fd8",
                 "shasum": ""
             },
             "require": {
@@ -91,7 +91,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2013-02-26 18:30:03"
+            "time": "2013-02-27 21:44:11"
         },
         {
             "name": "symfony/browser-kit",
