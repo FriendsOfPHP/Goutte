@@ -17,6 +17,7 @@ use Symfony\Component\BrowserKit\Response;
 use Guzzle\Http\Exception\CurlException;
 use Guzzle\Http\Exception\BadResponseException;
 use Guzzle\Http\Message\Response as GuzzleResponse;
+use Guzzle\Http\Message\Header as GuzzleHeader;
 use Guzzle\Http\ClientInterface as GuzzleClientInterface;
 use Guzzle\Http\Client as GuzzleClient;
 use Guzzle\Http\Message\EntityEnclosingRequestInterface;
@@ -168,6 +169,15 @@ class Client extends BaseClient
 
     protected function createResponse(GuzzleResponse $response)
     {
-        return new Response($response->getBody(true), $response->getStatusCode(), $response->getHeaders()->getAll());
+        $headers = $response->getHeaders()->getAll();
+        $headers = array_map(function ($header) {
+            if ($header instanceof GuzzleHeader) {
+                return $header->raw();
+            }
+
+            return $header;
+        }, $headers);
+
+        return new Response($response->getBody(true), $response->getStatusCode(), $headers);
     }
 }
