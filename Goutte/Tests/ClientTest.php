@@ -15,6 +15,7 @@ use Goutte\Client;
 use Symfony\Component\BrowserKit\Cookie;
 
 use Guzzle\Http\Message\Response as GuzzleResponse;
+use Guzzle\Http\Message\Header as GuzzleHeader;
 use Guzzle\Http\Client as GuzzleClient;
 use Guzzle\Plugin\Mock\MockPlugin;
 use Guzzle\Plugin\History\HistoryPlugin;
@@ -243,5 +244,27 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         // Ensure that two requests were sent
         $this->assertEquals(2, count($this->historyPlugin));
+    }
+
+    public function testConvertsGuzzleHeadersToArrays()
+    {
+        if (!class_exists("Guzzle\Http\Message\Header")) {
+            $this->markTestSkipped("Guzzle ~3.6 required");
+        }
+
+        $guzzle = $this->getGuzzle();
+
+        $this->mockPlugin->clearQueue();
+        $this->mockPlugin->addResponse(new GuzzleResponse(200, array(
+            new GuzzleHeader('Date', 'Tue, 04 Jun 2013 13:22:41 GMT'),
+        )));
+
+        $client = new Client();
+        $client->setClient($guzzle);
+        $client->request('GET', 'http://www.example.com/');
+        $response = $client->getResponse();
+        $headers = $response->getHeaders();
+
+        $this->assertInternalType("array", array_shift($headers), "Header not converted from Guzzle\Http\Message\Header to array");
     }
 }
