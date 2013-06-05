@@ -172,7 +172,7 @@ class Client extends BaseClient
         $headers = $response->getHeaders()->getAll();
         $headers = array_map(function ($header) {
             if ($header instanceof GuzzleHeader) {
-                return $header->raw();
+                return $header->toArray();
             }
 
             return $header;
