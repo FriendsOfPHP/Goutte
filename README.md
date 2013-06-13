@@ -72,7 +72,7 @@ Goutte is a thin wrapper around the following fine PHP libraries:
  * Symfony Components: BrowserKit, ClassLoader, CssSelector, DomCrawler,
    Finder, and Process
 
- * [Guzzle](http://www.guzzlephp.org)
+ * [Guzzle](http://www.guzzlephp.org) HTTP Component
 
 License
 -------
