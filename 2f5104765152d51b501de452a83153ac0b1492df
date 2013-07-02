@@ -1,0 +1,6 @@
+---------------------------------------------------------------------------
+
+by pylebecq at 2013-06-01T10:08:38Z
+
+I can confirm this issue.
+@fabpot Could you review this one line patch please ?
