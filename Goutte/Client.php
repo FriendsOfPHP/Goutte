@@ -75,7 +75,7 @@ class Client extends BaseClient
     {
         $headers = array();
         foreach ($request->getServer() as $key => $val) {
-            $key = ucfirst(strtolower(str_replace(array('_', 'HTTP-'), array('-', ''), $key)));
+            $key = implode('-', array_map('ucfirst', explode('-', strtolower(str_replace(array('_', 'HTTP-'), array('-', ''), $key)))));
             if (!isset($headers[$key])) {
                 $headers[$key] = $val;
             }
