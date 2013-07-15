@@ -78,6 +78,7 @@ class Compiler
             'LICENSE',
             'vendor/autoload.php',
             'Goutte/Client.php',
+            'vendor/guzzle/http/Guzzle/Http/Resources/cacert.pem',
         );
 
         $dirs = array(
