@@ -79,6 +79,7 @@ class Compiler
             'vendor/autoload.php',
             'Goutte/Client.php',
             'vendor/guzzle/http/Guzzle/Http/Resources/cacert.pem',
+            'vendor/guzzle/http/Guzzle/Http/Resources/cacert.pem.md5'
         );
 
         $dirs = array(
