@@ -22,41 +22,56 @@ Usage
 
 Require the Goutte phar file to use Goutte in a script:
 
-    require_once '/path/to/goutte.phar';
+```php
+require_once '/path/to/goutte.phar';
+```
 
 Create a Goutte Client instance (which extends
 `Symfony\Component\BrowserKit\Client`):
 
-    use Goutte\Client;
+```php
+use Goutte\Client;
 
-    $client = new Client();
+$client = new Client();
+```
 
 Make requests with the `request()` method:
 
-    $crawler = $client->request('GET', 'http://www.symfony-project.org/');
+```php
+$crawler = $client->request('GET', 'http://www.symfony-project.org/');
+```
 
 The method returns a `Crawler` object
 (`Symfony\Component\DomCrawler\Crawler`).
 
 Click on links:
 
-    $link = $crawler->selectLink('Plugins')->link();
-    $crawler = $client->click($link);
+```php
+$link = $crawler->selectLink('Plugins')->link();
+$crawler = $client->click($link);
+```
 
 Submit forms:
 
-    $form = $crawler->selectButton('sign in')->form();
-    $crawler = $client->submit($form, array('signin[username]' => 'fabien', 'signin[password]' => 'xxxxxx'));
+```php
+$form = $crawler->selectButton('sign in')->form();
+$crawler = $client->submit($form, array(
+    'signin[username]' => 'fabien',
+    'signin[password]' => 'xxxxxx'
+));
+```
 
 Extract data:
 
-    $nodes = $crawler->filter('.error_list');
-    if ($nodes->count())
-    {
-      die(sprintf("Authentication error: %s\n", $nodes->text()));
-    }
+```php
+$nodes = $crawler->filter('.error_list');
+if ($nodes->count())
+{
+  die(sprintf("Authentication error: %s\n", $nodes->text()));
+}
 
-    printf("Nb tasks: %d\n", $crawler->filter('#nb_tasks')->text());
+printf("Nb tasks: %d\n", $crawler->filter('#nb_tasks')->text());
+```
 
 More Information
 ----------------
@@ -80,4 +95,3 @@ License
 Goutte is licensed under the MIT license.
 
 [1]: https://raw.github.com/fabpot/Goutte/master/goutte.phar
-
