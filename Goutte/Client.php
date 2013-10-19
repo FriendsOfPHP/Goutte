@@ -71,6 +71,13 @@ class Client extends BaseClient
         return $this;
     }
 
+    public function resetAuth()
+    {
+        $this->auth = null;
+
+        return $this;
+    }
+
     protected function doRequest($request)
     {
         $headers = array();
