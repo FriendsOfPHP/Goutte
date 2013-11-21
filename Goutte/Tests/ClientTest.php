@@ -29,7 +29,7 @@ use Guzzle\Http\Message\PostFile;
  */
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
-    protected $history;
+    protected $historyPlugin;
     protected $mockPlugin;
 
     protected function getGuzzle()
