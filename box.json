@@ -1,0 +1,21 @@
+{
+    "output": "goutte.phar",
+    "chmod": "0755",
+    "compactors": [
+        "Herrera\\Box\\Compactor\\Php"
+    ],
+    "extract": false,
+    "files": [
+        "LICENSE",
+        "Goutte/Client.php"
+    ],
+    "finder": [
+        {
+            "name": ["*.php", "*.pem*"],
+            "exclude": ["Tests", "tests"],
+            "in": "vendor"
+        }
+    ],
+    "stub": "Goutte/Resources/phar-stub.php",
+    "web": false
+}
