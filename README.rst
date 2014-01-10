@@ -27,7 +27,7 @@ Require the Goutte phar file to use Goutte in a script:
     require_once '/path/to/goutte.phar';
 
 Create a Goutte Client instance (which extends
-`Symfony\Component\BrowserKit\Client`):
+``Symfony\Component\BrowserKit\Client``):
 
 .. code-block:: php
 
@@ -35,40 +35,44 @@ Create a Goutte Client instance (which extends
 
     $client = new Client();
 
-Make requests with the `request()` method:
+Make requests with the ``request()`` method:
 
 .. code-block:: php
 
-    $crawler = $client->request('GET', 'http://www.symfony-project.org/');
+    // Go to the symfony.com website
+    $crawler = $client->request('GET', 'http://www.symfony.com/blog/');
 
-The method returns a `Crawler` object
-(`Symfony\Component\DomCrawler\Crawler`).
+The method returns a ``Crawler`` object
+(``Symfony\Component\DomCrawler\Crawler``).
 
 Click on links:
 
 .. code-block:: php
 
-    $link = $crawler->selectLink('Plugins')->link();
+    // Click on the "Security Advisories" link
+    $link = $crawler->selectLink('Security Advisories')->link();
     $crawler = $client->click($link);
-
-Submit forms:
-
-.. code-block:: php
-
-    $form = $crawler->selectButton('sign in')->form();
-    $crawler = $client->submit($form, array('signin[username]' => 'fabien', 'signin[password]' => 'xxxxxx'));
 
 Extract data:
 
 .. code-block:: php
 
-    $nodes = $crawler->filter('.error_list');
-    if ($nodes->count())
-    {
-      die(sprintf("Authentication error: %s\n", $nodes->text()));
-    }
+    // Get the latest post in this category and display the titles
+    $crawler->filter('h2.post > a')->each(function ($node) {
+        print $node->text()."\n";
+    });
 
-    printf("Nb tasks: %d\n", $crawler->filter('#nb_tasks')->text());
+Submit forms:
+
+.. code-block:: php
+
+    $crawler = $client->request('GET', 'http://github.com/');
+    $crawler = $client->click($crawler->selectLink('Sign in')->link());
+    $form = $crawler->selectButton('Sign in')->form();
+    $crawler = $client->submit($form, array('login' => 'fabpot', 'password' => 'xxxxxx'));
+    $crawler->filter('.flash-error')->each(function ($node) {
+        print $node->text()."\n";
+    });
 
 More Information
 ----------------
@@ -82,14 +86,14 @@ Technical Information
 Goutte is a thin wrapper around the following fine PHP libraries:
 
 * Symfony Components: BrowserKit, ClassLoader, CssSelector, DomCrawler, Finder,
-  and Process
+  and Process;
 
-*  `Guzzle`_ HTTP Component
+*  `Guzzle`_ HTTP Component.
 
 License
 -------
 
 Goutte is licensed under the MIT license.
 
-.. _Goutte.phar: https://raw.github.com/fabpot/Goutte/master/goutte.phar
-.. _Guzzle:      http://docs.guzzlephp.org
+.. _`Goutte.phar`: https://raw.github.com/fabpot/Goutte/master/goutte.phar
+.. _`Guzzle`:      http://docs.guzzlephp.org
