@@ -3,6 +3,12 @@ php:
   - "5.5"
   - "5.4"
   - "5.3"
+  - hhvm
+
+matrix:
+    allow_failures:
+        - php: hhvm
+
 before_script:
   - composer install -n --dev
 script:
