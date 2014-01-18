@@ -95,5 +95,5 @@ License
 
 Goutte is licensed under the MIT license.
 
-.. _`Goutte.phar`: https://raw.github.com/fabpot/Goutte/master/goutte.phar
+.. _`Goutte.phar`: http://get.sensiolabs.org/goutte.phar
 .. _`Guzzle`:      http://docs.guzzlephp.org
