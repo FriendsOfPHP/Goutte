@@ -11,3 +11,7 @@ before_script:
 
 script:
     - phpunit
+
+matrix:
+    allow_failures:
+        - php: hhvm
