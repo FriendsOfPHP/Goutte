@@ -1,0 +1,13 @@
+---------------------------------------------------------------------------
+
+by stof at 2014-01-13T09:44:10Z
+
+as it is passing on HHVM, I would disallow failures
+
+---------------------------------------------------------------------------
+
+by staabm at 2014-01-13T11:01:42Z
+
+didn't expected it would pass... ;-)
+
+Here you are.
