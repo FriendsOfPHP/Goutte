@@ -280,4 +280,22 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInternalType("array", array_shift($headers), "Header not converted from Guzzle\Http\Message\Header to array");
     }
+    
+    public function testSetsGetParamsCorrectly()
+    {
+        $guzzle = $this->getGuzzle();
+        $client = new Client();
+        $client->setClient($guzzle);
+        
+        $params = array(
+            'a' => 'a',
+            'b' => 'b',
+        );
+        
+        $c = $client->request('GET', 'http://www.example.com/', $params);
+        $request = $this->historyPlugin->getLastRequest();
+        
+        $this->assertSame(http_build_query($params), (string)$request->getQuery());
+        
+    }
 }

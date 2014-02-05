@@ -108,7 +108,14 @@ class Client extends BaseClient
             $headers,
             $body
         );
-
+        
+        $params = $request->getParameters();
+        
+        if (in_array($request->getMethod(), array('GET','HEAD')) && !empty($params)) {
+            $query = $guzzleRequest->getQuery();
+            $query->merge($params);
+        }
+        
         foreach ($this->headers as $name => $value) {
             $guzzleRequest->setHeader($name, $value);
         }
