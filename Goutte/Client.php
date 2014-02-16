@@ -125,7 +125,7 @@ class Client extends BaseClient
             $guzzleRequest->addCookie($name, $value);
         }
 
-        if ('POST' == $request->getMethod()) {
+        if ('POST' == $request->getMethod() || 'PUT' == $request->getMethod()) {
             $this->addPostFiles($guzzleRequest, $request->getFiles());
         }
 
