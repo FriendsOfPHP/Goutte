@@ -1,7 +1,0 @@
-CHANGELOG
-=========
-
-* 0.2
-
- * The first argument to Client has been removed
- * Zend libraries have been replaced with Guzzle
