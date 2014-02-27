@@ -17,7 +17,6 @@ use Symfony\Component\BrowserKit\Response;
 use Guzzle\Http\Exception\CurlException;
 use Guzzle\Http\Exception\BadResponseException;
 use Guzzle\Http\Message\Response as GuzzleResponse;
-use Guzzle\Http\Message\Header as GuzzleHeader;
 use Guzzle\Http\ClientInterface as GuzzleClientInterface;
 use Guzzle\Http\Client as GuzzleClient;
 use Guzzle\Http\Message\EntityEnclosingRequestInterface;
