@@ -181,14 +181,7 @@ class Client extends BaseClient
 
     protected function createResponse(GuzzleResponse $response)
     {
-        $headers = $response->getHeaders()->getAll();
-        $headers = array_map(function ($header) {
-            if ($header instanceof GuzzleHeader) {
-                return $header->toArray();
-            }
-
-            return $header;
-        }, $headers);
+        $headers = $response->getHeaders()->toArray();
 
         return new Response($response->getBody(true), $response->getStatusCode(), $headers);
     }
