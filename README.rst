@@ -11,37 +11,22 @@ Requirements
 
 Goutte works with PHP 5.3.3 or later.
 
-Installing via Composer
------------------------
+Installation
+------------
 
-The recommended way to install Goutte is through `Composer`_.
+Add ``fabpot/goutte`` as a require dependency in your ``composer.json`` file:
 
 .. code-block:: bash
 
-    # Install Composer
-    curl -sS https://getcomposer.org/installer | php
-
-    # Add Goutte as a dependency
     php composer.phar require fabpot/goutte:~1.0
 
-After installing, you need to require Composer's autoloader:
+.. tip::
 
-.. code-block:: php
+    You can also download the `Goutte.phar`_ file:
 
-    require 'vendor/autoload.php';
+    .. code-block:: php
 
-Installing via Phar
--------------------
-
-Installing Goutte is as easy as it can get. Download the `Goutte.phar`_ file
-and you're done!
-
-
-Require the Goutte phar file to use Goutte in a script:
-
-.. code-block:: php
-
-    require_once '/path/to/goutte.phar';
+        require_once '/path/to/goutte.phar';
 
 Usage
 -----
@@ -115,6 +100,6 @@ License
 
 Goutte is licensed under the MIT license.
 
-.. _`Composer`: http://getcomposer.org
+.. _`Composer`:    http://getcomposer.org
 .. _`Goutte.phar`: http://get.sensiolabs.org/goutte.phar
 .. _`Guzzle`:      http://docs.guzzlephp.org
