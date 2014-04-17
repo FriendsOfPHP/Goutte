@@ -19,11 +19,7 @@
         "symfony/dom-crawler": "~2.1",
         "symfony/finder": "~2.1",
         "symfony/process": "~2.1",
-        "guzzle/http": "~3.1"
-    },
-    "require-dev": {
-        "guzzle/plugin-history": "~3.1",
-        "guzzle/plugin-mock": "~3.1"
+        "guzzlehttp/guzzle": "4.*"
     },
     "autoload": {
         "psr-0": { "Goutte": "." }
