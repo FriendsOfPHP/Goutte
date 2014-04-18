@@ -64,7 +64,7 @@ class Client extends BaseClient
         unset($this->headers[$name]);
     }
 
-    public function setAuth($user, $password = '', $type = CURLAUTH_BASIC)
+    public function setAuth($user, $password = '', $type = 'basic')
     {
         $this->auth = array(
             'user' => $user,

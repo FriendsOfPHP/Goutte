@@ -88,6 +88,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $request = $this->historyPlugin->getLastRequest();
         $this->assertEquals('me', $request->getConfig()->get('auth')[0]);
         $this->assertEquals('**', $request->getConfig()->get('auth')[1]);
+        $this->assertEquals('basic', $request->getConfig()->get('auth')[2]);
     }
 
     public function testResetsAuth()
