@@ -107,6 +107,8 @@ class Client extends BaseClient
                 $this->auth['password'],
                 $this->auth['type']
             ));
+        } else {
+          $this->getClient()->setDefaultOption('auth', NULL);
         }
 
         $requestOptions = array(
