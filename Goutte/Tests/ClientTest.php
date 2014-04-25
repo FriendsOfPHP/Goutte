@@ -217,17 +217,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $request->getBody()->getFiles());
     }
 
-    public function testUsesCurlOptions()
-    {
-        $guzzle = $this->getGuzzle();
-        $client = new Client();
-        $client->setClient($guzzle);
-        $crawler = $client->request('GET', 'http://www.example.com/');
-        $request = $this->historyPlugin->getLastRequest();
-          $this->assertEquals(0, $request->getConfig()->get('curl')['CURLOPT_MAXREDIRS']);
-        $this->assertEquals(30, $request->getConfig()->get('curl')['CURLOPT_TIMEOUT']);
-    }
-
     public function testCreatesResponse()
     {
         $guzzle = $this->getGuzzle();

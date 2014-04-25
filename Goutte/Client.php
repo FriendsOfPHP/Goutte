@@ -114,12 +114,6 @@ class Client extends BaseClient
           'cookies' => $this->getCookieJar()->allRawValues($request->getUri()),
           'allow_redirects' => false,
           'timeout' => 30,
-          'config' => array(
-              'curl' => array(
-                  'CURLOPT_TIMEOUT' => 30,
-                  'CURLOPT_MAXREDIRS' => 0,
-              ),
-          )
         );
 
         if (!empty($headers)) {
