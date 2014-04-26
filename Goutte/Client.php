@@ -46,7 +46,7 @@ class Client extends BaseClient
     public function getClient()
     {
         if (!$this->client) {
-            $this->client = new GuzzleClient(array('defaults' => array('allow_redirects' => true, 'cookies' => TRUE)));
+            $this->client = new GuzzleClient(array('defaults' => array('allow_redirects' => false, 'cookies' => true)));
         }
 
         return $this->client;
