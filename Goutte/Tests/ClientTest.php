@@ -29,17 +29,17 @@ use GuzzleHttp\Post\PostFile;
  */
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
-    protected $historyPlugin;
-    protected $mockPlugin;
+    protected $history;
+    protected $mock;
 
     protected function getGuzzle()
     {
-        $this->historyPlugin = new History();
-        $this->mockPlugin = new Mock();
-        $this->mockPlugin->addResponse(new GuzzleResponse(200, array(), Stream::factory('<html><body><p>Hi</p></body></html>')));
+        $this->history = new History();
+        $this->mock = new Mock();
+        $this->mock->addResponse(new GuzzleResponse(200, array(), Stream::factory('<html><body><p>Hi</p></body></html>')));
         $guzzle = new GuzzleClient(array('redirect.disable' => true, 'base_url' => ''));
-        $guzzle->getEmitter()->attach($this->mockPlugin);
-        $guzzle->getEmitter()->attach($this->historyPlugin);
+        $guzzle->getEmitter()->attach($this->mock);
+        $guzzle->getEmitter()->attach($this->history);
 
         return $guzzle;
     }
@@ -65,7 +65,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client->setClient($guzzle);
         $client->setHeader('X-Test', 'test');
         $crawler = $client->request('GET', 'http://www.example.com/');
-        $this->assertEquals('test', $this->historyPlugin->getLastRequest()->getHeader('X-Test'));
+        $this->assertEquals('test', $this->history->getLastRequest()->getHeader('X-Test'));
     }
 
     public function testCustomUserAgent()
@@ -75,7 +75,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client->setClient($guzzle);
         $client->setHeader('User-Agent', 'foo');
         $crawler = $client->request('GET', 'http://www.example.com/');
-        $this->assertEquals('foo', $this->historyPlugin->getLastRequest()->getHeader('User-Agent'));
+        $this->assertEquals('foo', $this->history->getLastRequest()->getHeader('User-Agent'));
     }
 
     public function testUsesAuth()
@@ -85,7 +85,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client->setClient($guzzle);
         $client->setAuth('me', '**');
         $crawler = $client->request('GET', 'http://www.example.com/');
-        $request = $this->historyPlugin->getLastRequest();
+        $request = $this->history->getLastRequest();
         $this->assertEquals('me', $request->getConfig()->get('auth')[0]);
         $this->assertEquals('**', $request->getConfig()->get('auth')[1]);
         $this->assertEquals('basic', $request->getConfig()->get('auth')[2]);
@@ -99,7 +99,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client->setAuth('me', '**');
         $client->resetAuth();
         $crawler = $client->request('GET', 'http://www.example.com/');
-        $request = $this->historyPlugin->getLastRequest();
+        $request = $this->history->getLastRequest();
         $this->assertNull($request->getConfig()->get('auth')[0]);
         $this->assertNull($request->getConfig()->get('auth')[1]);
     }
@@ -111,7 +111,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client->setClient($guzzle);
         $client->getCookieJar()->set(new Cookie('test', '123'));
         $crawler = $client->request('GET', 'http://www.example.com/');
-        $request = $this->historyPlugin->getLastRequest();
+        $request = $this->history->getLastRequest();
         $this->assertEquals('test=123', $request->getHeader('Cookie'));
     }
 
@@ -128,7 +128,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         );
 
         $crawler = $client->request('POST', 'http://www.example.com/', array(), $files);
-        $request = $this->historyPlugin->getLastRequest();
+        $request = $this->history->getLastRequest();
 
         $files = $request->getBody()->getFiles();
         $this->assertFile(reset($files), 'test', __FILE__, array(
@@ -147,7 +147,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         );
 
         $crawler = $client->request('POST', 'http://www.example.com/', array(), $files);
-        $request = $this->historyPlugin->getLastRequest();
+        $request = $this->history->getLastRequest();
         $files = $request->getBody()->getFiles();
         $this->assertFile(reset($files), 'test', __FILE__, array(
           'Content-Type' => 'text/x-php',
@@ -170,7 +170,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         );
 
         $crawler = $client->request('POST', 'http://www.example.com/', array(), $files);
-        $request = $this->historyPlugin->getLastRequest();
+        $request = $this->history->getLastRequest();
         $files = $request->getBody()->getFiles();
         $this->assertFile(reset($files), 'form[test]', __FILE__, array(
             'Content-Type' => 'text/x-php',
@@ -188,7 +188,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         );
 
         $crawler = $client->request('POST', 'http://www.example.com/', array(), $files);
-        $request = $this->historyPlugin->getLastRequest();
+        $request = $this->history->getLastRequest();
         $files = $request->getBody()->getFiles();
         $this->assertFile(reset($files), 'test', __FILE__, array(
           'Content-Type' => 'text/x-php',
@@ -212,7 +212,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         );
 
         $crawler = $client->request('POST', 'http://www.example.com/', array(), $files);
-        $request = $this->historyPlugin->getLastRequest();
+        $request = $this->history->getLastRequest();
 
         $this->assertEquals(array(), $request->getBody()->getFiles());
     }
@@ -230,11 +230,11 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $guzzle = $this->getGuzzle();
 
-        $this->mockPlugin->clearQueue();
-        $this->mockPlugin->addResponse(new GuzzleResponse(301, array(
+        $this->mock->clearQueue();
+        $this->mock->addResponse(new GuzzleResponse(301, array(
             'Location' => 'http://www.example.com/'
         )));
-        $this->mockPlugin->addResponse(new GuzzleResponse(200, [], Stream::factory('<html><body><p>Test</p></body></html>')));
+        $this->mock->addResponse(new GuzzleResponse(200, [], Stream::factory('<html><body><p>Test</p></body></html>')));
 
         $client = new Client();
         $client->setClient($guzzle);
@@ -243,15 +243,15 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Test', $crawler->filter('p')->text());
 
         // Ensure that two requests were sent
-        $this->assertEquals(2, count($this->historyPlugin));
+        $this->assertEquals(2, count($this->history));
     }
 
     public function testConvertsGuzzleHeadersToArrays()
     {
         $guzzle = $this->getGuzzle();
 
-        $this->mockPlugin->clearQueue();
-        $this->mockPlugin->addResponse(new GuzzleResponse(200, array(
+        $this->mock->clearQueue();
+        $this->mock->addResponse(new GuzzleResponse(200, array(
             'Date' => 'Tue, 04 Jun 2013 13:22:41 GMT',
         )));
 
