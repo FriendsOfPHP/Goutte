@@ -1,0 +1,99 @@
+---------------------------------------------------------------------------
+
+by stof at 2014-04-17T09:22:45Z
+
+This removes the PHP 5.3 support, and it breaks BC in Goutte, so it would require bumping Goutte to a version 2.0 before merging it
+
+---------------------------------------------------------------------------
+
+by larowlan at 2014-04-17T09:52:09Z
+
+@stof are you asking me to make the change in composer.json?
+
+---------------------------------------------------------------------------
+
+by stof at 2014-04-17T12:14:09Z
+
+Well, it is also to make @fabpot aware of all implications of merging this. Given the impact, it means that Goutte 1.x would still need to be maintained after the change.
+
+And anyway, Guzzle 3 is still maintained, so we could stick to v3 for now if we want to avoid maintaining 2 separate versions (PHP 5.3 is not dead yet, so we cannot easily dop the support unfortunately)
+
+---------------------------------------------------------------------------
+
+by Berdir at 2014-04-17T12:15:52Z
+
+Started to test this with behat/https://github.com/Behat/MinkGoutteDriver, seems like basic authentication is not working correctly yet.
+
+Goutte\Client::setAuth(), $type defaults to CURLAUTH_BASIC, but it looks like Guzzle now defaults to 'basic' as string, as it no longer requires curl.
+
+---------------------------------------------------------------------------
+
+by stof at 2014-04-17T12:32:59Z
+
+@Berdir This means that  `setAuth`` needs to be fixed to use the appropriate Guzzle API internally.
+
+This is another reason why the change need to be done carefully, to ensure that the Goutte API is not broken.
+
+---------------------------------------------------------------------------
+
+by larowlan at 2014-04-17T23:41:19Z
+
+Updated description to clarify goals/motivation - basically that Drupal 8 is likely to need Goutte but we  already require Guzzle 4 and would prefer to only need one version of Guzzle.
+
+---------------------------------------------------------------------------
+
+by larowlan at 2014-04-18T01:57:56Z
+
+Fixed setAuth to default to 'basic' instead of CURLAUTH_BASIC and added test
+
+---------------------------------------------------------------------------
+
+by larowlan at 2014-04-18T02:03:23Z
+
+Updated composer.json and .travis.yml to reflect Goutte 2.0 and php 5.4 dependency
+
+---------------------------------------------------------------------------
+
+by Berdir at 2014-04-24T12:09:42Z
+
+Updated https://github.com/Behat/MinkGoutteDriver/pull/34, which should now run the tests but will fail on the basic auth tests as it does unset the auth default options if you remove it again.
+
+This works for the goutte mink driver tests:
+
+```
+        if ($this->auth !== null) {
+            $this->getClient()->setDefaultOption('auth', array(
+                $this->auth['user'],
+                $this->auth['password'],
+                $this->auth['type']
+            ));
+        } else {
+            $this->getClient()->setDefaultOption('auth', NULL);
+        }
+```
+
+Not sure if there's a nicer way?
+
+---------------------------------------------------------------------------
+
+by larowlan at 2014-04-25T22:16:41Z
+
+Fixed reviews from @Berdir and @damiankloip
+
+---------------------------------------------------------------------------
+
+by larowlan at 2014-04-26T12:32:14Z
+
+Fixed reviews from @fabpot
+
+---------------------------------------------------------------------------
+
+by larowlan at 2014-05-02T10:34:38Z
+
+Anything else needed from me here?
+
+---------------------------------------------------------------------------
+
+by mtdowling at 2014-05-07T23:21:23Z
+
+Sorry for the delay in reviewing. There were various issues when this was first filed, but everything looks good now.
