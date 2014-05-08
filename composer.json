@@ -13,12 +13,9 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "ext-curl": "*",
         "symfony/browser-kit": "~2.1",
         "symfony/css-selector": "~2.1",
         "symfony/dom-crawler": "~2.1",
-        "symfony/finder": "~2.1",
-        "symfony/process": "~2.1",
         "guzzlehttp/guzzle": "4.*"
     },
     "autoload": {
