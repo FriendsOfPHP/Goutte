@@ -11,30 +11,27 @@
 
 namespace Goutte;
 
+use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Message\RequestInterface;
+use GuzzleHttp\Message\Response as GuzzleResponse;
 use GuzzleHttp\Post\PostFile;
 use Symfony\Component\BrowserKit\Client as BaseClient;
 use Symfony\Component\BrowserKit\Response;
 
-use GuzzleHttp\Message\Response as GuzzleResponse;
-use GuzzleHttp\ClientInterface as GuzzleClientInterface;
-use GuzzleHttp\Client as GuzzleClient;
-
 /**
  * Client.
  *
- * @package Goutte
- * @author  Fabien Potencier <fabien.potencier@symfony-project.com>
- * @author  Michael Dowling <michael@guzzlephp.org>
+ * @author Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author Michael Dowling <michael@guzzlephp.org>
  */
 class Client extends BaseClient
 {
-    const VERSION = '0.2';
-
-    protected $headers = array();
-    protected $auth = null;
     protected $client;
+
+    private $headers = array();
+    private $auth = null;
 
     public function setClient(GuzzleClientInterface $client)
     {
@@ -66,11 +63,7 @@ class Client extends BaseClient
 
     public function setAuth($user, $password = '', $type = 'basic')
     {
-        $this->auth = array(
-            'user' => $user,
-            'password' => $password,
-            'type'     => $type
-        );
+        $this->auth = array($user, $password, $type);
 
         return $this;
     }
@@ -101,25 +94,17 @@ class Client extends BaseClient
             }
         }
 
-        if ($this->auth !== null) {
-            $this->getClient()->setDefaultOption('auth', array(
-                $this->auth['user'],
-                $this->auth['password'],
-                $this->auth['type']
-            ));
-        } else {
-          $this->getClient()->setDefaultOption('auth', NULL);
-        }
+        $this->getClient()->setDefaultOption('auth', $this->auth);
 
         $requestOptions = array(
-          'body' => $body,
-          'cookies' => $this->getCookieJar()->allRawValues($request->getUri()),
-          'allow_redirects' => false,
-          'timeout' => 30,
+            'body' => $body,
+            'cookies' => $this->getCookieJar()->allRawValues($request->getUri()),
+            'allow_redirects' => false,
+            'timeout' => 30,
         );
 
         if (!empty($headers)) {
-          $requestOptions['headers'] = $headers;
+            $requestOptions['headers'] = $headers;
         }
 
         $guzzleRequest = $this->getClient()->createRequest(
@@ -148,10 +133,9 @@ class Client extends BaseClient
 
     protected function addPostFiles(RequestInterface $request, array $files, $arrayName = '')
     {
-
         foreach ($files as $name => $info) {
             if (!empty($arrayName)) {
-                $name = $arrayName . '[' . $name . ']';
+                $name = $arrayName.'['.$name.']';
             }
 
             if (is_array($info)) {

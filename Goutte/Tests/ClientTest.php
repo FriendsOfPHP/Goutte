@@ -12,15 +12,13 @@
 namespace Goutte\Tests;
 
 use Goutte\Client;
-use GuzzleHttp\Stream\Stream;
-use Symfony\Component\BrowserKit\Cookie;
-
-use GuzzleHttp\Message\Response as GuzzleResponse;
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Message\Response as GuzzleResponse;
+use GuzzleHttp\Stream\Stream;
 use GuzzleHttp\Subscriber\History;
 use GuzzleHttp\Subscriber\Mock;
-use GuzzleHttp\Message\Response;
 use GuzzleHttp\Post\PostFile;
+use Symfony\Component\BrowserKit\Cookie;
 
 /**
  * Goutte Client Test
