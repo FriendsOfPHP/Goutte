@@ -278,6 +278,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client = new Client();
         $client->setClient($guzzle);
         $crawler = $client->request('GET', 'https://www.example.com/');
+        $this->assertEquals('https', $this->history->getLastRequest()->getScheme());
         $this->assertEquals('Test', $crawler->filter('p')->text());
     }
 }
