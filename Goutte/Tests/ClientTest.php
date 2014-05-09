@@ -268,4 +268,16 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($postFile->getFilename(), $fileName);
         $this->assertEquals($postFile->getHeaders(), $headers);
     }
+
+    public function testHttps()
+    {
+        $guzzle = $this->getGuzzle();
+
+        $this->mock->clearQueue();
+        $this->mock->addResponse(new GuzzleResponse(200, [], Stream::factory('<html><body><p>Test</p></body></html>')));
+        $client = new Client();
+        $client->setClient($guzzle);
+        $crawler = $client->request('GET', 'https://www.example.com/');
+        $this->assertEquals('Test', $crawler->filter('p')->text());
+    }
 }
