@@ -126,6 +126,9 @@ class Client extends BaseClient
             $response = $this->getClient()->send($guzzleRequest);
         } catch (RequestException $e) {
             $response = $e->getResponse();
+            if (null === $response) {
+                throw $e;
+            }
         }
 
         return $this->createResponse($response);
