@@ -13,6 +13,7 @@ namespace Goutte\Tests;
 
 use Goutte\Client;
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Message\Response as GuzzleResponse;
 use GuzzleHttp\Stream\Stream;
 use GuzzleHttp\Subscriber\History;
@@ -260,6 +261,19 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $headers = $response->getHeaders();
 
         $this->assertInternalType("array", array_shift($headers), "Header not converted from Guzzle\Http\Message\Header to array");
+    }
+
+    public function testNullResponseException()
+    {
+        $this->setExpectedException('GuzzleHttp\Exception\RequestException');
+        $guzzle = $this->getGuzzle();
+        $this->mock->clearQueue();
+        $exception = new RequestException('', $this->getMock('GuzzleHttp\Message\RequestInterface'));
+        $this->mock->addException($exception);
+        $client = new Client();
+        $client->setClient($guzzle);
+        $client->request('GET', 'http://www.example.com/');
+        $response = $client->getResponse();
     }
 
     protected function assertFile(PostFile $postFile, $fieldName, $fileName, $headers)
