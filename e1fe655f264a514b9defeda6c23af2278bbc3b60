@@ -1,0 +1,53 @@
+---------------------------------------------------------------------------
+
+by slaci at 2014-05-09T11:26:56Z
+
+Hey
+
+Why not set it to "on" in https://github.com/symfony/BrowserKit/blob/master/Client.php#L319?
+
+This fix seems a bit hacky for me tbh. I think it should handle all boolean true values or stick to Guzzle and avoid them. To decide first we should ask the guzzle devs if its an intentional regression or a bug?
+
+Edit: As i see guzzle 3.8.1 didnt check for types or anything else, so the bool true value of HTTPS header became "1" before. https://github.com/guzzle/guzzle/blob/v3.8.1/src/Guzzle/Http/Message/Header.php#L78
+
+---------------------------------------------------------------------------
+
+by stof at 2014-05-09T14:06:04Z
+
+well, actually, Goutte should be fixed to filter the ``$server`` variable to extract headers from it instead of considering everything as a header. ``HTTPS`` is not meant to be sent as an HTTP header.
+
+---------------------------------------------------------------------------
+
+by slaci at 2014-05-09T17:23:23Z
+
+Thats even better. The HTTPS stuff was weird from the start, but i see its just a shortcut for internal use.
+
+---------------------------------------------------------------------------
+
+by stof at 2014-05-09T18:56:48Z
+
+well, the issue is https://github.com/fabpot/Goutte/blob/master/Goutte/Client.php#L81-86 which keeps all non-headers as headers too (keeping only the ``HTTP-*`` elements is not enough given that some ``Content-*`` headers are not prefixed in PHP though).
+
+---------------------------------------------------------------------------
+
+by larowlan at 2014-05-09T21:33:35Z
+
+So should we whitelist possible values or just blacklist https?
+
+---------------------------------------------------------------------------
+
+by stof at 2014-05-09T21:43:44Z
+
+IMO, we should whitelist the values. See https://github.com/symfony/HttpFoundation/blob/master/ServerBag.php#L28 for the logic extracting headers in HttpFoundation
+
+---------------------------------------------------------------------------
+
+by larowlan at 2014-05-09T21:48:32Z
+
+Neat, borrowed and adapted from there @stof++
+
+---------------------------------------------------------------------------
+
+by larowlan at 2014-05-10T08:02:09Z
+
+Refactored to mirror the existing code
