@@ -1,0 +1,35 @@
+---------------------------------------------------------------------------
+
+by stof at 2014-05-11T21:40:27Z
+
+can you add a test covering this case if possible ? (I don't know whether the Mock plugin allows to mock this case though)
+
+---------------------------------------------------------------------------
+
+by larowlan at 2014-05-11T21:41:18Z
+
+Yeah was working on that now, trying to decipher how to simulate it.
+
+On 12 May 2014 07:40, Christophe Coevoet <notifications@github.com> wrote:
+
+> can you add a test covering this case if possible ? (I don't know whether
+> the Mock plugin allows to mock this case though)
+>
+> —
+> Reply to this email directly or view it on GitHub<https://github.com/fabpot/Goutte/pull/149#issuecomment-42784212>
+> .
+>
+
+--
+Lee Rowlands
+Senior Drupal Developer
+PreviousNext
+skype: larowlan
+email: larowlan@previousnext.com.au
+
+---------------------------------------------------------------------------
+
+by larowlan at 2014-05-11T21:47:24Z
+
+Added a test.
+The Mock has an addException method, which is neat.
