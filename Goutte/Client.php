@@ -79,7 +79,7 @@ class Client extends BaseClient
     {
         $headers = array();
         foreach ($request->getServer() as $key => $val) {
-            $key = implode('-', array_map('ucfirst', explode('-', strtolower(str_replace(array('_', 'HTTP-'), array('-', ''), $key)))));
+            $key = implode('-', array_map('ucfirst', explode('-', strtolower(str_replace('_', '-', $key)))));
             $contentHeaders = array('Content-length' => true, 'Content-md5' => true, 'Content-type' => true);
             if (0 === strpos($key, 'Http-')) {
                 $headers[substr($key, 5)] = $val;
