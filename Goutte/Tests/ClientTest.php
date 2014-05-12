@@ -295,4 +295,17 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('https', $this->history->getLastRequest()->getScheme());
         $this->assertEquals('Test', $crawler->filter('p')->text());
     }
+
+    public function testCustomUserAgentConstructor()
+    {
+        $guzzle = $this->getGuzzle();
+        $client = new Client([
+          'HTTP_HOST' => '1.2.3.4',
+          'HTTP_USER_AGENT' => 'SomeHost'
+        ]);
+        $client->setClient($guzzle);
+        $crawler = $client->request('GET', 'http://www.example.com/');
+        $this->assertEquals('SomeHost', $this->history->getLastRequest()->getHeader('User-Agent'));
+    }
+
 }
