@@ -130,9 +130,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $request = $this->history->getLastRequest();
 
         $files = $request->getBody()->getFiles();
-        $this->assertFile(reset($files), 'test', __FILE__, array(
-          'Content-Type' => 'text/x-php',
-          'Content-Disposition' => 'form-data; filename="ClientTest.php"; name="test"',
+        $this->assertFile(reset($files), 'test', 'test.txt', array(
+          'Content-Type' => 'text/plain',
+          'Content-Disposition' => 'form-data; filename="test.txt"; name="test"',
         ));
     }
 
@@ -171,9 +171,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $crawler = $client->request('POST', 'http://www.example.com/', array(), $files);
         $request = $this->history->getLastRequest();
         $files = $request->getBody()->getFiles();
-        $this->assertFile(reset($files), 'form[test]', __FILE__, array(
-            'Content-Type' => 'text/x-php',
-            'Content-Disposition' => 'form-data; filename="ClientTest.php"; name="form[test]"',
+        $this->assertFile(reset($files), 'form[test]', 'test.txt', array(
+            'Content-Type' => 'text/plain',
+            'Content-Disposition' => 'form-data; filename="test.txt"; name="form[test]"',
         ));
     }
 
