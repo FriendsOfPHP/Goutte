@@ -83,6 +83,13 @@ Submit forms:
         print $node->text()."\n";
     });
 
+Set cURL options:
+
+.. code-block:: php
+
+    // Goutte 1.x:
+    $client->getClient()->getConfig()->set('curl.options', array(CURLOPT_TIMEOUT => 60));
+
 More Information
 ----------------
 
