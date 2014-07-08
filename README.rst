@@ -58,7 +58,7 @@ Fine-tune cURL options:
 
 .. code-block:: php
 
-    $client->getClient()->setDefaultOption('config/curl/' . CURLOPT_TIMEOUT, 60);
+    $client->getClient()->setDefaultOption('config/curl/'.CURLOPT_TIMEOUT, 60);
 
 Click on links:
 
