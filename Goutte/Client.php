@@ -32,6 +32,7 @@ class Client extends BaseClient
 
     private $headers = array();
     private $auth = null;
+    private $timeout = null;
 
     public function setClient(GuzzleClientInterface $client)
     {
@@ -75,6 +76,20 @@ class Client extends BaseClient
         return $this;
     }
 
+    public function setTimeout($seconds)
+    {
+        $this->timeout = $seconds;
+
+        return $this;
+    }
+
+    public function resetTimeout()
+    {
+        $this->timeout = 30;
+
+        return $this;
+    }
+
     protected function doRequest($request)
     {
         $headers = array();
@@ -105,7 +120,7 @@ class Client extends BaseClient
             'body' => $body,
             'cookies' => $this->getCookieJar()->allRawValues($request->getUri()),
             'allow_redirects' => false,
-            'timeout' => 30,
+            'timeout' => $this->timeout ?: 30,
         );
 
         if (!empty($headers)) {

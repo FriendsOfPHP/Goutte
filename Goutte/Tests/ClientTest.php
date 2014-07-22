@@ -308,4 +308,27 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('SomeHost', $this->history->getLastRequest()->getHeader('User-Agent'));
     }
 
+    public function testUsesCustomTimeout()
+    {
+        $guzzle = $this->getGuzzle();
+        $client = new Client();
+        $client->setClient($guzzle);
+        $client->setTimeout(40);
+        $crawler = $client->request('GET', 'http://www.example.com/');
+        $request = $this->history->getLastRequest();
+        $this->assertEquals(40, $request->getConfig()->get('timeout'));
+    }
+
+    public function testResetsTimeout()
+    {
+        $guzzle = $this->getGuzzle();
+        $client = new Client();
+        $client->setClient($guzzle);
+        $client->setTimeout(40);
+        $client->resetTimeout();
+        $crawler = $client->request('GET', 'http://www.example.com/');
+        $request = $this->history->getLastRequest();
+        $this->assertEquals(30, $request->getConfig()->get('timeout'));
+    }
+
 }
