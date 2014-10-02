@@ -280,7 +280,16 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals($postFile->getName(), $fieldName);
         $this->assertEquals($postFile->getFilename(), $fileName);
-        $this->assertEquals($postFile->getHeaders(), $headers);
+
+        $postFileHeaders = $postFile->getHeaders();
+        
+        // Note: Sort 'Content-Disposition' values before comparing, because the order changed in Guzzle 4.2.2
+        $postFileHeaders['Content-Disposition'] = explode('; ', $postFileHeaders['Content-Disposition']);
+        sort($postFileHeaders['Content-Disposition']);
+        $headers['Content-Disposition'] = explode('; ', $headers['Content-Disposition']);
+        sort($headers['Content-Disposition']);
+
+        $this->assertEquals($postFileHeaders, $headers);
     }
 
     public function testHttps()
