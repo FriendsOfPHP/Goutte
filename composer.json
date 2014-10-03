@@ -16,7 +16,7 @@
         "symfony/browser-kit": "~2.1",
         "symfony/css-selector": "~2.1",
         "symfony/dom-crawler": "~2.1",
-        "guzzlehttp/guzzle": "4.*"
+        "guzzlehttp/guzzle": ">=4,<6"
     },
     "autoload": {
         "psr-0": { "Goutte": "." }
