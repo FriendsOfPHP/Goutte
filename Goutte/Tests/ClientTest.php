@@ -131,7 +131,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(array(
             'test' => array(
-                new PostFile('test', __FILE__, 'text/x-php')
+                new PostFile('test', __FILE__, 'text/x-php', 'test.txt')
             )
         ), $request->getPostFiles());
     }
@@ -174,7 +174,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(array(
             'form[test]' => array(
-                new PostFile('form[test]', __FILE__, 'text/x-php')
+                new PostFile('form[test]', __FILE__, 'text/x-php', 'test.txt')
             )
         ), $request->getPostFiles());
     }
