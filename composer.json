@@ -3,7 +3,7 @@
     "type": "application",
     "description": "A simple PHP Web Scraper",
     "keywords": ["scraper"],
-    "homepage": "https://github.com/fabpot/Goutte",
+    "homepage": "https://github.com/FriendsOfPHP/Goutte",
     "license": "MIT",
     "authors": [
         {
@@ -19,7 +19,7 @@
         "guzzlehttp/guzzle": ">=4,<6"
     },
     "autoload": {
-        "psr-0": { "Goutte": "." }
+        "psr-4": { "Goutte\\": "Goutte" }
     },
     "extra": {
         "branch-alias": {
