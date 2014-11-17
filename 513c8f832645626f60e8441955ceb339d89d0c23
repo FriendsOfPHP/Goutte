@@ -1,0 +1,35 @@
+---------------------------------------------------------------------------
+
+by fabpot at 2014-11-17T12:07:59Z
+
+That's not needed as per the HTTP spec. Do you have a specific need to make this change?
+
+---------------------------------------------------------------------------
+
+by ossinkine at 2014-11-17T12:13:52Z
+
+If second word in lowercase then `isset($contentHeaders['Content-Type']) === false`
+
+---------------------------------------------------------------------------
+
+by ossinkine at 2014-11-17T12:15:06Z
+
+In other words, the second condition is never satisfied
+
+---------------------------------------------------------------------------
+
+by fabpot at 2014-11-17T12:19:22Z
+
+I understand now. So, instead of this change, I would prefer to remove the proper capitalization done for the key but apparently, Guzzle is case sensitive for HTTP headers (which is a bug :))
+
+---------------------------------------------------------------------------
+
+by ossinkine at 2014-11-17T12:47:58Z
+
+No, Guzzle is not case sensitive for HTTP headers
+
+---------------------------------------------------------------------------
+
+by ossinkine at 2014-11-17T12:50:06Z
+
+@fabpot Is that what you mean?
