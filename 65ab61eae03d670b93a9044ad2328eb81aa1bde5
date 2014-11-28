@@ -1,0 +1,27 @@
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-17T21:46:38Z
+
+Travis is OK, fabbot is not.
+
+```diff
+-        if (!in_array($request->getMethod(), array('GET', 'HEAD'))) {
++        if (!in_array($request->getMethod(), array('GET', 'HEAD'), true)) {
+```
+wow, someone is playing with PHP CS FIxer contrib level ;)
+
+---------------------------------------------------------------------------
+
+by fabpot at 2014-11-18T07:52:17Z
+
+I messed up things when upgrading PHP-CS-Fixer, fixed now and everything is back to green!
+
+---------------------------------------------------------------------------
+
+by keradus at 2014-11-27T21:58:17Z
+
+no longer need the config file for this project when using 1.2@dev (no need to exclude that phar-stub).
+
+So here is just one space fix to made PHP CS Fixer not complains about it.
+
+BTW, idea of getting .php_cs by fabbot is still cool ;)
