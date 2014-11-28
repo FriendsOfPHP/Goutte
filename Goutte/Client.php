@@ -91,7 +91,7 @@ class Client extends BaseClient
         }
 
         $body = null;
-        if (!in_array($request->getMethod(), array('GET','HEAD'))) {
+        if (!in_array($request->getMethod(), array('GET', 'HEAD'))) {
             if (null !== $request->getContent()) {
                 $body = $request->getContent();
             } else {
