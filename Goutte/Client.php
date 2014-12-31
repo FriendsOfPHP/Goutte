@@ -153,6 +153,8 @@ class Client extends BaseClient
                     } else {
                         continue;
                     }
+                } elseif (isset($info['content'])) {
+                    $request->getBody()->addFile(new PostFile($name, $info['content'], isset($info['name']) ? $info['name'] : null));
                 } else {
                     $this->addPostFiles($request, $info, $name);
                 }
