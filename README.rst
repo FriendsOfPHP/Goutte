@@ -22,7 +22,7 @@ Add ``fabpot/goutte`` as a require dependency in your ``composer.json`` file:
 
 .. code-block:: bash
 
-    php composer.phar require fabpot/goutte:~2.0
+    composer require fabpot/goutte
 
 .. tip::
 
@@ -31,6 +31,9 @@ Add ``fabpot/goutte`` as a require dependency in your ``composer.json`` file:
     .. code-block:: php
 
         require_once '/path/to/goutte.phar';
+
+    The phars for Goutte 1.x are also available for `download
+    <http://get.sensiolabs.org/goutte-v1.0.7.phar>`.
 
 Usage
 -----
