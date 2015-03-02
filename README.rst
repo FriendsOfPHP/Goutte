@@ -95,8 +95,9 @@ Submit forms:
 More Information
 ----------------
 
-Read the documentation of the BrowserKit and DomCrawler Symfony Components for
-more information about what you can do with Goutte.
+Read the documentation of the BrowserKit and `DomCrawler
+<http://symfony.com/doc/any/components/dom_crawler.html>`_ Symfony Components
+for more information about what you can do with Goutte.
 
 Technical Information
 ---------------------
