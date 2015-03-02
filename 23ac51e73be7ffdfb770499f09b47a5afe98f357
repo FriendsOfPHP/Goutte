@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by stof at 2015-03-02T10:37:18Z
+
+I would allow failures on PHP 7 for now, given that it does not work yet (and you should probably enable PHP7 testing on guzzle first and make them pass, because the issue is currently an incompatibility in guzzle)
+
+---------------------------------------------------------------------------
+
+by TomasVotruba at 2015-03-02T11:42:16Z
+
+@stof Fixed
