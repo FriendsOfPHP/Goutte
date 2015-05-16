@@ -99,6 +99,11 @@ Read the documentation of the BrowserKit and `DomCrawler
 <http://symfony.com/doc/any/components/dom_crawler.html>`_ Symfony Components
 for more information about what you can do with Goutte.
 
+Pronunciation
+-------------
+
+Goutte is pronounced ``goot`` i.e. it rhymes with ``boot`` and not ``out``.
+
 Technical Information
 ---------------------
 
