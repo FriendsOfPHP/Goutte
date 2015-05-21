@@ -121,7 +121,7 @@ class Client extends BaseClient
             $guzzleRequest->setHeader($name, $value);
         }
 
-        if ('POST' == $request->getMethod() || 'PUT' == $request->getMethod()) {
+        if (in_array($request->getMethod(), ['POST', 'PUT']) && $request->getFiles()) {
             $this->addPostFiles($guzzleRequest, $request->getFiles());
         }
 
