@@ -21,7 +21,7 @@ use GuzzleHttp\Middleware;
 use Symfony\Component\BrowserKit\Cookie;
 
 /**
- * Goutte Client Test
+ * Goutte Client Test.
  *
  * @author Michael Dowling <michael@guzzlephp.org>
  * @author Charles Sarrazin <charles@sarraz.in>
@@ -122,7 +122,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $files = array(
             'test' => array(
                 'name' => 'test.txt',
-                'tmp_name' => __DIR__ . '/fixtures.txt',
+                'tmp_name' => __DIR__.'/fixtures.txt',
             ),
         );
 
@@ -133,7 +133,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $boundary = $stream->getBoundary();
         $this->assertEquals(
             "--$boundary\r\nContent-Disposition: form-data; name=\"test\"; filename=\"test.txt\"\r\nContent-Length: 4\r\n"
-            . "Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
+            ."Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
             $stream->getContents()
         );
     }
@@ -144,7 +144,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client = new Client();
         $client->setClient($guzzle);
         $files = array(
-            'test' => __DIR__ . '/fixtures.txt',
+            'test' => __DIR__.'/fixtures.txt',
         );
 
         $client->request('POST', 'http://www.example.com/', array(), $files);
@@ -154,7 +154,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $boundary = $stream->getBoundary();
         $this->assertEquals(
             "--$boundary\r\nContent-Disposition: form-data; name=\"test\"; filename=\"fixtures.txt\"\r\nContent-Length: 4\r\n"
-            . "Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
+            ."Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
             $stream->getContents()
         );
     }
@@ -168,7 +168,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             'form' => array(
                 'test' => array(
                     'name' => 'test.txt',
-                    'tmp_name' => __DIR__ . '/fixtures.txt',
+                    'tmp_name' => __DIR__.'/fixtures.txt',
                 ),
             ),
         );
@@ -180,7 +180,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $boundary = $stream->getBoundary();
         $this->assertEquals(
             "--$boundary\r\nContent-Disposition: form-data; name=\"form[test]\"; filename=\"test.txt\"\r\nContent-Length: 4\r\n"
-            . "Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
+            ."Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
             $stream->getContents()
         );
     }
@@ -191,7 +191,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client = new Client();
         $client->setClient($guzzle);
         $files = array(
-            'test' => __DIR__ . '/fixtures.txt',
+            'test' => __DIR__.'/fixtures.txt',
         );
 
         $client->request('POST', 'http://www.example.com/', array(), $files);
@@ -201,7 +201,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $boundary = $stream->getBoundary();
         $this->assertEquals(
             "--$boundary\r\nContent-Disposition: form-data; name=\"test\"; filename=\"fixtures.txt\"\r\nContent-Length: 4\r\n"
-            . "Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
+            ."Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
             $stream->getContents()
         );
     }
@@ -271,7 +271,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $response = $client->getResponse();
         $headers = $response->getHeaders();
 
-        $this->assertInternalType("array", array_shift($headers), 'Header not converted from Guzzle\Http\Message\Header to array');
+        $this->assertInternalType('array', array_shift($headers), 'Header not converted from Guzzle\Http\Message\Header to array');
     }
 
     public function testNullResponseException()
