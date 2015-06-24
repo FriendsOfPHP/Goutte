@@ -185,6 +185,58 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testPostFormWithFiles()
+    {
+        $guzzle = $this->getGuzzle();
+        $client = new Client();
+        $client->setClient($guzzle);
+        $files = array(
+            'test' => __DIR__.'/fixtures.txt',
+        );
+        $params = array(
+            'foo' => 'bar',
+        );
+
+        $client->request('POST', 'http://www.example.com/', $params, $files);
+        $request = end($this->history)['request'];
+
+        $stream = $request->getBody();
+        $boundary = $stream->getBoundary();
+        $this->assertEquals(
+            "--$boundary\r\nContent-Disposition: form-data; name=\"foo\"\r\nContent-Length: 3\r\n"
+            ."\r\nbar\r\n"
+            ."--$boundary\r\nContent-Disposition: form-data; name=\"test\"; filename=\"fixtures.txt\"\r\nContent-Length: 4\r\n"
+            ."Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
+        $stream->getContents());
+    }
+
+    public function testPostEmbeddedFormWithFiles()
+    {
+        $guzzle = $this->getGuzzle();
+        $client = new Client();
+        $client->setClient($guzzle);
+        $files = array(
+            'test' => __DIR__.'/fixtures.txt',
+        );
+        $params = array(
+            'foo' => array(
+                'bar' => 'baz',
+            ),
+        );
+
+        $client->request('POST', 'http://www.example.com/', $params, $files);
+        $request = end($this->history)['request'];
+
+        $stream = $request->getBody();
+        $boundary = $stream->getBoundary();
+        $this->assertEquals(
+            "--$boundary\r\nContent-Disposition: form-data; name=\"foo[bar]\"\r\nContent-Length: 3\r\n"
+            ."\r\nbaz\r\n"
+            ."--$boundary\r\nContent-Disposition: form-data; name=\"test\"; filename=\"fixtures.txt\"\r\nContent-Length: 4\r\n"
+            ."Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
+        $stream->getContents());
+    }
+
     public function testUsesPostFilesOnClientSide()
     {
         $guzzle = $this->getGuzzle();
