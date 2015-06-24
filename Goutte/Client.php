@@ -102,14 +102,16 @@ class Client extends BaseClient
         );
 
         if (!in_array($request->getMethod(), array('GET', 'HEAD'))) {
-            if (null !== $request->getContent()) {
-                $requestOptions['body'] = $request->getContent();
+            if (null !== $content = $request->getContent()) {
+                $requestOptions['body'] = $content;
             } else {
-                $requestOptions['form_params'] = $request->getParameters();
-
                 if ($files = $request->getFiles()) {
                     $requestOptions['multipart'] = [];
+
+                    $this->addPostFields($request->getParameters(), $requestOptions['multipart']);
                     $this->addPostFiles($files, $requestOptions['multipart']);
+                } else {
+                    $requestOptions['form_params'] = $request->getParameters();
                 }
             }
         }
@@ -172,6 +174,24 @@ class Client extends BaseClient
             }
 
             $multipart[] = $file;
+        }
+    }
+
+    public function addPostFields(array $formParams, array &$multipart, $arrayName = '')
+    {
+        foreach ($formParams as $name => $value) {
+            if (!empty($arrayName)) {
+                $name = $arrayName.'['.$name.']';
+            }
+
+            if (is_array($value)) {
+                $this->addPostFields($value, $multipart, $name);
+            } else {
+                $multipart[] = [
+                    'name' => $name,
+                    'contents' => $value,
+                ];
+            }
         }
     }
 
