@@ -14,6 +14,7 @@ Goutte depends on PHP 5.5+ and Guzzle 6+.
 .. tip::
 
     If you need support for PHP 5.4 or Guzzle 4-5, use Goutte 2.x.
+
     If you need support for PHP 5.3 or Guzzle 3, use Goutte 1.x.
 
 Installation
