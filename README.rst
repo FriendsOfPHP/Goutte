@@ -28,14 +28,6 @@ Add ``fabpot/goutte`` as a require dependency in your ``composer.json`` file:
 
     composer require fabpot/goutte
 
-.. tip::
-
-    You can also download the `Goutte.phar`_ file:
-
-    .. code-block:: php
-
-        require_once '/path/to/goutte.phar';
-
 Usage
 -----
 
@@ -119,6 +111,5 @@ License
 
 Goutte is licensed under the MIT license.
 
-.. _`Composer`:    http://getcomposer.org
-.. _`Goutte.phar`: https://github.com/FriendsOfPHP/Goutte/releases
-.. _`Guzzle`:      http://docs.guzzlephp.org
+.. _`Composer`: http://getcomposer.org
+.. _`Guzzle`:   http://docs.guzzlephp.org
