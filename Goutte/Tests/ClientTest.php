@@ -16,6 +16,7 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use GuzzleHttp\Middleware;
 use Symfony\Component\BrowserKit\Cookie;
@@ -185,6 +186,27 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testPostForm()
+    {
+        $guzzle = $this->getGuzzle();
+        $client = new Client();
+        $client->setClient($guzzle);
+
+        $params = array(
+            'foo' => 'bar',
+        );
+
+        $client->request('POST', 'http://www.example.com/', $params);
+        $request = end($this->history)['request'];
+
+        $body = $request->getBody()->getContents();
+
+        $this->assertEquals(
+            'foo=bar',
+            $body
+        );
+    }
+
     public function testPostFormWithFiles()
     {
         $guzzle = $this->getGuzzle();
@@ -235,6 +257,33 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             ."--$boundary\r\nContent-Disposition: form-data; name=\"test\"; filename=\"fixtures.txt\"\r\nContent-Length: 4\r\n"
             ."Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
         $stream->getContents());
+    }
+
+    public function testPostMultipartFormWithoutFiles()
+    {
+        $guzzle = $this->getGuzzle();
+        $client = new Client();
+        $client->setClient($guzzle);
+
+        $params = array(
+            'foo' => 'bar',
+        );
+
+        $client->setServerParameter('Content-Type', 'multipart/form-data');
+
+        $client->request('POST', 'http://www.example.com/', $params);
+        /*
+         * @var Request
+         */
+        $request = end($this->history)['request'];
+
+        $stream = $request->getBody();
+        $boundary = $stream->getBoundary();
+        $this->assertEquals(
+            "--$boundary\r\nContent-Disposition: form-data; name=\"foo\"\r\nContent-Length: 3\r\n"
+            ."\r\nbar\r\n"
+            ."--$boundary--\r\n",
+            $stream->getContents());
     }
 
     public function testUsesPostFilesOnClientSide()

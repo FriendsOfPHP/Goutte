@@ -110,6 +110,11 @@ class Client extends BaseClient
 
                     $this->addPostFields($request->getParameters(), $requestOptions['multipart']);
                     $this->addPostFiles($files, $requestOptions['multipart']);
+                } elseif (!empty($headers['content-type'])
+                    && 'multipart/form-data' == $headers['content-type'] && !$files) {
+                    $requestOptions['multipart'] = [];
+
+                    $this->addPostFields($request->getParameters(), $requestOptions['multipart']);
                 } else {
                     $requestOptions['form_params'] = $request->getParameters();
                 }
