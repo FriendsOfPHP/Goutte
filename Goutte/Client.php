@@ -17,6 +17,7 @@ use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\BrowserKit\Client as BaseClient;
+use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\BrowserKit\Response;
 
 /**
@@ -75,6 +76,11 @@ class Client extends BaseClient
         return $this;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
     protected function doRequest($request)
     {
         $headers = array();
@@ -92,7 +98,7 @@ class Client extends BaseClient
 
         $cookies = CookieJar::fromArray(
             $this->getCookieJar()->allRawValues($request->getUri()),
-            $request->getServer()['HTTP_HOST']
+            parse_url($request->getUri(), PHP_URL_HOST)
         );
 
         $requestOptions = array(
