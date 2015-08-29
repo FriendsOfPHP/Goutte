@@ -114,6 +114,17 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('test=123', $request->getHeaderLine('Cookie'));
     }
 
+    public function testUsesCookiesWithCustomPort()
+    {
+        $guzzle = $this->getGuzzle();
+        $client = new Client();
+        $client->setClient($guzzle);
+        $client->getCookieJar()->set(new Cookie('test', '123'));
+        $client->request('GET', 'http://www.example.com:8000/');
+        $request = end($this->history)['request'];
+        $this->assertEquals('test=123', $request->getHeaderLine('Cookie'));
+    }
+
     public function testUsesPostFiles()
     {
         $guzzle = $this->getGuzzle();
