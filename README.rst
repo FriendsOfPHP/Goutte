@@ -50,11 +50,18 @@ Make requests with the ``request()`` method:
 The method returns a ``Crawler`` object
 (``Symfony\Component\DomCrawler\Crawler``).
 
-Fine-tune cURL options:
+To use your own Guzzle settings, you may create and pass a new Guzzle 6 instance to Goutte. For example, to add a 60 second request timeout:
 
 .. code-block:: php
 
-    $client->getClient()->setDefaultOption('config/curl/'.CURLOPT_TIMEOUT, 60);
+    use Goutte\Client;
+    use GuzzleHttp\Client as GuzzleClient;
+    
+    $goutteClient = new Client();
+    $guzzleClient = new GuzzleClient(array(
+        'timeout' => 60,
+    ));
+    $goutteClient->setClient($guzzleClient);
 
 Click on links:
 
