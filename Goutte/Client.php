@@ -95,6 +95,24 @@ class Client extends BaseClient
                 $headers[$key] = $val;
             }
         }
+        
+        $config = $this->getClient()->getConfig();
+        if (! empty($config['headers'])) {
+            foreach($config['headers'] as $key => $value) {
+                $this->removeHeader($key);
+                $key = strtolower(str_replace('_', '-', $key));
+                $this->headers[$key] = $value;
+            }
+        }
+        
+        $params = $request->getParameters();
+        if (! empty($params['headers'])) {
+            foreach($params['headers'] as $key => $value) {
+                $this->removeHeader($key);
+                $key = strtolower(str_replace('_', '-', $key));
+                $this->headers[$key] = $value;
+            }
+        }
 
         $cookies = CookieJar::fromArray(
             $this->getCookieJar()->allRawValues($request->getUri()),
