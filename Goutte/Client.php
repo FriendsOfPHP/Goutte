@@ -97,7 +97,7 @@ class Client extends BaseClient
         }
         
         $config = $this->getClient()->getConfig();
-        if (! empty($config['headers'])) {
+        if (!empty($config['headers'])) {
             foreach($config['headers'] as $key => $value) {
                 $this->removeHeader($key);
                 $key = strtolower(str_replace('_', '-', $key));
@@ -106,7 +106,7 @@ class Client extends BaseClient
         }
         
         $params = $request->getParameters();
-        if (! empty($params['headers'])) {
+        if (!empty($params['headers'])) {
             foreach($params['headers'] as $key => $value) {
                 $this->removeHeader($key);
                 $key = strtolower(str_replace('_', '-', $key));
