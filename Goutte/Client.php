@@ -95,7 +95,7 @@ class Client extends BaseClient
                 $headers[$key] = $val;
             }
         }
-        
+    
         $config = $this->getClient()->getConfig();
         if (!empty($config['headers'])) {
             foreach($config['headers'] as $key => $value) {
@@ -104,7 +104,7 @@ class Client extends BaseClient
                 $this->headers[$key] = $value;
             }
         }
-        
+    
         $params = $request->getParameters();
         if (!empty($params['headers'])) {
             foreach($params['headers'] as $key => $value) {
