@@ -86,8 +86,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             'headers' => [
                 'User-Agent' => 'foo',
             ],
-        ]
+        ];
         $guzzle = $this->getGuzzle();
+        $guzzle->setClient($options);
         $client = new Client();
         $client->setClient($guzzle);
         $client->request('GET', 'http://www.example.com/');
