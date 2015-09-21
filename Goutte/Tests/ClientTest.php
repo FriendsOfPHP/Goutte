@@ -84,8 +84,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $options = [
             'headers' => [
-                'User-Agent' => 'foo'    
-            ]
+                'User-Agent' => 'foo',
+            ],
         ]
         $guzzle = $this->getGuzzle();
         $client = new Client();
@@ -101,8 +101,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client->setClient($guzzle);
         $client->request('GET', 'http://www.example.com/', [
             'headers' => [
-                'User-Agent' => 'foo'    
-            ]    
+                'User-Agent' => 'foo',
+            ],
         ]);
         $this->assertEquals('foo', end($this->history)['request']->getHeaderLine('User-Agent'));
     }
