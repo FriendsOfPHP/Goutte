@@ -77,7 +77,34 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client->setClient($guzzle);
         $client->setHeader('User-Agent', 'foo');
         $client->request('GET', 'http://www.example.com/');
-        $this->assertEquals('Symfony2 BrowserKit, foo', end($this->history)['request']->getHeaderLine('User-Agent'));
+        $this->assertEquals('foo', end($this->history)['request']->getHeaderLine('User-Agent'));
+    }
+
+    public function testCustomUserAgentUsingConfig()
+    {
+        $options = [
+            'headers' => [
+                'User-Agent' => 'foo'    
+            ]
+        ]
+        $guzzle = $this->getGuzzle();
+        $client = new Client();
+        $client->setClient($guzzle);
+        $client->request('GET', 'http://www.example.com/');
+        $this->assertEquals('foo', end($this->history)['request']->getHeaderLine('User-Agent'));
+    }
+
+    public function testCustomUserAgentUsingParams()
+    {
+        $guzzle = $this->getGuzzle();
+        $client = new Client();
+        $client->setClient($guzzle);
+        $client->request('GET', 'http://www.example.com/', [
+            'headers' => [
+                'User-Agent' => 'foo'    
+            ]    
+        ]);
+        $this->assertEquals('foo', end($this->history)['request']->getHeaderLine('User-Agent'));
     }
 
     public function testUsesAuth()
