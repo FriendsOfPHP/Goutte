@@ -13,6 +13,8 @@ namespace Goutte\Tests;
 
 use Goutte\Client;
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Cookie\FileCookieJar;
+use GuzzleHttp\Cookie\SessionCookieJar;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
@@ -123,6 +125,86 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client->request('GET', 'http://www.example.com:8000/');
         $request = end($this->history)['request'];
         $this->assertEquals('test=123', $request->getHeaderLine('Cookie'));
+    }
+
+    public function testSessionCookieJar($testSaveSessionCookie = false)
+    {
+        $guzzle = $this->getGuzzle();
+        $client = new Client();
+        $client->setClient($guzzle);
+
+        $jar = new SessionCookieJar('sessionVar', $testSaveSessionCookie);
+        $client->setGuzzleCookieJar($jar);
+
+        $client->getCookieJar()->set(new Cookie('test', '123', null, '/', 'www.example.com'));
+        $client->getCookieJar()->set(new Cookie('foo', 'bar', time() + 1000, '/', 'www.example.com'));
+        $client->request('GET', 'http://www.example.com/');
+
+        // Call to destruct method manually to test saving cookies
+        $jar->__destruct();
+
+        // Make sure it wrote to the sessionVar in $_SESSION
+        $contents = $_SESSION['sessionVar'];
+        $this->assertNotEmpty($contents);
+
+        // Load the cookieJar from the SESSION
+        $cookieJarReloaded = new SessionCookieJar('sessionVar');
+
+        if ($testSaveSessionCookie) {
+            $this->assertEquals(2, count($cookieJarReloaded));
+        } else {
+            $this->assertEquals(1, count($cookieJarReloaded));
+        }
+
+        unset($_SESSION['sessionVar']);
+    }
+
+    public function testSessionCookieJarParameters()
+    {
+        return array(
+            array(false),
+            array(true)
+        );
+    }
+
+    public function testFileCookieJar($testSaveSessionCookie = false)
+    {
+        $guzzle = $this->getGuzzle();
+        $client = new Client();
+        $client->setClient($guzzle);
+
+        $filename = tempnam('/tmp', 'file-cookies');
+        $jar = new FileCookieJar($filename, $testSaveSessionCookie);
+        $client->setGuzzleCookieJar($jar);
+
+        $client->getCookieJar()->set(new Cookie('test', '123', null, '/', 'www.example.com'));
+        $client->getCookieJar()->set(new Cookie('foo', 'bar', time() + 1000, '/', 'www.example.com'));
+        $client->request('GET', 'http://www.example.com/');
+
+        // Call to destruct method manually to test saving cookies
+        $jar->__destruct();
+
+        // Make sure it wrote to the file
+        $contents = file_get_contents($filename);
+        $this->assertNotEmpty($contents);
+
+        // Load the cookieJar from the file
+        $cookieJarReloaded = new FileCookieJar($filename);
+        if ($testSaveSessionCookie) {
+            $this->assertEquals(2, count($cookieJarReloaded));
+        } else {
+            $this->assertEquals(1, count($cookieJarReloaded));
+        }
+
+        unlink($filename);
+    }
+
+    public function testFileCookieJarParameters()
+    {
+        return array(
+            array(false),
+            array(true)
+        );
     }
 
     public function testUsesPostFiles()

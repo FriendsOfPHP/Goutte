@@ -86,7 +86,7 @@ class Client extends BaseClient
         return $this->guzzleCookieJar;
     }
 
-    public function setGuzzleCookieJar($guzzleCookieJar)
+    public function setGuzzleCookieJar(CookieJar $guzzleCookieJar)
     {
         $this->guzzleCookieJar = $guzzleCookieJar;
     }
@@ -111,16 +111,32 @@ class Client extends BaseClient
             }
         }
 
-        $cookies = $this->getCookieJar()->allRawValues($request->getUri());
-        $domain = parse_url($request->getUri(), PHP_URL_HOST);
+        $parts = array_replace(array('path' => '/'), parse_url($request->getUri()));
+        $cookies = $this->getCookieJar()->all();
 
-        foreach ($cookies as $name => $value) {
-            $this->getGuzzleCookieJar()->setCookie(new SetCookie([
-                'Domain'  => $domain,
-                'Name'    => $name,
-                'Value'   => $value,
-                'Discard' => true
-            ]));
+        foreach ($cookies as $cookie) {
+            $domain = $cookie->getDomain();
+            if ($domain) {
+                $domain = '.'.ltrim($domain, '.');
+                if ($domain != substr('.'.$parts['host'], -strlen($domain))) {
+                    continue;
+                }
+            }
+
+            $path = $cookie->getPath();
+            if ($path != substr($parts['path'], 0, strlen($path))) {
+                continue;
+            }
+
+            if ($cookie->isSecure() && 'https' != $parts['scheme']) {
+                continue;
+            }
+
+            $setCookie = SetCookie::fromString((string) $cookie);
+            if (empty($setCookie->getDomain())) {
+                $setCookie->setDomain($parts['host']);
+            }
+            $this->getGuzzleCookieJar()->setCookie($setCookie);
         }
 
         $requestOptions = array(
