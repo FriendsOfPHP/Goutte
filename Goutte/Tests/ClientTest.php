@@ -136,8 +136,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $jar = new SessionCookieJar('sessionVar', $testSaveSessionCookie);
         $client->setGuzzleCookieJar($jar);
 
-        $client->getCookieJar()->set(new Cookie('test', '123', null, '/', 'www.example.com'));
-        $client->getCookieJar()->set(new Cookie('foo', 'bar', time() + 1000, '/', 'www.example.com'));
+        $client->getCookieJar()->set(new Cookie('test', '123'));
+        $client->getCookieJar()->set(new Cookie('foo', 'bar', time() + 1000));
         $client->request('GET', 'http://www.example.com/');
 
         // Call to destruct method manually to test saving cookies
@@ -177,8 +177,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $jar = new FileCookieJar($filename, $testSaveSessionCookie);
         $client->setGuzzleCookieJar($jar);
 
-        $client->getCookieJar()->set(new Cookie('test', '123', null, '/', 'www.example.com'));
-        $client->getCookieJar()->set(new Cookie('foo', 'bar', time() + 1000, '/', 'www.example.com'));
+        $client->getCookieJar()->set(new Cookie('test', '123'));
+        $client->getCookieJar()->set(new Cookie('foo', 'bar', time() + 1000));
         $client->request('GET', 'http://www.example.com/');
 
         // Call to destruct method manually to test saving cookies
