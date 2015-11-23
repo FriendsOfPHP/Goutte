@@ -163,7 +163,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(false),
-            array(true)
+            array(true),
         );
     }
 
@@ -203,7 +203,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         return array(
             array(false),
-            array(true)
+            array(true),
         );
     }
 

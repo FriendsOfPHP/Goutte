@@ -83,6 +83,7 @@ class Client extends BaseClient
         if (empty($this->guzzleCookieJar)) {
             $this->guzzleCookieJar = new CookieJar();
         }
+
         return $this->guzzleCookieJar;
     }
 
