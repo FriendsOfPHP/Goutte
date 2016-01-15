@@ -33,6 +33,7 @@ class Client extends BaseClient
 
     private $headers = array();
     private $auth = null;
+    private $options = [];
 
     public function setClient(GuzzleClientInterface $client)
     {
@@ -43,11 +44,25 @@ class Client extends BaseClient
 
     public function getClient()
     {
+        $default_options = array('defaults' => array('allow_redirects' => false, 'cookies' => true));
+        $options = array_merge($default_options, $this->options);
+
         if (!$this->client) {
-            $this->client = new GuzzleClient(array('defaults' => array('allow_redirects' => false, 'cookies' => true)));
+            $this->client = new GuzzleClient($options);
         }
 
         return $this->client;
+    }
+
+    public function setOptions($options)
+    {
+        if (!is_array($options)) {
+            throw new \Exception('setOptions must be passed an array');
+        }
+
+        $this->options = options;
+
+        return $this;
     }
 
     public function setHeader($name, $value)

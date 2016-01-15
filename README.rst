@@ -85,6 +85,43 @@ Submit forms:
         print $node->text()."\n";
     });
 
+Adding a cache to the crawler
+=============================
+
+By using a Guzzle handler such as .._`rtheunissen/guzzle-cache-handler`: https://github.com/rtheunissen/guzzle-cache-handler 
+you can cache responses very easily:
+
+.. code-block:: php
+
+    use Goutte\Client;
+    use Concat\Http\Handler\CacheHandler;
+    use Doctrine\Common\Cache\FilesystemCache;
+
+    // Basic directory cache example
+    $cacheProvider = new FilesystemCache(__DIR__ . '/cache');
+    $handler = new CacheHandler($cacheProvider, $defaultHandler, [
+        /**
+         * @var array HTTP methods that should be cached.
+         */
+        'methods' => ['GET'],
+
+        /**
+         * @var integer Time in seconds to cache a response for.
+         */
+        'expire' => 3600 /* one hour */,
+
+        /**
+         * @var callable Accepts a request and returns true if it should be cached.
+         */
+        'filter' => null,
+    ]);
+
+    $client = new Client();
+
+    $client->setOptions(
+        array('handler' => $handler)
+    )
+
 More Information
 ----------------
 
