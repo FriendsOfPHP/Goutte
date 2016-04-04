@@ -372,4 +372,17 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $client->request('GET', 'http://www.example.com/');
         $this->assertEquals('SomeHost', end($this->history)['request']->getHeaderLine('User-Agent'));
     }
+
+    public function testResetHeaders()
+    {
+        $client = new Client();
+        $client->setHeader('X-Test', 'test');
+
+        $reflectionProperty = new \ReflectionProperty('Goutte\Client', 'headers');
+        $reflectionProperty->setAccessible(true);
+        $this->assertEquals(array('X-Test' => 'test'), $reflectionProperty->getValue($client));
+
+        $client->resetHeaders();
+        $this->assertEquals(array(), $reflectionProperty->getValue($client));
+    }
 }
