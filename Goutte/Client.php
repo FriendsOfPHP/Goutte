@@ -62,9 +62,10 @@ class Client extends BaseClient
         unset($this->headers[$name]);
     }
 
-    public function resetHeaders()
+    public function reset()
     {
         $this->headers = array();
+        $this->resetAuth();
     }
 
     public function setAuth($user, $password = '', $type = 'basic')

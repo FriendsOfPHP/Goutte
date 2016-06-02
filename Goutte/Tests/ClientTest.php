@@ -382,7 +382,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $reflectionProperty->setAccessible(true);
         $this->assertEquals(array('X-Test' => 'test'), $reflectionProperty->getValue($client));
 
-        $client->resetHeaders();
+        $client->reset();
         $this->assertEquals(array(), $reflectionProperty->getValue($client));
     }
 }
