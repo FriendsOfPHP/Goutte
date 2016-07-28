@@ -45,7 +45,7 @@ Make requests with the ``request()`` method:
 .. code-block:: php
 
     // Go to the symfony.com website
-    $crawler = $client->request('GET', 'http://www.symfony.com/blog/');
+    $crawler = $client->request('GET', 'https://www.symfony.com/blog/');
 
 The method returns a ``Crawler`` object
 (``Symfony\Component\DomCrawler\Crawler``).
@@ -77,7 +77,7 @@ Submit forms:
 
 .. code-block:: php
 
-    $crawler = $client->request('GET', 'http://github.com/');
+    $crawler = $client->request('GET', 'https://github.com/');
     $crawler = $client->click($crawler->selectLink('Sign in')->link());
     $form = $crawler->selectButton('Sign in')->form();
     $crawler = $client->submit($form, array('login' => 'fabpot', 'password' => 'xxxxxx'));
@@ -89,7 +89,7 @@ More Information
 ----------------
 
 Read the documentation of the BrowserKit and `DomCrawler
-<http://symfony.com/doc/any/components/dom_crawler.html>`_ Symfony Components
+<https://symfony.com/doc/any/components/dom_crawler.html>`_ Symfony Components
 for more information about what you can do with Goutte.
 
 Pronunciation
@@ -111,5 +111,5 @@ License
 
 Goutte is licensed under the MIT license.
 
-.. _`Composer`: http://getcomposer.org
+.. _`Composer`: https://getcomposer.org
 .. _`Guzzle`:   http://docs.guzzlephp.org
