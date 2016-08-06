@@ -162,7 +162,7 @@ class Client extends BaseClient
             ];
 
             if (is_array($info)) {
-                if (isset($info['tmp_name'])) {
+                if (isset($info['tmp_name']) && !is_array($info['tmp_name'])) {
                     if ('' !== $info['tmp_name']) {
                         $file['contents'] = fopen($info['tmp_name'], 'r');
                         if (isset($info['name'])) {
