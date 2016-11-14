@@ -32,14 +32,14 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     /** @var MockHandler */
     protected $mock;
 
-    protected function getGuzzle(array $responses = [])
+    protected function getGuzzle(array $responses = array())
     {
         if (empty($responses)) {
-            $responses = [new GuzzleResponse(200, [], '<html><body><p>Hi</p></body></html>')];
+            $responses = array(new GuzzleResponse(200, array(), '<html><body><p>Hi</p></body></html>'));
         }
         $this->mock = new MockHandler($responses);
         $handlerStack = HandlerStack::create($this->mock);
-        $this->history = [];
+        $this->history = array();
         $handlerStack->push(Middleware::history($this->history));
         $guzzle = new GuzzleClient(array('redirect.disable' => true, 'base_uri' => '', 'handler' => $handlerStack));
 
@@ -303,12 +303,12 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testHandlesRedirectsCorrectly()
     {
-        $guzzle = $this->getGuzzle([
+        $guzzle = $this->getGuzzle(array(
             new GuzzleResponse(301, array(
                 'Location' => 'http://www.example.com/',
             )),
-            new GuzzleResponse(200, [], '<html><body><p>Test</p></body></html>'),
-        ]);
+            new GuzzleResponse(200, array(), '<html><body><p>Test</p></body></html>'),
+        ));
 
         $client = new Client();
         $client->setClient($guzzle);
@@ -322,11 +322,11 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testConvertsGuzzleHeadersToArrays()
     {
-        $guzzle = $this->getGuzzle([
+        $guzzle = $this->getGuzzle(array(
             new GuzzleResponse(200, array(
                 'Date' => 'Tue, 04 Jun 2013 13:22:41 GMT',
             )),
-        ]);
+        ));
 
         $client = new Client();
         $client->setClient($guzzle);
@@ -340,9 +340,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     public function testNullResponseException()
     {
         $this->setExpectedException('GuzzleHttp\Exception\RequestException');
-        $guzzle = $this->getGuzzle([
+        $guzzle = $this->getGuzzle(array(
             new RequestException('', $this->getMock('Psr\Http\Message\RequestInterface')),
-        ]);
+        ));
         $client = new Client();
         $client->setClient($guzzle);
         $client->request('GET', 'http://www.example.com/');
@@ -351,9 +351,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testHttps()
     {
-        $guzzle = $this->getGuzzle([
-            new GuzzleResponse(200, [], '<html><body><p>Test</p></body></html>'),
-        ]);
+        $guzzle = $this->getGuzzle(array(
+            new GuzzleResponse(200, array(), '<html><body><p>Test</p></body></html>'),
+        ));
 
         $client = new Client();
         $client->setClient($guzzle);
@@ -364,10 +364,10 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     public function testCustomUserAgentConstructor()
     {
         $guzzle = $this->getGuzzle();
-        $client = new Client([
+        $client = new Client(array(
           'HTTP_HOST' => '1.2.3.4',
           'HTTP_USER_AGENT' => 'SomeHost',
-        ]);
+        ));
         $client->setClient($guzzle);
         $client->request('GET', 'http://www.example.com/');
         $this->assertEquals('SomeHost', end($this->history)['request']->getHeaderLine('User-Agent'));

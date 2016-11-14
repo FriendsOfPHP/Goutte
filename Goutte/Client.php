@@ -62,10 +62,17 @@ class Client extends BaseClient
         unset($this->headers[$name]);
     }
 
-    public function reset()
+    public function resetHeaders()
     {
         $this->headers = array();
-        $this->resetAuth();
+
+        return $this;
+    }
+
+    public function reset()
+    {
+        $this->resetAuth()
+             ->resetHeaders();
     }
 
     public function setAuth($user, $password = '', $type = 'basic')
@@ -118,7 +125,7 @@ class Client extends BaseClient
                 $requestOptions['body'] = $content;
             } else {
                 if ($files = $request->getFiles()) {
-                    $requestOptions['multipart'] = [];
+                    $requestOptions['multipart'] = array();
 
                     $this->addPostFields($request->getParameters(), $requestOptions['multipart']);
                     $this->addPostFiles($files, $requestOptions['multipart']);
@@ -163,9 +170,9 @@ class Client extends BaseClient
                 $name = $arrayName.'['.$name.']';
             }
 
-            $file = [
+            $file = array(
                 'name' => $name,
-            ];
+            );
 
             if (is_array($info)) {
                 if (isset($info['tmp_name'])) {
@@ -199,10 +206,10 @@ class Client extends BaseClient
             if (is_array($value)) {
                 $this->addPostFields($value, $multipart, $name);
             } else {
-                $multipart[] = [
+                $multipart[] = array(
                     'name' => $name,
                     'contents' => $value,
-                ];
+                );
             }
         }
     }
