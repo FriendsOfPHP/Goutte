@@ -129,7 +129,7 @@ class Client extends BaseClient
                 $requestOptions['body'] = $content;
             } else {
                 if ($files = $request->getFiles()) {
-                    $requestOptions['multipart'] = array();
+                    $requestOptions['multipart'] = [];
 
                     $this->addPostFields($request->getParameters(), $requestOptions['multipart']);
                     $this->addPostFiles($files, $requestOptions['multipart']);
@@ -174,9 +174,9 @@ class Client extends BaseClient
                 $name = $arrayName.'['.$name.']';
             }
 
-            $file = array(
+            $file = [
                 'name' => $name,
-            );
+            ];
 
             if (is_array($info)) {
                 if (isset($info['tmp_name'])) {
@@ -210,10 +210,10 @@ class Client extends BaseClient
             if (is_array($value)) {
                 $this->addPostFields($value, $multipart, $name);
             } else {
-                $multipart[] = array(
+                $multipart[] = [
                     'name' => $name,
                     'contents' => $value,
-                );
+                ];
             }
         }
     }
