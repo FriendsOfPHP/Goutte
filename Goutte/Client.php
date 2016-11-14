@@ -69,8 +69,12 @@ class Client extends BaseClient
         return $this;
     }
 
-    public function reset()
+    /**
+     * {@inheritdoc}
+     */
+    public function restart()
     {
+        parent::restart();
         $this->resetAuth()
              ->resetHeaders();
     }

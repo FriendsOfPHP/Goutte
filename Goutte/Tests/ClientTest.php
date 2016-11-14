@@ -386,7 +386,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $reflectionProperty->getValue($client));
     }
 
-    public function testReset()
+    public function testRestart()
     {
         $client = new Client();
         $client->setHeader('X-Test', 'test');
@@ -400,8 +400,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $authReflectionProperty->setAccessible(true);
         $this->assertEquals(array('foo', 'bar', 'basic'), $authReflectionProperty->getValue($client));
 
-        $client->reset();
+        $client->restart();
         $this->assertEquals(array(), $headersReflectionProperty->getValue($client));
-        $this->assertEquals(null, $authReflectionProperty->getValue($client));
+        $this->assertNull($authReflectionProperty->getValue($client));
     }
 }
