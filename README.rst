@@ -50,7 +50,8 @@ Make requests with the ``request()`` method:
 The method returns a ``Crawler`` object
 (``Symfony\Component\DomCrawler\Crawler``).
 
-To use your own Guzzle settings, you may create and pass a new Guzzle 6 instance to Goutte. For example, to add a 60 second request timeout:
+To use your own Guzzle settings, you may create and pass a new Guzzle 6
+instance to Goutte. For example, to add a 60 second request timeout:
 
 .. code-block:: php
 
