@@ -1,0 +1,11 @@
+---------------------------------------------------------------------------
+
+by stof at 2016-02-16T12:07:28Z
+
+Well, if Guzzle does not treat headers case insensitively, it is a bug in Guzzle itself.
+
+---------------------------------------------------------------------------
+
+by fabpot at 2016-11-15T16:12:01Z
+
+I agree with @stof
