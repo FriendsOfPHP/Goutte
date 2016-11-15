@@ -62,6 +62,23 @@ class Client extends BaseClient
         unset($this->headers[$name]);
     }
 
+    public function resetHeaders()
+    {
+        $this->headers = array();
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function restart()
+    {
+        parent::restart();
+        $this->resetAuth()
+             ->resetHeaders();
+    }
+
     public function setAuth($user, $password = '', $type = 'basic')
     {
         $this->auth = array($user, $password, $type);
