@@ -1,0 +1,54 @@
+---------------------------------------------------------------------------
+
+by Shine-neko at 2016-06-01T09:42:08Z
+
+ping @fabpot
+
+---------------------------------------------------------------------------
+
+by webaaz at 2016-11-14T08:16:09Z
+
+Need merge for Behatch/contexts#164
+
+Thanks
+
+---------------------------------------------------------------------------
+
+by jubianchi at 2016-11-14T09:33:00Z
+
+This PR seems good. I see only one thing we could change to keep everything consistent: the `Client` already has a `resetAuth` method to let users reset only auth settings. Why not do the same for headers?
+
+I think the proposed `resetHeaders` method is useful if we only want to reset headers.
+
+Then, the `reset` method would just have to call both `reset*` methods:
+
+```php
+public function reset()
+{
+    $this
+        ->resetAuth()
+        ->resetHeaders();
+}
+```
+
+This will also keep things simple if reseting headers ever involves a much complex logic.
+
+BTW, it's ok for me, unfortunately @webaaz I don't have the right to merge here and I would like to have @fabpot's go before doing so.
+
+---------------------------------------------------------------------------
+
+by vincentchalamon at 2016-11-14T09:45:48Z
+
+@jubianchi Fixed, thanks for your feedback
+
+---------------------------------------------------------------------------
+
+by webaaz at 2016-11-15T10:09:59Z
+
+@vincentchalamon You know why fabbot.io refuse the check?
+
+---------------------------------------------------------------------------
+
+by vincentchalamon at 2016-11-15T10:12:21Z
+
+@webaaz Check this comment from @fabpot: https://github.com/FriendsOfPHP/Goutte/pull/261#discussion_r87832202
