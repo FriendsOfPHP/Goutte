@@ -1,0 +1,43 @@
+---------------------------------------------------------------------------
+
+by ssanders at 2015-09-09T20:02:39Z
+
+There should be examples for Goutte 3, 2, and 1, as they are so wildly different somehow.
+
+Though everyone hated when I tried adding one for Goutte 1 which people still actually use.
+
+The existing one is for 2.
+
+Actually it would probably be best if those who need cURL options just used Guzzle and DomCrawler, which would defeat the whole point of Goutte.
+
+---------------------------------------------------------------------------
+
+by georaldc at 2015-09-09T20:24:27Z
+
+Maybe I should have worded it out that the example was for the latest version (though I did semi-hint that with the Guzzle 6 reference)?
+
+I don't know but I IMO think that the readme file should only pertain to the latest version to prevent confusion
+
+---------------------------------------------------------------------------
+
+by georaldc at 2015-09-10T17:28:12Z
+
+You can also view each tagged release's corresponding readme file so there's that if you need info on past releases.
+
+---------------------------------------------------------------------------
+
+by themagnifico at 2016-01-03T02:44:07Z
+
++1
+
+---------------------------------------------------------------------------
+
+by OGProgrammer at 2016-02-17T06:23:42Z
+
++1 had problems with readme, this mr helped
+
+---------------------------------------------------------------------------
+
+by project707 at 2016-03-05T00:45:31Z
+
+How does this work when you need to do this in multiple places to the same instance throughout a class/service? I don't _think_ you can modify the new GuzzleClient instance after it is first instantiated, right?
