@@ -96,9 +96,8 @@ Submit forms:
 More Information
 ----------------
 
-Read the documentation of the BrowserKit and `DomCrawler
-<http://symfony.com/doc/current/components/dom_crawler.html>`_ Symfony Components
-for more information about what you can do with Goutte.
+Read the documentation of the `BrowserKit`_ and `DomCrawler`_ Symfony
+Components for more information about what you can do with Goutte.
 
 Pronunciation
 -------------
@@ -110,7 +109,7 @@ Technical Information
 
 Goutte is a thin wrapper around the following fine PHP libraries:
 
-* Symfony Components: BrowserKit, CssSelector and DomCrawler;
+* Symfony Components: `BrowserKit`_, `CssSelector`_ and `DomCrawler`_;
 
 *  `Guzzle`_ HTTP Component.
 
@@ -120,4 +119,7 @@ License
 Goutte is licensed under the MIT license.
 
 .. _`Composer`: http://getcomposer.org
-.. _`Guzzle`:   http://docs.guzzlephp.org
+.. _`Guzzle`: http://docs.guzzlephp.org
+.. _`BrowserKit`: http://symfony.com/components/BrowserKit
+.. _`DomCrawler`: http://symfony.com/doc/current/components/dom_crawler.html
+.. _`CssSelector`: http://symfony.com/doc/current/components/css_selector.html
