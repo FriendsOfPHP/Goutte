@@ -380,7 +380,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $reflectionProperty = new \ReflectionProperty('Goutte\Client', 'headers');
         $reflectionProperty->setAccessible(true);
-        $this->assertEquals(array('X-Test' => 'test'), $reflectionProperty->getValue($client));
+        $this->assertEquals(array('x-test' => 'test'), $reflectionProperty->getValue($client));
 
         $client->resetHeaders();
         $this->assertEquals([], $reflectionProperty->getValue($client));
@@ -394,7 +394,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $headersReflectionProperty = new \ReflectionProperty('Goutte\Client', 'headers');
         $headersReflectionProperty->setAccessible(true);
-        $this->assertEquals(array('X-Test' => 'test'), $headersReflectionProperty->getValue($client));
+        $this->assertEquals(array('x-test' => 'test'), $headersReflectionProperty->getValue($client));
 
         $authReflectionProperty = new \ReflectionProperty('Goutte\Client', 'auth');
         $authReflectionProperty->setAccessible(true);
