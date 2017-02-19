@@ -18,6 +18,12 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use GuzzleHttp\Middleware;
+use Http\Adapter\Guzzle6\Client as GuzzleAdapter;
+use Http\Client\Exception\RequestException as HttpRequestException;
+use Http\Client\HttpClient;
+use Http\Message\Authentication;
+use Http\Message\Authentication\BasicAuth;
+use Psr\Http\Message\RequestInterface;
 use Symfony\Component\BrowserKit\Cookie;
 
 /**
@@ -32,39 +38,39 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     /** @var MockHandler */
     protected $mock;
 
-    protected function getGuzzle(array $responses = [])
+    protected function getGuzzle(array $responses = array())
     {
         if (empty($responses)) {
-            $responses = [new GuzzleResponse(200, [], '<html><body><p>Hi</p></body></html>')];
+            $responses = array(new GuzzleResponse(200, array(), '<html><body><p>Hi</p></body></html>'));
         }
         $this->mock = new MockHandler($responses);
         $handlerStack = HandlerStack::create($this->mock);
-        $this->history = [];
+        $this->history = array();
         $handlerStack->push(Middleware::history($this->history));
         $guzzle = new GuzzleClient(array('redirect.disable' => true, 'base_uri' => '', 'handler' => $handlerStack));
 
-        return $guzzle;
+        return new GuzzleAdapter($guzzle);
     }
 
-    public function testCreatesDefaultClient()
+    public function testCreatesDefaultAdapter()
     {
         $client = new Client();
-        $this->assertInstanceOf('GuzzleHttp\\ClientInterface', $client->getClient());
+        $this->assertInstanceOf(HttpClient::class, $client->getAdapter());
     }
 
     public function testUsesCustomClient()
     {
-        $guzzle = new GuzzleClient();
+        $guzzle = new GuzzleAdapter();
         $client = new Client();
-        $this->assertSame($client, $client->setClient($guzzle));
-        $this->assertSame($guzzle, $client->getClient());
+        $this->assertSame($client, $client->setAdapter($guzzle));
+        $this->assertSame($guzzle, $client->getAdapter());
     }
 
     public function testUsesCustomHeaders()
     {
         $guzzle = $this->getGuzzle();
         $client = new Client();
-        $client->setClient($guzzle);
+        $client->setAdapter($guzzle);
         $client->setHeader('X-Test', 'test');
         $client->request('GET', 'http://www.example.com/');
         $this->assertEquals('test', end($this->history)['request']->getHeaderLine('X-Test'));
@@ -74,7 +80,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $guzzle = $this->getGuzzle();
         $client = new Client();
-        $client->setClient($guzzle);
+        $client->setAdapter($guzzle);
         $client->setHeader('User-Agent', 'foo');
         $client->request('GET', 'http://www.example.com/');
         $this->assertEquals('foo', end($this->history)['request']->getHeaderLine('User-Agent'));
@@ -84,8 +90,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $guzzle = $this->getGuzzle();
         $client = new Client();
-        $client->setClient($guzzle);
-        $client->setAuth('me', '**');
+        $client->setAdapter($guzzle);
+        $client->setAuth(new BasicAuth('me', '**'));
         $client->request('GET', 'http://www.example.com/');
         $request = end($this->history)['request'];
         $this->assertEquals('Basic bWU6Kio=', $request->getHeaderLine('Authorization'));
@@ -95,8 +101,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $guzzle = $this->getGuzzle();
         $client = new Client();
-        $client->setClient($guzzle);
-        $client->setAuth('me', '**');
+        $client->setAdapter($guzzle);
+        $client->setAuth(new BasicAuth('me', '**'));
         $client->resetAuth();
         $client->request('GET', 'http://www.example.com/');
         $request = end($this->history)['request'];
@@ -107,7 +113,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $guzzle = $this->getGuzzle();
         $client = new Client();
-        $client->setClient($guzzle);
+        $client->setAdapter($guzzle);
         $client->getCookieJar()->set(new Cookie('test', '123'));
         $client->request('GET', 'http://www.example.com/');
         $request = end($this->history)['request'];
@@ -118,7 +124,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $guzzle = $this->getGuzzle();
         $client = new Client();
-        $client->setClient($guzzle);
+        $client->setAdapter($guzzle);
         $client->getCookieJar()->set(new Cookie('test', '123'));
         $client->request('GET', 'http://www.example.com:8000/');
         $request = end($this->history)['request'];
@@ -129,7 +135,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $guzzle = $this->getGuzzle();
         $client = new Client();
-        $client->setClient($guzzle);
+        $client->setAdapter($guzzle);
         $files = array(
             'test' => array(
                 'name' => 'test.txt',
@@ -141,7 +147,8 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $request = end($this->history)['request'];
 
         $stream = $request->getBody();
-        $boundary = $stream->getBoundary();
+        $boundary = $this->getBoundary($request);
+
         $this->assertEquals(
             "--$boundary\r\nContent-Disposition: form-data; name=\"test\"; filename=\"test.txt\"\r\nContent-Length: 4\r\n"
             ."Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
@@ -153,7 +160,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $guzzle = $this->getGuzzle();
         $client = new Client();
-        $client->setClient($guzzle);
+        $client->setAdapter($guzzle);
         $files = array(
             'test' => __DIR__.'/fixtures.txt',
         );
@@ -162,7 +169,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $request = end($this->history)['request'];
 
         $stream = $request->getBody();
-        $boundary = $stream->getBoundary();
+        $boundary = $this->getBoundary($request);
         $this->assertEquals(
             "--$boundary\r\nContent-Disposition: form-data; name=\"test\"; filename=\"fixtures.txt\"\r\nContent-Length: 4\r\n"
             ."Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
@@ -174,7 +181,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $guzzle = $this->getGuzzle();
         $client = new Client();
-        $client->setClient($guzzle);
+        $client->setAdapter($guzzle);
         $files = array(
             'form' => array(
                 'test' => array(
@@ -188,7 +195,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $request = end($this->history)['request'];
 
         $stream = $request->getBody();
-        $boundary = $stream->getBoundary();
+        $boundary = $this->getBoundary($request);
         $this->assertEquals(
             "--$boundary\r\nContent-Disposition: form-data; name=\"form[test]\"; filename=\"test.txt\"\r\nContent-Length: 4\r\n"
             ."Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
@@ -200,7 +207,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $guzzle = $this->getGuzzle();
         $client = new Client();
-        $client->setClient($guzzle);
+        $client->setAdapter($guzzle);
         $files = array(
             'test' => __DIR__.'/fixtures.txt',
         );
@@ -212,7 +219,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $request = end($this->history)['request'];
 
         $stream = $request->getBody();
-        $boundary = $stream->getBoundary();
+        $boundary = $this->getBoundary($request);
         $this->assertEquals(
             "--$boundary\r\nContent-Disposition: form-data; name=\"foo\"\r\nContent-Length: 3\r\n"
             ."\r\nbar\r\n"
@@ -225,7 +232,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $guzzle = $this->getGuzzle();
         $client = new Client();
-        $client->setClient($guzzle);
+        $client->setAdapter($guzzle);
         $files = array(
             'test' => __DIR__.'/fixtures.txt',
         );
@@ -239,7 +246,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $request = end($this->history)['request'];
 
         $stream = $request->getBody();
-        $boundary = $stream->getBoundary();
+        $boundary = $this->getBoundary($request);
         $this->assertEquals(
             "--$boundary\r\nContent-Disposition: form-data; name=\"foo[bar]\"\r\nContent-Length: 3\r\n"
             ."\r\nbaz\r\n"
@@ -252,7 +259,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $guzzle = $this->getGuzzle();
         $client = new Client();
-        $client->setClient($guzzle);
+        $client->setAdapter($guzzle);
         $files = array(
             'test' => __DIR__.'/fixtures.txt',
         );
@@ -261,7 +268,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $request = end($this->history)['request'];
 
         $stream = $request->getBody();
-        $boundary = $stream->getBoundary();
+        $boundary = $this->getBoundary($request);
         $this->assertEquals(
             "--$boundary\r\nContent-Disposition: form-data; name=\"test\"; filename=\"fixtures.txt\"\r\nContent-Length: 4\r\n"
             ."Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
@@ -273,7 +280,7 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $guzzle = $this->getGuzzle();
         $client = new Client();
-        $client->setClient($guzzle);
+        $client->setAdapter($guzzle);
         $files = array(
             'test' => array(
                 'name' => '',
@@ -286,8 +293,9 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $client->request('POST', 'http://www.example.com/', array(), $files);
         $request = end($this->history)['request'];
+
         $stream = $request->getBody();
-        $boundary = $stream->getBoundary();
+        $boundary = $this->getBoundary($request);
 
         $this->assertEquals("--$boundary--\r\n", $stream->getContents());
     }
@@ -296,22 +304,22 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     {
         $guzzle = $this->getGuzzle();
         $client = new Client();
-        $client->setClient($guzzle);
+        $client->setAdapter($guzzle);
         $crawler = $client->request('GET', 'http://www.example.com/');
         $this->assertEquals('Hi', $crawler->filter('p')->text());
     }
 
     public function testHandlesRedirectsCorrectly()
     {
-        $guzzle = $this->getGuzzle([
+        $guzzle = $this->getGuzzle(array(
             new GuzzleResponse(301, array(
                 'Location' => 'http://www.example.com/',
             )),
-            new GuzzleResponse(200, [], '<html><body><p>Test</p></body></html>'),
-        ]);
+            new GuzzleResponse(200, array(), '<html><body><p>Test</p></body></html>'),
+        ));
 
         $client = new Client();
-        $client->setClient($guzzle);
+        $client->setAdapter($guzzle);
 
         $crawler = $client->request('GET', 'http://www.example.com/');
         $this->assertEquals('Test', $crawler->filter('p')->text());
@@ -322,14 +330,14 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testConvertsGuzzleHeadersToArrays()
     {
-        $guzzle = $this->getGuzzle([
+        $guzzle = $this->getGuzzle(array(
             new GuzzleResponse(200, array(
                 'Date' => 'Tue, 04 Jun 2013 13:22:41 GMT',
             )),
-        ]);
+        ));
 
         $client = new Client();
-        $client->setClient($guzzle);
+        $client->setAdapter($guzzle);
         $client->request('GET', 'http://www.example.com/');
         $response = $client->getResponse();
         $headers = $response->getHeaders();
@@ -339,24 +347,24 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
     public function testNullResponseException()
     {
-        $this->setExpectedException('GuzzleHttp\Exception\RequestException');
-        $guzzle = $this->getGuzzle([
-            new RequestException('', $this->getMock('Psr\Http\Message\RequestInterface')),
-        ]);
+        $this->setExpectedException(HttpRequestException::class);
+        $guzzle = $this->getGuzzle(array(
+            new RequestException('', $this->getMock(RequestInterface::class)),
+        ));
         $client = new Client();
-        $client->setClient($guzzle);
+        $client->setAdapter($guzzle);
         $client->request('GET', 'http://www.example.com/');
         $client->getResponse();
     }
 
     public function testHttps()
     {
-        $guzzle = $this->getGuzzle([
-            new GuzzleResponse(200, [], '<html><body><p>Test</p></body></html>'),
-        ]);
+        $guzzle = $this->getGuzzle(array(
+            new GuzzleResponse(200, array(), '<html><body><p>Test</p></body></html>'),
+        ));
 
         $client = new Client();
-        $client->setClient($guzzle);
+        $client->setAdapter($guzzle);
         $crawler = $client->request('GET', 'https://www.example.com/');
         $this->assertEquals('Test', $crawler->filter('p')->text());
     }
@@ -364,11 +372,11 @@ class ClientTest extends \PHPUnit_Framework_TestCase
     public function testCustomUserAgentConstructor()
     {
         $guzzle = $this->getGuzzle();
-        $client = new Client([
+        $client = new Client(array(
           'HTTP_HOST' => '1.2.3.4',
           'HTTP_USER_AGENT' => 'SomeHost',
-        ]);
-        $client->setClient($guzzle);
+        ));
+        $client->setAdapter($guzzle);
         $client->request('GET', 'http://www.example.com/');
         $this->assertEquals('SomeHost', end($this->history)['request']->getHeaderLine('User-Agent'));
     }
@@ -383,14 +391,14 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('x-test' => 'test'), $reflectionProperty->getValue($client));
 
         $client->resetHeaders();
-        $this->assertEquals([], $reflectionProperty->getValue($client));
+        $this->assertEquals(array(), $reflectionProperty->getValue($client));
     }
 
     public function testRestart()
     {
         $client = new Client();
         $client->setHeader('X-Test', 'test');
-        $client->setAuth('foo', 'bar');
+        $client->setAuth(new BasicAuth('foo', 'bar'));
 
         $headersReflectionProperty = new \ReflectionProperty('Goutte\Client', 'headers');
         $headersReflectionProperty->setAccessible(true);
@@ -398,10 +406,19 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $authReflectionProperty = new \ReflectionProperty('Goutte\Client', 'auth');
         $authReflectionProperty->setAccessible(true);
-        $this->assertEquals(array('foo', 'bar', 'basic'), $authReflectionProperty->getValue($client));
+        $this->assertInstanceOf(Authentication::class, $authReflectionProperty->getValue($client));
 
         $client->restart();
-        $this->assertEquals([], $headersReflectionProperty->getValue($client));
+        $this->assertEquals(array(), $headersReflectionProperty->getValue($client));
         $this->assertNull($authReflectionProperty->getValue($client));
+    }
+
+    private function getBoundary($request)
+    {
+        if (!preg_match('#boundary="(.+)"$#', $request->getHeader('content-type')[0], $matches)) {
+            throw new \Exception('Could not match any boundary.');
+        }
+
+        return $matches[1];
     }
 }

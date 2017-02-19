@@ -11,10 +11,20 @@
 
 namespace Goutte;
 
-use GuzzleHttp\Client as GuzzleClient;
-use GuzzleHttp\ClientInterface as GuzzleClientInterface;
-use GuzzleHttp\Cookie\CookieJar;
-use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Request as Psr7Request;
+use Http\Client\Common\Plugin\AuthenticationPlugin;
+use Http\Client\Common\Plugin\CookiePlugin;
+use Http\Client\Common\Plugin\HeaderSetPlugin;
+use Http\Client\Common\PluginClient;
+use Http\Client\Exception\HttpException;
+use Http\Client\HttpClient;
+use Http\Discovery\HttpClientDiscovery;
+use Http\Discovery\StreamFactoryDiscovery;
+use Http\Message\Authentication;
+use Http\Message\Cookie;
+use Http\Message\CookieJar;
+use Http\Message\MultipartStream\MultipartStreamBuilder;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\BrowserKit\Client as BaseClient;
 use Symfony\Component\BrowserKit\Request;
@@ -29,27 +39,47 @@ use Symfony\Component\BrowserKit\Response;
  */
 class Client extends BaseClient
 {
-    protected $client;
+    /**
+     * @var HttpClient
+     */
+    protected $adapter;
 
+    /**
+     * @var string[]
+     */
     private $headers = array();
+
+    /**
+     * @var null|Authentication
+     */
     private $auth = null;
 
-    public function setClient(GuzzleClientInterface $client)
+    /**
+     * @return HttpClient
+     */
+    public function getAdapter()
     {
-        $this->client = $client;
+        return $this->adapter ?: HttpClientDiscovery::find();
+    }
+
+    /**
+     * @param HttpClient $adapter
+     *
+     * @return Client
+     */
+    public function setAdapter(HttpClient $adapter)
+    {
+        $this->adapter = $adapter;
 
         return $this;
     }
 
-    public function getClient()
-    {
-        if (!$this->client) {
-            $this->client = new GuzzleClient(array('allow_redirects' => false, 'cookies' => true));
-        }
-
-        return $this->client;
-    }
-
+    /**
+     * @param string $name
+     * @param string $value
+     *
+     * @return Client
+     */
     public function setHeader($name, $value)
     {
         $this->headers[strtolower($name)] = $value;
@@ -57,11 +87,17 @@ class Client extends BaseClient
         return $this;
     }
 
+    /**
+     * @param string $name
+     */
     public function removeHeader($name)
     {
         unset($this->headers[strtolower($name)]);
     }
 
+    /**
+     * @return Client
+     */
     public function resetHeaders()
     {
         $this->headers = array();
@@ -79,13 +115,23 @@ class Client extends BaseClient
              ->resetHeaders();
     }
 
-    public function setAuth($user, $password = '', $type = 'basic')
+    /**
+     * @param Authentication $auth
+     *
+     * @see http://docs.php-http.org/en/latest/message/authentication.html
+     *
+     * @return Client
+     */
+    public function setAuth(Authentication $auth)
     {
-        $this->auth = array($user, $password, $type);
+        $this->auth = $auth;
 
         return $this;
     }
 
+    /**
+     * @return Client
+     */
     public function resetAuth()
     {
         $this->auth = null;
@@ -100,60 +146,10 @@ class Client extends BaseClient
      */
     protected function doRequest($request)
     {
-        $headers = array();
-        foreach ($request->getServer() as $key => $val) {
-            $key = strtolower(str_replace('_', '-', $key));
-            $contentHeaders = array('content-length' => true, 'content-md5' => true, 'content-type' => true);
-            if (0 === strpos($key, 'http-')) {
-                $headers[substr($key, 5)] = $val;
-            }
-            // CONTENT_* are not prefixed with HTTP_
-            elseif (isset($contentHeaders[$key])) {
-                $headers[$key] = $val;
-            }
-        }
-
-        $cookies = CookieJar::fromArray(
-            $this->getCookieJar()->allRawValues($request->getUri()),
-            parse_url($request->getUri(), PHP_URL_HOST)
-        );
-
-        $requestOptions = array(
-            'cookies' => $cookies,
-            'allow_redirects' => false,
-            'auth' => $this->auth,
-        );
-
-        if (!in_array($request->getMethod(), array('GET', 'HEAD'))) {
-            if (null !== $content = $request->getContent()) {
-                $requestOptions['body'] = $content;
-            } else {
-                if ($files = $request->getFiles()) {
-                    $requestOptions['multipart'] = [];
-
-                    $this->addPostFields($request->getParameters(), $requestOptions['multipart']);
-                    $this->addPostFiles($files, $requestOptions['multipart']);
-                } else {
-                    $requestOptions['form_params'] = $request->getParameters();
-                }
-            }
-        }
-
-        if (!empty($headers)) {
-            $requestOptions['headers'] = $headers;
-        }
-
-        $method = $request->getMethod();
-        $uri = $request->getUri();
-
-        foreach ($this->headers as $name => $value) {
-            $requestOptions['headers'][$name] = $value;
-        }
-
         // Let BrowserKit handle redirects
         try {
-            $response = $this->getClient()->request($method, $uri, $requestOptions);
-        } catch (RequestException $e) {
+            $response = $this->createClient($request)->sendRequest($this->buildPsr7Request($request));
+        } catch (HttpException $e) {
             $response = $e->getResponse();
             if (null === $response) {
                 throw $e;
@@ -163,7 +159,134 @@ class Client extends BaseClient
         return $this->createResponse($response);
     }
 
-    protected function addPostFiles(array $files, array &$multipart, $arrayName = '')
+    /**
+     * @param Request $request
+     *
+     * @return HttpClient
+     */
+    protected function createClient(Request $request)
+    {
+        $plugins = array();
+
+        if ($this->auth) {
+            $plugins[] = new AuthenticationPlugin($this->auth);
+        }
+
+        if ($this->headers) {
+            $plugins[] = new HeaderSetPlugin($this->headers);
+        }
+
+        $plugins[] = new CookiePlugin($this->buildCookieJar($request));
+
+        return new PluginClient($this->adapter, $plugins);
+    }
+
+    /**
+     * @param ResponseInterface $response
+     *
+     * @return Response
+     */
+    protected function createResponse(ResponseInterface $response)
+    {
+        return new Response((string) $response->getBody(), $response->getStatusCode(), $response->getHeaders());
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return CookieJar
+     */
+    protected function buildCookieJar(Request $request)
+    {
+        $jar = new CookieJar();
+        $domain = parse_url($request->getUri(), PHP_URL_HOST);
+
+        foreach ($this->getCookieJar()->allRawValues($request->getUri()) as $name => $value) {
+            $jar->addCookie(new Cookie($name, $value, null, $domain));
+        }
+
+        return $jar;
+    }
+
+    /**
+     * @param array $server
+     *
+     * @return array
+     */
+    protected function buildHeaders(array $server)
+    {
+        $headers = array();
+        $contentHeaders = array('content-length' => true, 'content-md5' => true, 'content-type' => true);
+
+        foreach ($server as $key => $val) {
+            $key = strtolower(str_replace('_', '-', $key));
+            if (0 === strpos($key, 'http-')) {
+                $headers[substr($key, 5)] = $val;
+            }
+            // CONTENT_* are not prefixed with HTTP_
+            elseif (isset($contentHeaders[$key])) {
+                $headers[$key] = $val;
+            }
+        }
+
+        return $headers;
+    }
+
+    /**
+     * @param Request $request
+     * @param array   $headers
+     *
+     * @return mixed
+     */
+    protected function buildBody(Request $request, array &$headers)
+    {
+        if (null !== $request->getContent()) {
+            return $request->getContent();
+        }
+
+        if (!$request->getFiles()) {
+            return $request->getParameters();
+        }
+
+        $builder = new MultipartStreamBuilder(StreamFactoryDiscovery::find());
+
+        $this->addPostFields($builder, $request->getParameters());
+        $this->addPostFiles($builder, $request->getFiles());
+
+        $stream = $builder->build();
+        $boundary = $builder->getBoundary();
+
+        $headers['Content-Type'] = 'multipart/form-data; boundary="'.$boundary.'"';
+
+        return $stream;
+    }
+
+    /**
+     * @param MultipartStreamBuilder $builder
+     * @param array                  $formParams
+     * @param string                 $arrayName
+     */
+    protected function addPostFields(MultipartStreamBuilder $builder, array $formParams, $arrayName = '')
+    {
+        foreach ($formParams as $name => $value) {
+            if (!empty($arrayName)) {
+                $name = $arrayName.'['.$name.']';
+            }
+
+            if (is_array($value)) {
+                $this->addPostFields($builder, $value, $name);
+            } else {
+                $builder->addResource($name, $value);
+            }
+        }
+    }
+
+    /**
+     * @param MultipartStreamBuilder $builder
+     * @param array                  $files
+     * @param string                 $arrayName
+     */
+    protected function addPostFiles(MultipartStreamBuilder $builder, array $files, $arrayName = '')
     {
         if (empty($files)) {
             return;
@@ -174,52 +297,43 @@ class Client extends BaseClient
                 $name = $arrayName.'['.$name.']';
             }
 
-            $file = [
-                'name' => $name,
-            ];
+            if (!is_array($info)) {
+                $builder->addResource($name, fopen($info, 'r'));
 
-            if (is_array($info)) {
-                if (isset($info['tmp_name'])) {
-                    if ('' !== $info['tmp_name']) {
-                        $file['contents'] = fopen($info['tmp_name'], 'r');
-                        if (isset($info['name'])) {
-                            $file['filename'] = $info['name'];
-                        }
-                    } else {
-                        continue;
-                    }
+                continue;
+            }
+
+            if (!isset($info['tmp_name'])) {
+                $this->addPostFiles($builder, $info, $name);
+
+                continue;
+            }
+
+            if (isset($info['tmp_name']) && '' !== $info['tmp_name']) {
+                if (isset($info['name'])) {
+                    $builder->addResource($name, fopen($info['tmp_name'], 'r'), array('filename' => $info['name']));
                 } else {
-                    $this->addPostFiles($info, $multipart, $name);
-                    continue;
+                    $builder->addResource($name, fopen($info['tmp_name'], 'r'));
                 }
-            } else {
-                $file['contents'] = fopen($info, 'r');
-            }
-
-            $multipart[] = $file;
-        }
-    }
-
-    public function addPostFields(array $formParams, array &$multipart, $arrayName = '')
-    {
-        foreach ($formParams as $name => $value) {
-            if (!empty($arrayName)) {
-                $name = $arrayName.'['.$name.']';
-            }
-
-            if (is_array($value)) {
-                $this->addPostFields($value, $multipart, $name);
-            } else {
-                $multipart[] = [
-                    'name' => $name,
-                    'contents' => $value,
-                ];
             }
         }
     }
 
-    protected function createResponse(ResponseInterface $response)
+    /**
+     * @param Request $request
+     *
+     * @return RequestInterface
+     */
+    protected function buildPsr7Request($request)
     {
-        return new Response((string) $response->getBody(), $response->getStatusCode(), $response->getHeaders());
+        $headers = $this->buildHeaders($request->getServer());
+        $body = !in_array($request->getMethod(), array('GET', 'HEAD')) ? $this->buildBody($request, $headers) : null;
+
+        return new Psr7Request(
+            $request->getMethod(),
+            $request->getUri(),
+            $headers,
+            $body
+        );
     }
 }
