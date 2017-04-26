@@ -137,6 +137,8 @@ class Client extends BaseClient
                     $requestOptions['form_params'] = $request->getParameters();
                 }
             }
+        } else {
+            $requestOptions['query'] = $request->getParameters();
         }
 
         if (!empty($headers)) {
