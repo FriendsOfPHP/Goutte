@@ -60,6 +60,7 @@ instance to Goutte. For example, to add a 60 second request timeout:
     
     $goutteClient = new Client();
     $guzzleClient = new GuzzleClient(array(
+        'base_uri' => 'https://github.com/',
         'timeout' => 60,
     ));
     $goutteClient->setClient($guzzleClient);
