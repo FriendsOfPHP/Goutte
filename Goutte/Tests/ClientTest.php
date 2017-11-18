@@ -18,6 +18,7 @@ use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use GuzzleHttp\Middleware;
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\BrowserKit\Cookie;
 
 /**
@@ -26,7 +27,7 @@ use Symfony\Component\BrowserKit\Cookie;
  * @author Michael Dowling <michael@guzzlephp.org>
  * @author Charles Sarrazin <charles@sarraz.in>
  */
-class ClientTest extends \PHPUnit_Framework_TestCase
+class ClientTest extends TestCase
 {
     protected $history;
     /** @var MockHandler */
@@ -337,11 +338,13 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         $this->assertInternalType('array', array_shift($headers), 'Header not converted from Guzzle\Http\Message\Header to array');
     }
 
+    /**
+     * @expectedException \GuzzleHttp\Exception\RequestException
+     */
     public function testNullResponseException()
     {
-        $this->setExpectedException('GuzzleHttp\Exception\RequestException');
         $guzzle = $this->getGuzzle([
-            new RequestException('', $this->getMock('Psr\Http\Message\RequestInterface')),
+            new RequestException('', $this->getMockBuilder('Psr\Http\Message\RequestInterface')->getMock()),
         ]);
         $client = new Client();
         $client->setClient($guzzle);
