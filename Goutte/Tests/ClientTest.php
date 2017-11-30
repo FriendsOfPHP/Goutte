@@ -318,7 +318,7 @@ class ClientTest extends TestCase
         $this->assertEquals('Test', $crawler->filter('p')->text());
 
         // Ensure that two requests were sent
-        $this->assertEquals(2, count($this->history));
+        $this->assertCount(2, $this->history);
     }
 
     public function testConvertsGuzzleHeadersToArrays()
