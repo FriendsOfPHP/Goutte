@@ -45,7 +45,7 @@ Make requests with the ``request()`` method:
 .. code-block:: php
 
     // Go to the symfony.com website
-    $crawler = $client->request('GET', 'https://www.symfony.com/blog/');
+    $crawler = $client->request('GET', 'https://symfony.com/blog/');
 
 The method returns a ``Crawler`` object
 (``Symfony\Component\DomCrawler\Crawler``).
