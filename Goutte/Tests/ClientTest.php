@@ -33,7 +33,7 @@ class ClientTest extends TestCase
     /** @var MockHandler */
     protected $mock;
 
-    protected function getGuzzle(array $responses = [])
+    protected function getGuzzle(array $responses = [], array $extraConfig = [])
     {
         if (empty($responses)) {
             $responses = [new GuzzleResponse(200, [], '<html><body><p>Hi</p></body></html>')];
@@ -42,7 +42,7 @@ class ClientTest extends TestCase
         $handlerStack = HandlerStack::create($this->mock);
         $this->history = [];
         $handlerStack->push(Middleware::history($this->history));
-        $guzzle = new GuzzleClient(array('redirect.disable' => true, 'base_uri' => '', 'handler' => $handlerStack));
+        $guzzle = new GuzzleClient(array_merge(array('redirect.disable' => true, 'base_uri' => '', 'handler' => $handlerStack), $extraConfig));
 
         return $guzzle;
     }
@@ -406,5 +406,42 @@ class ClientTest extends TestCase
         $client->restart();
         $this->assertEquals([], $headersReflectionProperty->getValue($client));
         $this->assertNull($authReflectionProperty->getValue($client));
+    }
+
+    public function testSetBaseUri()
+    {
+        $guzzle = $this->getGuzzle([], ['base_uri' => 'http://example.com/']);
+        $client = new Client();
+        $client->setClient($guzzle);
+
+        $this->assertNull($client->getServerParameter('HTTPS', null));
+        $this->assertSame('example.com', $client->getServerParameter('HTTP_HOST'));
+
+        $client->request('GET', '/foo');
+        $this->assertSame('http://example.com/foo', (string) end($this->history)['request']->getUri());
+    }
+
+    public function testSetHttpsBaseUri()
+    {
+        $guzzle = $this->getGuzzle([], ['base_uri' => 'https://example.com:1234']);
+        $client = new Client();
+        $client->setClient($guzzle);
+
+        $this->assertSame('on', $client->getServerParameter('HTTPS'));
+        $this->assertSame('example.com:1234', $client->getServerParameter('HTTP_HOST'));
+
+        $client->request('GET', '/foo');
+        $this->assertSame('https://example.com:1234/foo', (string) end($this->history)['request']->getUri());
+    }
+
+    /**
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Setting a path in the Guzzle "base_uri" config option is not supported by Goutte yet.
+     */
+    public function testSetBaseUriWithPath()
+    {
+        $guzzle = $this->getGuzzle([], ['base_uri' => 'http://example.com/foo/']);
+        $client = new Client();
+        $client->setClient($guzzle);
     }
 }

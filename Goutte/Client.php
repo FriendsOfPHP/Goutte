@@ -16,6 +16,7 @@ use GuzzleHttp\ClientInterface as GuzzleClientInterface;
 use GuzzleHttp\Cookie\CookieJar;
 use GuzzleHttp\Exception\RequestException;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UriInterface;
 use Symfony\Component\BrowserKit\Client as BaseClient;
 use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\BrowserKit\Response;
@@ -26,17 +27,41 @@ use Symfony\Component\BrowserKit\Response;
  * @author Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author Michael Dowling <michael@guzzlephp.org>
  * @author Charles Sarrazin <charles@sarraz.in>
+ * @author Kévin Dunglas <dunglas@gmail.com>
  */
 class Client extends BaseClient
 {
     protected $client;
 
     private $headers = array();
-    private $auth = null;
+    private $auth;
 
     public function setClient(GuzzleClientInterface $client)
     {
         $this->client = $client;
+
+        /**
+         * @var $baseUri UriInterface
+         */
+        if (null !== $this->getServerParameter('HTTP_HOST', null) || null === $baseUri = $client->getConfig('base_uri')) {
+            return $this;
+        }
+
+        $path = $baseUri->getPath();
+        if ('' !== $path && '/' !== $path) {
+            throw new \InvalidArgumentException('Setting a path in the Guzzle "base_uri" config option is not supported by Goutte yet.');
+        }
+
+        if (null === $this->getServerParameter('HTTPS', null) && 'https' === $baseUri->getScheme()) {
+            $this->setServerParameter('HTTPS', 'on');
+        }
+
+        $host = $baseUri->getHost();
+        if (null !== $port = $baseUri->getPort()) {
+            $host .= ":$port";
+        }
+
+        $this->setServerParameter('HTTP_HOST', $host);
 
         return $this;
     }
