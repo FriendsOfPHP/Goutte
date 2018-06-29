@@ -1,0 +1,5 @@
+---------------------------------------------------------------------------
+
+by dunglas at 2018-06-29T12:05:11Z
+
+Any chance to get this PR merged and a new tag added @fabpot? It will allow to improve the compatlbiity of Panthère with existing Symfony test suites: https://github.com/symfony/panthere/pull/36
