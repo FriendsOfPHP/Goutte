@@ -176,14 +176,7 @@ class Client extends BaseClient
         }
 
         // Let BrowserKit handle redirects
-        try {
-            $response = $this->getClient()->request($method, $uri, $requestOptions);
-        } catch (RequestException $e) {
-            $response = $e->getResponse();
-            if (null === $response) {
-                throw $e;
-            }
-        }
+        $response = $this->getClient()->request($method, $uri, $requestOptions);
 
         return $this->createResponse($response);
     }
