@@ -62,6 +62,8 @@ class Client extends BaseClient
         }
 
         $this->setServerParameter('HTTP_HOST', $host);
+        
+        $this->setServerParameter('HTTP_USER_AGENT', $client->getConfig('headers')['User-Agent']);
 
         return $this;
     }
