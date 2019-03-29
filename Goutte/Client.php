@@ -77,14 +77,14 @@ class Client extends BaseClient
 
     public function setHeader($name, $value)
     {
-        $this->headers[strtolower($name)] = $value;
+        $this->headers[$name] = $value;
 
         return $this;
     }
 
     public function removeHeader($name)
     {
-        unset($this->headers[strtolower($name)]);
+        unset($this->headers[$name]);
     }
 
     public function resetHeaders()
