@@ -9,9 +9,12 @@ responses.
 Requirements
 ------------
 
-Goutte depends on PHP 5.5+ and Guzzle 6+.
+Goutte depends on PHP 7.1+ and Guzzle 6+.
 
 .. tip::
+
+    If you need support for PHP 5.5, use Goutte 3.x (latest `phar
+    <https://github.com/FriendsOfPHP/Goutte/releases/download/v3.1.0/goutte-v3.1.0.phar>`_).
 
     If you need support for PHP 5.4 or Guzzle 4-5, use Goutte 2.x (latest `phar
     <https://github.com/FriendsOfPHP/Goutte/releases/download/v2.0.4/goutte-v2.0.4.phar>`_).

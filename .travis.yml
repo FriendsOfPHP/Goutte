@@ -11,12 +11,9 @@ env:
         - SYMFONY_PHPUNIT_DIR=$HOME/.phpunit_bridge
 
 php:
+    - 7.3
     - 7.2
     - 7.1
-    - 7.0
-    - 5.6
-    - 5.5
-    - nightly
 
 install:
     - composer update
