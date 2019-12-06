@@ -16,8 +16,8 @@ use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Response as GuzzleResponse;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\BrowserKit\Cookie;
 
@@ -42,7 +42,7 @@ class ClientTest extends TestCase
         $handlerStack = HandlerStack::create($this->mock);
         $this->history = [];
         $handlerStack->push(Middleware::history($this->history));
-        $guzzle = new GuzzleClient(array_merge(array('redirect.disable' => true, 'base_uri' => '', 'handler' => $handlerStack), $extraConfig));
+        $guzzle = new GuzzleClient(array_merge(['redirect.disable' => true, 'base_uri' => '', 'handler' => $handlerStack], $extraConfig));
 
         return $guzzle;
     }
@@ -131,14 +131,14 @@ class ClientTest extends TestCase
         $guzzle = $this->getGuzzle();
         $client = new Client();
         $client->setClient($guzzle);
-        $files = array(
-            'test' => array(
+        $files = [
+            'test' => [
                 'name' => 'test.txt',
                 'tmp_name' => __DIR__.'/fixtures.txt',
-            ),
-        );
+            ],
+        ];
 
-        $client->request('POST', 'http://www.example.com/', array(), $files);
+        $client->request('POST', 'http://www.example.com/', [], $files);
         $request = end($this->history)['request'];
 
         $stream = $request->getBody();
@@ -155,11 +155,11 @@ class ClientTest extends TestCase
         $guzzle = $this->getGuzzle();
         $client = new Client();
         $client->setClient($guzzle);
-        $files = array(
+        $files = [
             'test' => __DIR__.'/fixtures.txt',
-        );
+        ];
 
-        $client->request('POST', 'http://www.example.com/', array(), $files);
+        $client->request('POST', 'http://www.example.com/', [], $files);
         $request = end($this->history)['request'];
 
         $stream = $request->getBody();
@@ -176,16 +176,16 @@ class ClientTest extends TestCase
         $guzzle = $this->getGuzzle();
         $client = new Client();
         $client->setClient($guzzle);
-        $files = array(
-            'form' => array(
-                'test' => array(
+        $files = [
+            'form' => [
+                'test' => [
                     'name' => 'test.txt',
                     'tmp_name' => __DIR__.'/fixtures.txt',
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
 
-        $client->request('POST', 'http://www.example.com/', array(), $files);
+        $client->request('POST', 'http://www.example.com/', [], $files);
         $request = end($this->history)['request'];
 
         $stream = $request->getBody();
@@ -202,12 +202,12 @@ class ClientTest extends TestCase
         $guzzle = $this->getGuzzle();
         $client = new Client();
         $client->setClient($guzzle);
-        $files = array(
+        $files = [
             'test' => __DIR__.'/fixtures.txt',
-        );
-        $params = array(
+        ];
+        $params = [
             'foo' => 'bar',
-        );
+        ];
 
         $client->request('POST', 'http://www.example.com/', $params, $files);
         $request = end($this->history)['request'];
@@ -219,7 +219,8 @@ class ClientTest extends TestCase
             ."\r\nbar\r\n"
             ."--$boundary\r\nContent-Disposition: form-data; name=\"test\"; filename=\"fixtures.txt\"\r\nContent-Length: 4\r\n"
             ."Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
-        $stream->getContents());
+            $stream->getContents()
+        );
     }
 
     public function testPostEmbeddedFormWithFiles()
@@ -227,14 +228,14 @@ class ClientTest extends TestCase
         $guzzle = $this->getGuzzle();
         $client = new Client();
         $client->setClient($guzzle);
-        $files = array(
+        $files = [
             'test' => __DIR__.'/fixtures.txt',
-        );
-        $params = array(
-            'foo' => array(
+        ];
+        $params = [
+            'foo' => [
                 'bar' => 'baz',
-            ),
-        );
+            ],
+        ];
 
         $client->request('POST', 'http://www.example.com/', $params, $files);
         $request = end($this->history)['request'];
@@ -246,7 +247,8 @@ class ClientTest extends TestCase
             ."\r\nbaz\r\n"
             ."--$boundary\r\nContent-Disposition: form-data; name=\"test\"; filename=\"fixtures.txt\"\r\nContent-Length: 4\r\n"
             ."Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
-        $stream->getContents());
+            $stream->getContents()
+        );
     }
 
     public function testUsesPostFilesOnClientSide()
@@ -254,11 +256,11 @@ class ClientTest extends TestCase
         $guzzle = $this->getGuzzle();
         $client = new Client();
         $client->setClient($guzzle);
-        $files = array(
+        $files = [
             'test' => __DIR__.'/fixtures.txt',
-        );
+        ];
 
-        $client->request('POST', 'http://www.example.com/', array(), $files);
+        $client->request('POST', 'http://www.example.com/', [], $files);
         $request = end($this->history)['request'];
 
         $stream = $request->getBody();
@@ -275,17 +277,17 @@ class ClientTest extends TestCase
         $guzzle = $this->getGuzzle();
         $client = new Client();
         $client->setClient($guzzle);
-        $files = array(
-            'test' => array(
+        $files = [
+            'test' => [
                 'name' => '',
                 'type' => '',
                 'tmp_name' => '',
                 'error' => 4,
                 'size' => 0,
-            ),
-        );
+            ],
+        ];
 
-        $client->request('POST', 'http://www.example.com/', array(), $files);
+        $client->request('POST', 'http://www.example.com/', [], $files);
         $request = end($this->history)['request'];
         $stream = $request->getBody();
         $boundary = $stream->getBoundary();
@@ -305,9 +307,9 @@ class ClientTest extends TestCase
     public function testHandlesRedirectsCorrectly()
     {
         $guzzle = $this->getGuzzle([
-            new GuzzleResponse(301, array(
+            new GuzzleResponse(301, [
                 'Location' => 'http://www.example.com/',
-            )),
+            ]),
             new GuzzleResponse(200, [], '<html><body><p>Test</p></body></html>'),
         ]);
 
@@ -318,15 +320,15 @@ class ClientTest extends TestCase
         $this->assertEquals('Test', $crawler->filter('p')->text());
 
         // Ensure that two requests were sent
-        $this->assertEquals(2, count($this->history));
+        $this->assertEquals(2, \count($this->history));
     }
 
     public function testConvertsGuzzleHeadersToArrays()
     {
         $guzzle = $this->getGuzzle([
-            new GuzzleResponse(200, array(
+            new GuzzleResponse(200, [
                 'Date' => 'Tue, 04 Jun 2013 13:22:41 GMT',
-            )),
+            ]),
         ]);
 
         $client = new Client();
@@ -335,14 +337,12 @@ class ClientTest extends TestCase
         $response = $client->getResponse();
         $headers = $response->getHeaders();
 
-        $this->assertInternalType('array', array_shift($headers), 'Header not converted from Guzzle\Http\Message\Header to array');
+        $this->assertIsArray(array_shift($headers), 'Header not converted from Guzzle\Http\Message\Header to array');
     }
 
-    /**
-     * @expectedException \GuzzleHttp\Exception\RequestException
-     */
     public function testNullResponseException()
     {
+        $this->expectException(\GuzzleHttp\Exception\RequestException::class);
         $guzzle = $this->getGuzzle([
             new RequestException('', $this->getMockBuilder('Psr\Http\Message\RequestInterface')->getMock()),
         ]);
@@ -383,7 +383,7 @@ class ClientTest extends TestCase
 
         $reflectionProperty = new \ReflectionProperty('Goutte\Client', 'headers');
         $reflectionProperty->setAccessible(true);
-        $this->assertEquals(array('x-test' => 'test'), $reflectionProperty->getValue($client));
+        $this->assertEquals(['x-test' => 'test'], $reflectionProperty->getValue($client));
 
         $client->resetHeaders();
         $this->assertEquals([], $reflectionProperty->getValue($client));
@@ -397,11 +397,11 @@ class ClientTest extends TestCase
 
         $headersReflectionProperty = new \ReflectionProperty('Goutte\Client', 'headers');
         $headersReflectionProperty->setAccessible(true);
-        $this->assertEquals(array('x-test' => 'test'), $headersReflectionProperty->getValue($client));
+        $this->assertEquals(['x-test' => 'test'], $headersReflectionProperty->getValue($client));
 
         $authReflectionProperty = new \ReflectionProperty('Goutte\Client', 'auth');
         $authReflectionProperty->setAccessible(true);
-        $this->assertEquals(array('foo', 'bar', 'basic'), $authReflectionProperty->getValue($client));
+        $this->assertEquals(['foo', 'bar', 'basic'], $authReflectionProperty->getValue($client));
 
         $client->restart();
         $this->assertEquals([], $headersReflectionProperty->getValue($client));
@@ -434,12 +434,10 @@ class ClientTest extends TestCase
         $this->assertSame('https://example.com:1234/foo', (string) end($this->history)['request']->getUri());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Setting a path in the Guzzle "base_uri" config option is not supported by Goutte yet.
-     */
     public function testSetBaseUriWithPath()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Setting a path in the Guzzle "base_uri" config option is not supported by Goutte yet.');
         $guzzle = $this->getGuzzle([], ['base_uri' => 'http://example.com/foo/']);
         $client = new Client();
         $client->setClient($guzzle);
