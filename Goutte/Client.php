@@ -21,8 +21,6 @@ use Symfony\Component\BrowserKit\Request;
 use Symfony\Component\BrowserKit\Response;
 
 /**
- * Client.
- *
  * @author Fabien Potencier <fabien@symfony.com>
  * @author Michael Dowling <michael@guzzlephp.org>
  * @author Charles Sarrazin <charles@sarraz.in>
