@@ -219,7 +219,8 @@ class ClientTest extends TestCase
             ."\r\nbar\r\n"
             ."--$boundary\r\nContent-Disposition: form-data; name=\"test\"; filename=\"fixtures.txt\"\r\nContent-Length: 4\r\n"
             ."Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
-        $stream->getContents());
+            $stream->getContents()
+        );
     }
 
     public function testPostEmbeddedFormWithFiles()
@@ -246,7 +247,8 @@ class ClientTest extends TestCase
             ."\r\nbaz\r\n"
             ."--$boundary\r\nContent-Disposition: form-data; name=\"test\"; filename=\"fixtures.txt\"\r\nContent-Length: 4\r\n"
             ."Content-Type: text/plain\r\n\r\nfoo\n\r\n--$boundary--\r\n",
-        $stream->getContents());
+            $stream->getContents()
+        );
     }
 
     public function testUsesPostFilesOnClientSide()

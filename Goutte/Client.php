@@ -24,7 +24,7 @@ use Symfony\Component\BrowserKit\Response;
 /**
  * Client.
  *
- * @author Fabien Potencier <fabien.potencier@symfony-project.com>
+ * @author Fabien Potencier <fabien@symfony.com>
  * @author Michael Dowling <michael@guzzlephp.org>
  * @author Charles Sarrazin <charles@sarraz.in>
  * @author Kévin Dunglas <dunglas@gmail.com>
