@@ -337,14 +337,12 @@ class ClientTest extends TestCase
         $response = $client->getResponse();
         $headers = $response->getHeaders();
 
-        $this->assertInternalType('array', array_shift($headers), 'Header not converted from Guzzle\Http\Message\Header to array');
+        $this->assertIsArray(array_shift($headers), 'Header not converted from Guzzle\Http\Message\Header to array');
     }
 
-    /**
-     * @expectedException \GuzzleHttp\Exception\RequestException
-     */
     public function testNullResponseException()
     {
+        $this->expectException(\GuzzleHttp\Exception\RequestException::class);
         $guzzle = $this->getGuzzle([
             new RequestException('', $this->getMockBuilder('Psr\Http\Message\RequestInterface')->getMock()),
         ]);
@@ -436,12 +434,10 @@ class ClientTest extends TestCase
         $this->assertSame('https://example.com:1234/foo', (string) end($this->history)['request']->getUri());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage Setting a path in the Guzzle "base_uri" config option is not supported by Goutte yet.
-     */
     public function testSetBaseUriWithPath()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Setting a path in the Guzzle "base_uri" config option is not supported by Goutte yet.');
         $guzzle = $this->getGuzzle([], ['base_uri' => 'http://example.com/foo/']);
         $client = new Client();
         $client->setClient($guzzle);
