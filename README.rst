@@ -9,18 +9,7 @@ responses.
 Requirements
 ------------
 
-Goutte depends on PHP 7.1+ and Guzzle 6+.
-
-.. tip::
-
-    If you need support for PHP 5.5, use Goutte 3.x (latest `phar
-    <https://github.com/FriendsOfPHP/Goutte/releases/download/v3.1.0/goutte-v3.1.0.phar>`_).
-
-    If you need support for PHP 5.4 or Guzzle 4-5, use Goutte 2.x (latest `phar
-    <https://github.com/FriendsOfPHP/Goutte/releases/download/v2.0.4/goutte-v2.0.4.phar>`_).
-
-    If you need support for PHP 5.3 or Guzzle 3, use Goutte 1.x (latest `phar
-    <https://github.com/FriendsOfPHP/Goutte/releases/download/v1.0.7/goutte-v1.0.7.phar>`_).
+Goutte depends on PHP 7.1+.
 
 Installation
 ------------
@@ -35,7 +24,7 @@ Usage
 -----
 
 Create a Goutte Client instance (which extends
-``Symfony\Component\BrowserKit\Client``):
+``Symfony\Component\BrowserKit\HttpBrowser``):
 
 .. code-block:: php
 
@@ -53,19 +42,15 @@ Make requests with the ``request()`` method:
 The method returns a ``Crawler`` object
 (``Symfony\Component\DomCrawler\Crawler``).
 
-To use your own Guzzle settings, you may create and pass a new Guzzle 6
+To use your own HTTP settings, you may create and pass an HttpClient
 instance to Goutte. For example, to add a 60 second request timeout:
 
 .. code-block:: php
 
     use Goutte\Client;
-    use GuzzleHttp\Client as GuzzleClient;
-    
-    $goutteClient = new Client();
-    $guzzleClient = new GuzzleClient(array(
-        'timeout' => 60,
-    ));
-    $goutteClient->setClient($guzzleClient);
+    use Symfony\Component\HttpClient\HttpClient;
+
+    $client = new Client(HttpClient::create(['timeout' => 60]));
 
 Click on links:
 
@@ -99,8 +84,8 @@ Submit forms:
 More Information
 ----------------
 
-Read the documentation of the `BrowserKit`_ and `DomCrawler`_ Symfony
-Components for more information about what you can do with Goutte.
+Read the documentation of the `BrowserKit`_, `DomCrawler`_, and `HttpClient`_
+Symfony Components for more information about what you can do with Goutte.
 
 Pronunciation
 -------------
@@ -110,11 +95,8 @@ Goutte is pronounced ``goot`` i.e. it rhymes with ``boot`` and not ``out``.
 Technical Information
 ---------------------
 
-Goutte is a thin wrapper around the following fine PHP libraries:
-
-* Symfony Components: `BrowserKit`_, `CssSelector`_ and `DomCrawler`_;
-
-*  `Guzzle`_ HTTP Component.
+Goutte is a thin wrapper around the following Symfony Components:
+`BrowserKit`_, `CssSelector`_, `DomCrawler`_, and `HttpClient`_.
 
 License
 -------
@@ -122,7 +104,7 @@ License
 Goutte is licensed under the MIT license.
 
 .. _`Composer`: https://getcomposer.org
-.. _`Guzzle`: http://docs.guzzlephp.org
 .. _`BrowserKit`: https://symfony.com/components/BrowserKit
 .. _`DomCrawler`: https://symfony.com/doc/current/components/dom_crawler.html
 .. _`CssSelector`: https://symfony.com/doc/current/components/css_selector.html
+.. _`HttpClient`: https://symfony.com/doc/current/components/http_client.html

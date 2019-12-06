@@ -16,7 +16,8 @@
         "symfony/browser-kit": "^4.4|^5.0",
         "symfony/css-selector": "^4.4|^5.0",
         "symfony/dom-crawler": "^4.4|^5.0",
-        "guzzlehttp/guzzle": "^6.0"
+        "symfony/http-client": "^4.4|^5.0",
+        "symfony/mime": "^4.4|^5.0"
     },
     "require-dev": {
         "symfony/phpunit-bridge": "^5.0"
@@ -27,7 +28,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.3-dev"
+            "dev-master": "4.0-dev"
         }
     }
 }
