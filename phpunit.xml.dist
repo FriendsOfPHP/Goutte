@@ -11,7 +11,7 @@
          bootstrap="./vendor/autoload.php">
     <testsuites>
         <testsuite name="Goutte Test Suite">
-            <directory>./Goutte/Tests</directory>
+            <directory>./tests</directory>
         </testsuite>
     </testsuites>
 </phpunit>
