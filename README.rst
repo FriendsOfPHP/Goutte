@@ -69,6 +69,8 @@ Extract data:
         print $node->text()."\n";
     });
 
+You can extract data using any kind `CSS Selectors`_ which will return nodes that you can further process. 
+
 Submit forms:
 
 .. code-block:: php
@@ -108,3 +110,4 @@ Goutte is licensed under the MIT license.
 .. _`DomCrawler`: https://symfony.com/doc/current/components/dom_crawler.html
 .. _`CssSelector`: https://symfony.com/doc/current/components/css_selector.html
 .. _`HttpClient`: https://symfony.com/doc/current/components/http_client.html
+.. _`CSS Selectors`: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors
