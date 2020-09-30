@@ -108,3 +108,7 @@ Goutte is licensed under the MIT license.
 .. _`DomCrawler`: https://symfony.com/doc/current/components/dom_crawler.html
 .. _`CssSelector`: https://symfony.com/doc/current/components/css_selector.html
 .. _`HttpClient`: https://symfony.com/doc/current/components/http_client.html
+
+
+
+with love Goutte
