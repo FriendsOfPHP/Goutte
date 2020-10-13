@@ -11,6 +11,7 @@ env:
         - SYMFONY_PHPUNIT_DIR=$HOME/.phpunit_bridge
 
 php:
+    - nightly
     - 7.4
     - 7.3
     - 7.2
