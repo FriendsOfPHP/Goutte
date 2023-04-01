@@ -6,6 +6,13 @@ Goutte is a screen scraping and web crawling library for PHP.
 Goutte provides a nice API to crawl websites and extract data from the HTML/XML
 responses.
 
+**WARNING**: This library is deprecated. As of v4, Goutte became a simple proxy
+to the `HttpBrowser class
+<https://symfony.com/doc/current/components/browser_kit.html#making-external-http-requests>`_
+from the `Symfony BrowserKit <https://symfony.com/browser-kit>`_ component. To
+migrate, replace ``Goutte\\Client`` by
+``Symfony\\Component\\BrowserKit\\HttpBrowser`` in your code.
+
 Requirements
 ------------
 
