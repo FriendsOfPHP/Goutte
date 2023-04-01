@@ -10,8 +10,8 @@ responses.
 to the `HttpBrowser class
 <https://symfony.com/doc/current/components/browser_kit.html#making-external-http-requests>`_
 from the `Symfony BrowserKit <https://symfony.com/browser-kit>`_ component. To
-migrate, replace ``Goutte\\Client`` by
-``Symfony\\Component\\BrowserKit\\HttpBrowser`` in your code.
+migrate, replace ``Goutte\Client`` by
+``Symfony\Component\BrowserKit\HttpBrowser`` in your code.
 
 Requirements
 ------------
